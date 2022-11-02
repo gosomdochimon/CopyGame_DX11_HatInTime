@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="98.Default">
+      <UniqueIdentifier>{b467f3ef-3a4f-4910-9d8b-32984f10175a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp">
+      <UniqueIdentifier>{26f44b19-48b8-43fc-9375-cdf76bb234ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines">
+      <UniqueIdentifier>{58c9acbd-476a-4f98-a5ff-d88db36efe19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels">
+      <UniqueIdentifier>{7e1d8f73-4353-4848-a46d-3724efe7e658}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects">
+      <UniqueIdentifier>{6545733c-14dc-4cec-8e7c-3e5b0ad75c3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\00.Loader">
+      <UniqueIdentifier>{d34b4313-2969-4649-ac63-5be3b1783f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.Logo">
+      <UniqueIdentifier>{5267b1be-398c-4f1f-8043-c7305aa0e1d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02.GamePlay">
+      <UniqueIdentifier>{35c5c360-0a21-4524-b3bd-78fd1a809214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.BackGround">
+      <UniqueIdentifier>{57566d9b-4982-490a-9436-a60395b8dd99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ShaderFiles">
+      <UniqueIdentifier>{ffd39a2b-4897-4694-bc2f-d9c96bf2d061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Terrain">
+      <UniqueIdentifier>{6cd33bd8-14ca-4499-8f92-7d7ff986c039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor">
+      <UniqueIdentifier>{6cb0f56f-ce15-4391-8056-e45552a67fa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn">
+      <UniqueIdentifier>{9f940819-8e95-4c19-95b7-09d3d80e3975}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\02.Player">
+      <UniqueIdentifier>{21bf6ab8-5f9a-4a9d-8d87-fb29367f59c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster">
+      <UniqueIdentifier>{59c87580-e79c-4ee8-8db5-01cb6ac64ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayerController">
+      <UniqueIdentifier>{f9e0bcd2-33dd-4163-99b5-c65dc20fff1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayerController\Command">
+      <UniqueIdentifier>{eaed1730-753d-4755-962f-12a160653c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\02.Player\01.HatKid">
+      <UniqueIdentifier>{d568985b-2f42-4c60-94a0-7e404c5cc78d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\02.Player\99.Player_CamVector">
+      <UniqueIdentifier>{4efde387-4581-49e9-83d2-af7c40c7d904}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Client.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>98.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MainApp.h">
+      <Filter>00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Defines.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Dynamic.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_GamePlay.h">
+      <Filter>01.Levels\02.GamePlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Loading.h">
+      <Filter>01.Levels\00.Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Loader.h">
+      <Filter>01.Levels\00.Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Logo.h">
+      <Filter>01.Levels\01.Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BackGround.h">
+      <Filter>02.GameObjects\00.BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObjects\01.Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>97.ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02.GameObjects\Actor\Pawn\02.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Actor.h">
+      <Filter>02.GameObjects\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Pawn.h">
+      <Filter>02.GameObjects\Actor\Pawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerController.h">
+      <Filter>PlayerController</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HatKid.h">
+      <Filter>02.GameObjects\Actor\Pawn\02.Player\01.HatKid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\KeyCommand.h">
+      <Filter>PlayerController\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Monster.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Client.cpp">
+      <Filter>98.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>98.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MainApp.cpp">
+      <Filter>00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Dynamic.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_GamePlay.cpp">
+      <Filter>01.Levels\02.GamePlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Loading.cpp">
+      <Filter>01.Levels\00.Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Loader.cpp">
+      <Filter>01.Levels\00.Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Logo.cpp">
+      <Filter>01.Levels\01.Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BackGround.cpp">
+      <Filter>02.GameObjects\00.BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObjects\01.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\02.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Actor.cpp">
+      <Filter>02.GameObjects\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Pawn.cpp">
+      <Filter>02.GameObjects\Actor\Pawn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerController.cpp">
+      <Filter>PlayerController</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HatKid.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\02.Player\01.HatKid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\KeyCommand.cpp">
+      <Filter>PlayerController\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Client.ico">
+      <Filter>98.Default</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>98.Default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc">
+      <Filter>98.Default</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,59 @@
+#pragma once
+#include "Component.h"
+
+BEGIN(Engine)
+
+class ENGINE_DLL CCollider final : public CComponent
+{
+public:
+	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE, TYPE_END};
+	enum BOUNDING { BOUNDING_ORIGINAL, BOUNDING_WORLD, BOUNDING_END};
+	
+	/*Collider 생성 시 필요한 초기 상태*/
+	typedef struct tagColliderDesc
+	{
+		_float3	vScale;
+		_float3	vRotation;
+		_float3 vPosition;
+	}COLLIDERDESC;
+public:
+	CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCollider(const CCollider& rhs);
+	virtual ~CCollider() = default;
+public:
+	virtual HRESULT	Initialize_Prototype(TYPE eType);
+	virtual HRESULT	Initialize(void* pArg);
+
+public:
+	void	Update(_fmatrix WorldMatrix);
+	HRESULT	Render();
+
+private:
+	_matrix	Remove_Rotation(_fmatrix Matrix);
+
+private:
+	TYPE		m_eType = TYPE_END;
+
+	COLLIDERDESC	m_ColliderDesc;
+
+	BoundingBox*			m_pAABB[BOUNDING_END] = { nullptr };
+	BoundingOrientedBox*	m_pOBB[BOUNDING_END] = { nullptr };
+	BoundingSphere*			m_pSphere[BOUNDING_END] = { nullptr };
+
+	_bool					m_isCollision = false;
+
+#ifdef _DEBUG
+
+	ID3D11InputLayout*						m_pInputLayout = nullptr;
+	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
+	BasicEffect*							m_pEffect = nullptr;
+
+#endif //_DEBUG
+
+public:
+	static CCollider* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType);
+	virtual CComponent* Clone(void* pArg = nullptr) override;
+	virtual void Free() override;
+};
+
+END
