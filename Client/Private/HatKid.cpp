@@ -41,7 +41,8 @@ void CHatKid::Tick(_float fTimeDelta)
 
 	m_pController->Input_Controller(fTimeDelta);
 
-	m_pModelCom->Play_Animation(fTimeDelta);
+	//m_pModelCom->Play_Animation(fTimeDelta, &m_bAnimFinished);
+	m_pModelCom->Play_Animation_Seperate(fTimeDelta, &m_bAnimFinished_Upper, &m_bAnimFinished_Lower);
 
 	m_pSPHERECom->Update(m_pTransformCom->Get_WorldMatrix());
 }
@@ -88,30 +89,30 @@ HRESULT CHatKid::Render()
 
 HRESULT CHatKid::Move_Front(_float fTimeDelta)
 {
-	//m_pModelCom->Set_CurrentAnimIndex(RUN);
-	m_pModelCom->Set_CurrentAnimIndex_Upper(ITEM_PICKUP_LARGE);
-	m_pModelCom->Set_CurrentAnimIndex_Lower(RUN);
+	//m_pModelCom->Set_NextAnimIndex(RUN, true);
+	m_pModelCom->Set_NextAnimIndex_Upper(ITEM_PICKUP_LARGE);
+	m_pModelCom->Set_NextAnimIndex_Lower(RUN);
 	
-	m_pTransformCom->Go_Straight(fTimeDelta);
+	//m_pTransformCom->Go_Straight(fTimeDelta);
 
 	return S_OK;
 }
 
 HRESULT CHatKid::Move_Back(_float fTimeDelta)
 {
-	//m_pModelCom->Set_CurrentAnimIndex(RUN);
-	m_pModelCom->Set_CurrentAnimIndex_Upper(SHAKE_FLASK);
-	m_pModelCom->Set_CurrentAnimIndex_Lower(RUN);
+	//m_pModelCom->Set_NextAnimIndex(CRARRY_UMBRELLA_INTRO, true);
+	m_pModelCom->Set_NextAnimIndex_Upper(SHAKE_FLASK);
+	m_pModelCom->Set_NextAnimIndex_Lower(JUMP_FORWARD);
 	//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.5f);
-	m_pTransformCom->Go_Straight(-fTimeDelta);
+	//m_pTransformCom->Go_Straight(-fTimeDelta);
 	return S_OK;
 }
 
 HRESULT CHatKid::Move_Left(_float fTimeDelta)
 {
-	//m_pModelCom->Set_CurrentAnimIndex(RUN);
-	m_pModelCom->Set_CurrentAnimIndex_Upper(CRARRY_UMBRELLA_INTRO);
-	m_pModelCom->Set_CurrentAnimIndex_Lower(RUN);
+	//m_pModelCom->Set_NextAnimIndex(JUMP_FORWARD, true);
+	m_pModelCom->Set_NextAnimIndex_Upper(CRARRY_UMBRELLA_INTRO);
+	m_pModelCom->Set_NextAnimIndex_Lower(RUN);
 	//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f);
 	//m_pTransformCom->Go_Straight(fTimeDelta);
 	return S_OK;
@@ -119,9 +120,9 @@ HRESULT CHatKid::Move_Left(_float fTimeDelta)
 
 HRESULT CHatKid::Move_Right(_float fTimeDelta)
 {
-	//m_pModelCom->Set_CurrentAnimIndex(RUN);
-	m_pModelCom->Set_CurrentAnimIndex_Upper(ITEM_CARRY_LARGE);
-	m_pModelCom->Set_CurrentAnimIndex_Lower(RUN);
+	//m_pModelCom->Set_NextAnimIndex(VICTORY, true);
+	m_pModelCom->Set_NextAnimIndex_Upper(ITEM_CARRY_LARGE);
+	m_pModelCom->Set_NextAnimIndex_Lower(RUN);
 	//m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), 1);
 	//m_pTransformCom->Go_Straight(fTimeDelta);
 	return S_OK;
@@ -149,15 +150,16 @@ HRESULT CHatKid::Action_3(_float fTimeDelta)
 }
 
 HRESULT CHatKid::Action_4(_float fTimeDelta)
-{
+{//Pickup Key
 	return S_OK;
 }
 
 HRESULT CHatKid::Idle(_float fTimeDelta)
 {
-	//m_pModelCom->Set_CurrentAnimIndex(0);
-	m_pModelCom->Set_CurrentAnimIndex_Upper(ITEM_CARRY_LARGE);
-	m_pModelCom->Set_CurrentAnimIndex_Lower(IDLE);
+	/*if(m_bAnimFinished)
+		m_pModelCom->Set_NextAnimIndex(IDLE_TAUNT, true);*/
+	m_pModelCom->Set_NextAnimIndex_Upper(ITEM_CARRY_LARGE);
+	m_pModelCom->Set_NextAnimIndex_Lower(IDLE);
 	return S_OK;
 }
 
@@ -194,6 +196,8 @@ HRESULT CHatKid::Ready_Components()
 	BoneIndexDesc.iLowerIndex = 91;
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_HatKid"), (CComponent**)&m_pModelCom, &BoneIndexDesc)))
 		return E_FAIL;
+	/*if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_HatKid"), (CComponent**)&m_pModelCom)))
+		return E_FAIL;*/
 
 	CCollider::COLLIDERDESC		ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));

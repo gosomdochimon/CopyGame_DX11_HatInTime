@@ -25,7 +25,7 @@ HRESULT CMonster::Initialize(void * pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(rand() % 10, 0.f, rand() % 10, 1.f));
 	m_pModelCom->Set_CurrentAnimIndex(rand() % 10);
-
+	m_pModelCom->Set_NextAnimIndex(rand() % 10, true);
 	//m_pModelCom->Set_CurrentAnimIndex(3);
 
 	return S_OK;
@@ -34,7 +34,7 @@ HRESULT CMonster::Initialize(void * pArg)
 void CMonster::Tick(_float fTimeDelta)
 {
 
-	m_pModelCom->Play_Animation(fTimeDelta);
+	m_pModelCom->Play_Animation(fTimeDelta, &m_bAnimFinished);
 }
 
 void CMonster::Late_Tick(_float fTimeDelta)

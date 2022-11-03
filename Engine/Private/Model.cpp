@@ -29,12 +29,12 @@ CModel::CModel(const CModel & rhs)
 	{
 		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
 			Safe_AddRef(Material.pMaterials[i]);
-	}	
+	}
 }
 
 CHierarchyNode * CModel::Get_BonePtr(const char * pBoneName) const
 {
-	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CHierarchyNode* pNode) 
+	auto	iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CHierarchyNode* pNode)
 	{
 		return !strcmp(pNode->Get_Name(), pBoneName);
 	});
@@ -53,11 +53,11 @@ HRESULT CModel::Initialize_Prototype(TYPE eModelType, const char * pModelFilePat
 
 	_uint			iFlag = 0;
 
-	if(TYPE_NONANIM == eModelType)	
+	if (TYPE_NONANIM == eModelType)
 		iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace;
 	else
 		iFlag = aiProcess_ConvertToLeftHanded | aiProcess_GenNormals | aiProcess_CalcTangentSpace;
-	
+
 	m_pAIScene = m_Importer.ReadFile(pModelFilePath, iFlag);
 	if (nullptr == m_pAIScene)
 		return E_FAIL;
@@ -81,7 +81,7 @@ HRESULT CModel::Initialize(void * pArg)
 		ZeroMemory(&m_BoneDesc, sizeof(m_BoneDesc));
 		memcpy(&m_BoneDesc, pArg, sizeof(BONEINDEXDESC));
 		m_bIsSeperate = true;
-	}	
+	}
 
 	for (auto& pMeshContainer : m_Meshes)
 		pMeshContainer->SetUp_Bones(this);
@@ -100,33 +100,93 @@ HRESULT CModel::SetUp_Material(CShader * pShader, const char * pConstantName, _u
 	return pShader->Set_ShaderResourceView(pConstantName, m_Materials[m_Meshes[iMeshIndex]->Get_MaterialIndex()].pMaterials[eType]->Get_SRV());
 }
 
-HRESULT CModel::Play_Animation(_float fTimeDelta)
+HRESULT CModel::Play_Animation(_float fTimeDelta, _bool* _bIsFinished)
+ {
+	if (m_iCurrentAnimIndex != m_iNextAnimIndex)
+	{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
+		if (m_bInterupted)
+		{
+			m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
+			m_bInterupted = false;
+		}
+		m_bLinearFinished = m_Animations[m_iCurrentAnimIndex]->Animation_Linear_Interpolation(fTimeDelta, m_Animations[m_iNextAnimIndex]);
+
+		if (m_bLinearFinished == true)
+		{
+			m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
+
+			m_iCurrentAnimIndex = m_iNextAnimIndex;
+
+		}
+	}
+	else
+	{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다.	
+	  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
+		*_bIsFinished = m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+	}
+
+	Invalidate_Bones();
+
+	return S_OK;
+}
+
+HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Upper, _bool* bIsFinished_Lower)
 {
-	/* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
-	if (m_bIsSeperate)
-	{
-		m_Animations[m_iCurrent_Upper_AnimIndex]->Invalidate_Upper_TransformationMatrix(fTimeDelta);
-		m_Animations[m_iCurrent_Lower_AnimIndex]->Invalidate_Lower_TransformationMatrix(fTimeDelta);
-	}
-	else 
-	{
-		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
-	}
-	
+	if (!m_bIsSeperate)
+		return E_FAIL;
+	/*For. Upper_Anim*/
+	if (m_iCurrent_Upper_AnimIndex != m_iNext_Upper_AnimIndex)
+	{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
+		if (m_bInterupted_Upper)
+		{
+			m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_UPPER);
+			m_bInterupted_Upper = false;
+		}
+		m_bLinearFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Animation_Linear_Interpolation_Upper(fTimeDelta, m_Animations[m_iNext_Upper_AnimIndex]);
 
+		if (m_bLinearFinished_Upper == true)
+		{
+			m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_UPPER);
 
-
-	for (auto& pBoneNode : m_Bones)
-	{
-		/* 뼈의 m_CombinedTransformationMatrix행렬을 갱신한다. */
-		pBoneNode->Invalidate_CombinedTransformationmatrix();
+			m_iCurrent_Upper_AnimIndex = m_iNext_Upper_AnimIndex;
+		}
 	}
+	else
+	{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다.	
+	  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
+		*bIsFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Invalidate_Upper_TransformationMatrix(fTimeDelta);
+	}
+
+	/*For. Lower_Anim*/
+	if (m_iCurrent_Lower_AnimIndex != m_iNext_Lower_AnimIndex)
+	{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
+		if (m_bInterupted_Lower)
+		{
+			m_Animations[m_iCurrent_Lower_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_LOWER);
+			m_bInterupted_Lower = false;
+		}
+		m_bLinearFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Animation_Linear_Interpolation_Lower(fTimeDelta, m_Animations[m_iNext_Lower_AnimIndex]);
+
+		if (m_bLinearFinished_Lower == true)
+		{
+			m_Animations[m_iCurrent_Lower_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_LOWER);
+
+			m_iCurrent_Lower_AnimIndex = m_iNext_Lower_AnimIndex;
+		}
+	}
+	else
+	{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다.	
+	  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
+		*bIsFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Invalidate_Lower_TransformationMatrix(fTimeDelta);
+	}
+
+	Invalidate_Bones();
 
 	return S_OK;
 }
 
 HRESULT CModel::Render(CShader * pShader, _uint iMeshIndex, _uint iPassIndex)
-{		
+{
 	_float4x4		BoneMatrix[256];
 
 	m_Meshes[iMeshIndex]->Get_BoneMatrices(BoneMatrix, XMLoadFloat4x4(&m_PivotMatrix));
@@ -150,14 +210,14 @@ CModel::BODYTYPE CModel::Compare_BoneName(const char * pBoneName)
 	});
 	//TODO: 루트노드가 다른사람들은 예외처리가 필요 나눈 루트가 중앙에 있지롱
 	if (iter == m_Bones.end())
-		return BODYTYPE::TYPE_END;
-	else if (iArrNum-1 < m_BoneDesc.iLowerIndex)
+		return BODYTYPE::BODYTYPE_END;
+	else if (iArrNum - 1 < m_BoneDesc.iLowerIndex)
 	{
-		return BODYTYPE::TYPE_UPPER;
+		return BODYTYPE::BODYTYPE_UPPER;
 	}
-	else 
+	else
 	{
-		return BODYTYPE::TYPE_LOWER;
+		return BODYTYPE::BODYTYPE_LOWER;
 	}
 }
 
@@ -187,7 +247,7 @@ HRESULT CModel::Create_MeshContainer()
 }
 
 HRESULT CModel::Create_Materials(const char* pModelFilePath)
-{	
+{
 	if (nullptr == m_pAIScene)
 		return E_FAIL;
 
@@ -232,14 +292,14 @@ HRESULT CModel::Create_Materials(const char* pModelFilePath)
 				return E_FAIL;
 		}
 
-		m_Materials.push_back(ModelMaterial);		
+		m_Materials.push_back(ModelMaterial);
 	}
 
 	return S_OK;
 }
 
 HRESULT CModel::Create_HierarchyNodes(const aiNode* pNode, CHierarchyNode* pParent)
-{ 
+{
 	CHierarchyNode*		pHierarchyNode = CHierarchyNode::Create(pNode, pParent);
 	if (nullptr == pHierarchyNode)
 		return E_FAIL;
@@ -271,6 +331,15 @@ HRESULT CModel::Create_Animations()
 	}
 
 	return S_OK;
+}
+
+void CModel::Invalidate_Bones()
+{
+	for (auto& pBoneNode : m_Bones)
+	{
+		/* 뼈의 m_CombinedTransformationMatrix행렬을 갱신한다. */
+		pBoneNode->Invalidate_CombinedTransformationmatrix();
+	}
 }
 
 CModel * CModel::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, TYPE eModelType, const char * pModelFilePath, _fmatrix PivotMatrix)
@@ -318,11 +387,11 @@ void CModel::Free()
 
 	for (auto& Material : m_Materials)
 	{
-		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)		
+		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
 			Safe_Release(Material.pMaterials[i]);
 	}
 	m_Materials.clear();
-		
+
 
 
 

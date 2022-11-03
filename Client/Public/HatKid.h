@@ -41,7 +41,9 @@ public:
 private:
 	ANIM_STATE			m_eState = STATE_END;
 	CCollider*			m_pSPHERECom = nullptr;
-
+	_bool				m_bAnimFinished = false;
+	_bool				m_bAnimFinished_Upper = false;
+	_bool				m_bAnimFinished_Lower = false;
 public:
 	virtual HRESULT		Move_Front(_float fTimeDelta)	override;
 	virtual	HRESULT		Move_Back(_float fTimeDelta)	override;

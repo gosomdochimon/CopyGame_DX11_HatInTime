@@ -1,36 +1,4 @@
-﻿FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\Shader_VtxAnimModel.cso
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\Shader_VtxModel.cso
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\Shader_VtxNorTex.cso
-FXC : warning X4717: Effects deprecated for D3DCompiler_47
-  
-  compilation object save succeeded; see C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\Shader_VtxTex.cso
-  stdafx.cpp
-  Client.cpp
-  Terrain.cpp
-  PlayerController.cpp
-  Player.cpp
-  Pawn.cpp
-  Monster.cpp
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\client\private\monster.cpp(26): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  MainApp.cpp
-  Loader.cpp
-  Level_Logo.cpp
-  Level_Loading.cpp
-  Level_GamePlay.cpp
-  KeyCommand.cpp
-  HatKid.cpp
-  Camera_Dynamic.cpp
-  BackGround.cpp
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\client\private\background.cpp(32): warning C4244: '인수': 'const unsigned int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Actor.cpp
-  코드를 생성하고 있습니다...
-DirectXTKd.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(pch.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+﻿DirectXTKd.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(pch.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 DirectXTKd.lib(ScreenGrab.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(ScreenGrab.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 DirectXTKd.lib(WICTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(WICTextureLoader.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
   Client.vcxproj -> C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Default\..\Bin\Client.exe
