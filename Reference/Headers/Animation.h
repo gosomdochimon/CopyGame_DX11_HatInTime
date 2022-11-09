@@ -13,7 +13,7 @@ private:
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize(class CModel* pModel, aiAnimation* pAIAnimation);
+	HRESULT Initialize(class CModel* pModel, aiAnimation* pAIAnimation, vector<class CHierarchyNode*>& pBones);
 	//void Invalidate_TransformationMatrix(_float fTimeDelta);
 	_bool Invalidate_TransformationMatrix(_float fTimeDelta);
 public:/*Get*/
@@ -37,6 +37,9 @@ public:
 	_bool Animation_Linear_Interpolation_Lower(_float fTimeDelta, CAnimation* NextAnim, _float fTotal_Linear_Duration = -1.f);
 
 	void	Reset_Channels(_uint iEnumNum);
+
+private:
+	HRESULT	Add_DummyChannels(CModel* pModel, vector<CChannel*> _TempChannels);
 private:
 	char				m_szName[MAX_PATH] = "";
 
@@ -79,7 +82,7 @@ private:
 
 
 public:
-	static CAnimation* Create(class CModel* pModel, aiAnimation* pAIAnimation);
+	static CAnimation* Create(class CModel* pModel, aiAnimation* pAIAnimation, vector<class CHierarchyNode*>& pBones);
 	virtual void Free() override;
 };
 

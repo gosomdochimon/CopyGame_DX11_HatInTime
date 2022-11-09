@@ -1,12 +1,12 @@
 #include "..\Public\Animation.h"
 #include "Channel.h"
 #include "Model.h"
-
+#include "HierarchyNode.h"
 CAnimation::CAnimation()
 {
 }
 
-HRESULT CAnimation::Initialize(CModel* pModel, aiAnimation * pAIAnimation)
+HRESULT CAnimation::Initialize(CModel* pModel, aiAnimation * pAIAnimation, vector<class CHierarchyNode*>& pBones)
 {
 	strcpy_s(m_szName, pAIAnimation->mName.data);
 
@@ -15,10 +15,13 @@ HRESULT CAnimation::Initialize(CModel* pModel, aiAnimation * pAIAnimation)
 
 	m_iNumChannels = pAIAnimation->mNumChannels;
 
+	//1. m_channels에 넣기전 임시벡터 생성
+	vector<CChannel*> TempChannels;
+
 	for (_uint i = 0; i < m_iNumChannels; ++i)
 	{
 		aiNodeAnim*		pAIChannel = pAIAnimation->mChannels[i];
-
+		//우선 있는 채널들 생성.
 		CChannel*		pChannel = CChannel::Create(pModel, pAIAnimation->mChannels[i]);
 
 		if (nullptr == pChannel)
@@ -39,12 +42,42 @@ HRESULT CAnimation::Initialize(CModel* pModel, aiAnimation * pAIAnimation)
 			}
 		}
 		else
-		{
-			m_Channels.push_back(pChannel);
+		{//뼈와 뼈간 
+			TempChannels.push_back(pChannel);
+			//m_Channels.push_back(pChannel);
 		}
 	}
+	/*Test*/
+	/*2. 만약 Hierarchy뼈는 있고 채널엔 없다면은 채널에 가라용 Initialize를 넣어서 생성 후 이름을 넣고
+			가라인지 아닌지 판별하는 변수하나를 만든다 */
+	if (!pModel->Get_IsSeperate())
+	{
+		_uint iNumBones = pBones.size();
+		for (_uint i = 0; i <iNumBones; ++i)
+		{
+			auto	iter = find_if(TempChannels.begin(), TempChannels.end(), [&](CChannel* pNode)
+			{
+				return !strcmp(pNode->Get_ChannelName(), pBones[i]->Get_Name());
+			});
+			if (iter == TempChannels.end())
+			{//가라채널 생성
+				CChannel*		pChannel = CChannel::Create(pModel, nullptr, pBones[i]->Get_Name());
+				m_Channels.push_back(pChannel);
+			}
+			else
+			{
+				m_Channels.push_back(*iter);
+			}
+		}
+	}
+	/*Test_End*/
+
+
 	m_iNumChannels_Upper = m_UpperChannels.size();
 	m_iNumChannels_Lower = m_LowerChannels.size();
+	//임시채널 비우기.
+	TempChannels.clear();
+
 
 	return S_OK;
 }
@@ -158,6 +191,9 @@ _bool CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta)
 			m_bLinearFinished = !m_bLinearFinished;
 		for (auto& pChannel : m_Channels)
 		{
+			//Dummy채널 확인
+			if (pChannel->Get_IsDummyChannel())
+				continue;
 			pChannel->Invalidate_TransformationMatrix(m_fCurrentTime);
 		}
 	}
@@ -266,6 +302,10 @@ _bool CAnimation::Animation_Linear_Interpolation(_float fTimeDelta, CAnimation *
 	{
 		for (_uint i = 0; i < m_iNumChannels; ++i)
 		{
+			//가라인지 아닌지 확인하는 코드가 되겠습니다.
+			if (m_Channels[i]->Get_IsDummyChannel() || NextAnimChannels[i]->Get_IsDummyChannel())
+				continue;
+
 			if (m_Channels[i]->Linear_Interpolation(NextAnimChannels[i]->Get_StartKeyFrame(), m_fLinear_CurrentTime, fTotal_Linear_Duration))
 			{
 				m_fLinear_CurrentTime = 0.f;
@@ -370,11 +410,11 @@ void CAnimation::Reset_Channels(_uint iEnumNum)
 
 
 
-CAnimation * CAnimation::Create(CModel* pModel, aiAnimation * pAIAnimation)
+CAnimation * CAnimation::Create(CModel* pModel, aiAnimation * pAIAnimation, vector<class CHierarchyNode*>& pBones)
 {
 	CAnimation*	pInstance = new CAnimation();
 
-	if (FAILED(pInstance->Initialize(pModel, pAIAnimation)))
+	if (FAILED(pInstance->Initialize(pModel, pAIAnimation, pBones)))
 	{
 		ERR_MSG(TEXT("Failed to Created : CAnimation"));
 		Safe_Release(pInstance);

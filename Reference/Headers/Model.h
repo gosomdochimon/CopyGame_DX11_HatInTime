@@ -28,6 +28,7 @@ public:/*Get Func*/
 		return m_iNumMeshes;
 	}
 
+	_uint	Get_iNumBones(void) const { return m_iNumBones; }
 	class CHierarchyNode* Get_BonePtr(const char* pBoneName) const;
 
 	_bool	Get_IsSeperate(void) const { return m_bIsSeperate; }
@@ -97,7 +98,7 @@ private:
 
 private:
 	/* ³» ¸ðµ¨ ÀüÃ¼ »ÀÀÇ °¹¼ö. */
-	_uint								m_iNumBones;
+	_uint								m_iNumBones = 0;
 	vector<class CHierarchyNode*>		m_Bones;
 
 	//_uint								m_iUpperBoneIndex = 0;

@@ -75,6 +75,8 @@ HRESULT CModel::Initialize(void * pArg)
 {
 	if (FAILED(Create_HierarchyNodes(m_pAIScene->mRootNode)))
 		return E_FAIL;
+	//본개수 넣어주기.
+	m_iNumBones = m_Bones.size();
 
 	if (pArg != nullptr)
 	{
@@ -427,7 +429,7 @@ HRESULT CModel::Create_Animations()
 	{
 		aiAnimation*	pAIAnimation = m_pAIScene->mAnimations[i];
 
-		CAnimation*		pAnimation = CAnimation::Create(this, pAIAnimation);
+		CAnimation*		pAnimation = CAnimation::Create(this, pAIAnimation, m_Bones);
 		if (nullptr == pAIAnimation)
 			return E_FAIL;
 

@@ -8,8 +8,20 @@ CChannel::CChannel()
 {
 }
 
-HRESULT CChannel::Initialize(CModel* pModel, aiNodeAnim * pAIChannel)
+HRESULT CChannel::Initialize(CModel* pModel, aiNodeAnim * pAIChannel, const char* pBoneName)
 {
+	if (pAIChannel == nullptr)
+	{
+		strcpy_s(m_szName, pBoneName);
+
+		m_pBoneNode = pModel->Get_BonePtr(m_szName);
+		Safe_AddRef(m_pBoneNode);
+		m_bIsDora = true;
+
+		return S_OK;
+	}
+
+	m_bIsDora = false;
 	strcpy_s(m_szName, pAIChannel->mNodeName.data);
 
 	m_iNumKeyframes = max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys);
@@ -155,11 +167,11 @@ _bool CChannel::Linear_Interpolation(KEYFRAME NextKeyFrame, _float fLinearCurren
 	return false;
 }
 
-CChannel * CChannel::Create(CModel* pModel, aiNodeAnim * pAIChannel)
+CChannel * CChannel::Create(CModel* pModel, aiNodeAnim * pAIChannel, const char* pBoneName)
 {
 	CChannel*	pInstance = new CChannel();
 
-	if (FAILED(pInstance->Initialize(pModel, pAIChannel)))
+	if (FAILED(pInstance->Initialize(pModel, pAIChannel, pBoneName)))
 	{
 		ERR_MSG(TEXT("Failed to Created : CChannel"));
 		Safe_Release(pInstance);
