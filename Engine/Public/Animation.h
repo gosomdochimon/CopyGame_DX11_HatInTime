@@ -20,6 +20,10 @@ public:/*Get*/
 	vector<class CChannel*>	Get_Channels(void) { return m_Channels; }
 	vector<class CChannel*>	Get_UpperChannels(void) { return m_UpperChannels; }
 	vector<class CChannel*>	Get_LowerChannels(void) { return m_LowerChannels; }
+
+	_bool					Get_Finished(_uint iEnumNum);
+	void					Set_Finished(_uint iEnumNum, _bool bFinished);
+	_bool					Get_LinearFinished(_uint iEnumNum);
 public:/*Set*/
 	void	Set_Loop(const _bool bLoop) { m_isLoop = bLoop; }
 public:
@@ -28,9 +32,9 @@ public:
 	/*For Lower*/
 	_bool Invalidate_Lower_TransformationMatrix(_float fTimeDelta);
 
-	_bool Animation_Linear_Interpolation(_float fTimeDelta, CAnimation* NextAnim);
-	_bool Animation_Linear_Interpolation_Upper(_float fTimeDelta, CAnimation* NextAnim);
-	_bool Animation_Linear_Interpolation_Lower(_float fTimeDelta, CAnimation* NextAnim);
+	_bool Animation_Linear_Interpolation(_float fTimeDelta, CAnimation* NextAnim, _float fTotal_Linear_Duration = -1.f);
+	_bool Animation_Linear_Interpolation_Upper(_float fTimeDelta, CAnimation* NextAnim, _float fTotal_Linear_Duration = -1.f);
+	_bool Animation_Linear_Interpolation_Lower(_float fTimeDelta, CAnimation* NextAnim, _float fTotal_Linear_Duration = -1.f);
 
 	void	Reset_Channels(_uint iEnumNum);
 private:

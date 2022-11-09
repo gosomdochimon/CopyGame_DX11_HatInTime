@@ -19,6 +19,24 @@ HRESULT CPlayerController::Initialize(CPlayer * pPlayer)
 	return S_OK;
 }
 
+void CPlayerController::Set_LockKeys(_bool bIsLock)
+{
+	if (bIsLock)
+	{
+		for (auto& iter = m_KeySets.begin(); iter != m_KeySets.end(); iter++)
+		{
+			iter->second.bCanUse = false;
+		}
+	}
+	else
+	{
+		for (auto& iter = m_KeySets.begin(); iter != m_KeySets.end(); iter++)
+		{
+			iter->second.bCanUse = true;
+		}
+	}
+}
+
 HRESULT CPlayerController::Setting_Key(void)
 {
 	pair<ACTIONKEY, COMMANDDESC> KeyMoveFront;
@@ -51,15 +69,30 @@ HRESULT CPlayerController::Setting_Key(void)
 	KeySlide.second.Key = VK_CONTROL;
 	KeySlide.second.pCommand = Sliding_Command = new CAction1_Command();
 
-	pair<ACTIONKEY, COMMANDDESC> KeySkill;
-	KeySkill.first = ACTIONKEY::SKILL1;
-	KeySkill.second.Key = VK_SHIFT;
-	KeySkill.second.pCommand = Skill_Command = new CAction2_Command();
+	pair<ACTIONKEY, COMMANDDESC> KeyPressSkill;
+	KeyPressSkill.first = ACTIONKEY::SKILLDOWN;
+	KeyPressSkill.second.Key = VK_SHIFT;
+	KeyPressSkill.second.pCommand = PressSkill_Command = new CAction2_Command();
+
+	pair<ACTIONKEY, COMMANDDESC> KeyUpSkill;
+	KeyUpSkill.first = ACTIONKEY::SKILLUP;
+	KeyUpSkill.second.Key = VK_SHIFT;
+	KeyUpSkill.second.pCommand = UpSkill_Command = new CAction5_Command();
 
 	pair<ACTIONKEY, COMMANDDESC> KeyInventory;
 	KeyInventory.first = ACTIONKEY::INVENTORY;
 	KeyInventory.second.Key = VK_RBUTTON;
 	KeyInventory.second.pCommand = Inventory_Command = new CAction3_Command();
+
+	pair<ACTIONKEY, COMMANDDESC> KeyInteraction;
+	KeyInteraction.first = ACTIONKEY::INTERACTION;
+	KeyInteraction.second.Key = 'G';
+	KeyInteraction.second.pCommand = Interaction_Command = new CAction4_Command();
+
+	pair<ACTIONKEY, COMMANDDESC> KeyTest;
+	KeyTest.first = ACTIONKEY::LBUTTON;
+	KeyTest.second.Key = VK_LBUTTON;
+	KeyTest.second.pCommand = Test_Command = new CAction6_Command();
 
 	m_KeySets.insert(KeyMoveFront);
 	m_KeySets.insert(KeyMoveBack);
@@ -67,8 +100,11 @@ HRESULT CPlayerController::Setting_Key(void)
 	m_KeySets.insert(KeyMoveLeft);
 	m_KeySets.insert(KeyMoveJump);
 	m_KeySets.insert(KeySlide);
-	m_KeySets.insert(KeySkill);
+	m_KeySets.insert(KeyPressSkill);
+	m_KeySets.insert(KeyUpSkill);
+	m_KeySets.insert(KeyInteraction);
 	m_KeySets.insert(KeyInventory);
+	m_KeySets.insert(KeyTest);
 	return S_OK;
 }
 
@@ -80,37 +116,76 @@ void CPlayerController::Input_Controller(_float fTImeDelta)
 	if (m_pOwner == nullptr)
 		return;
 
-	if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_FRONT].Key) 
-		&& m_KeySets[ACTIONKEY::MOVE_FRONT].bCanUse == true)
+	if (m_pOwner->Get_CanInputKey())//전체적인 액션키 봉쇄.
 	{
-		m_KeySets[ACTIONKEY::MOVE_FRONT].pCommand->Excute(m_pOwner, fTImeDelta);
+		if (pGameInstance->Key_Down(m_KeySets[ACTIONKEY::SLIDING].Key)
+			&& m_KeySets[ACTIONKEY::SLIDING].bCanUse == true)
+		{
+			m_KeySets[ACTIONKEY::SLIDING].pCommand->Excute(m_pOwner, fTImeDelta);
+		}
+		
+		if (pGameInstance->Key_Down(m_KeySets[ACTIONKEY::INTERACTION].Key)
+			&& m_KeySets[ACTIONKEY::INTERACTION].bCanUse == true)
+		{
+			m_KeySets[ACTIONKEY::INTERACTION].pCommand->Excute(m_pOwner, fTImeDelta);
+		}
+
+		if (pGameInstance->Key_Up(m_KeySets[ACTIONKEY::SKILLUP].Key)
+			&& m_KeySets[ACTIONKEY::SKILLUP].bCanUse == true)
+		{
+			m_KeySets[ACTIONKEY::SKILLUP].pCommand->Excute(m_pOwner, fTImeDelta);
+		}
+		else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::SKILLDOWN].Key)
+			&& m_KeySets[ACTIONKEY::SKILLDOWN].bCanUse == true)
+		{
+
+			m_KeySets[ACTIONKEY::SKILLDOWN].pCommand->Excute(m_pOwner, fTImeDelta);
+		}
+
+		if (m_pOwner->Get_CanMove()) //움직임 봉쇄용.
+		{
+			if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_FRONT].Key)
+				&& m_KeySets[ACTIONKEY::MOVE_FRONT].bCanUse == true)
+			{
+ 				m_KeySets[ACTIONKEY::MOVE_FRONT].pCommand->Excute(m_pOwner, fTImeDelta);
+			}
+			else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_BACK].Key)
+				&& m_KeySets[ACTIONKEY::MOVE_BACK].bCanUse == true)
+			{
+				m_KeySets[ACTIONKEY::MOVE_BACK].pCommand->Excute(m_pOwner, fTImeDelta);
+			}
+			else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_LEFT].Key)
+				&& m_KeySets[ACTIONKEY::MOVE_LEFT].bCanUse == true)
+			{
+				m_KeySets[ACTIONKEY::MOVE_LEFT].pCommand->Excute(m_pOwner, fTImeDelta);
+			}
+			else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_RIGHT].Key)
+				&& m_KeySets[ACTIONKEY::MOVE_RIGHT].bCanUse == true)
+			{
+				m_KeySets[ACTIONKEY::MOVE_RIGHT].pCommand->Excute(m_pOwner, fTImeDelta);
+			}
+			else
+			{
+				m_pOwner->Idle(fTImeDelta);
+			}
+		}
+
 	}
-	else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_BACK].Key)
-		&& m_KeySets[ACTIONKEY::MOVE_BACK].bCanUse == true)
+	
+	
+	//Menu&Inventory키는 항상 작동해야함.
+	if (pGameInstance->Key_Down(m_KeySets[ACTIONKEY::INVENTORY].Key)
+		&& m_KeySets[ACTIONKEY::INVENTORY].bCanUse == true)
 	{
-		m_KeySets[ACTIONKEY::MOVE_BACK].pCommand->Excute(m_pOwner, fTImeDelta);
+		m_KeySets[ACTIONKEY::INVENTORY].pCommand->Excute(m_pOwner, fTImeDelta);
 	}
-	else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_LEFT].Key)
-		&& m_KeySets[ACTIONKEY::MOVE_LEFT].bCanUse == true)
-	{
-		m_KeySets[ACTIONKEY::MOVE_LEFT].pCommand->Excute(m_pOwner, fTImeDelta);
-	}
-	else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_RIGHT].Key)
-		&& m_KeySets[ACTIONKEY::MOVE_RIGHT].bCanUse == true)
-	{
-		m_KeySets[ACTIONKEY::MOVE_RIGHT].pCommand->Excute(m_pOwner, fTImeDelta);
-	}
-	else
-	{
-		m_pOwner->Idle(fTImeDelta);
-	}
+
 	Safe_Release(pGameInstance);
-
 }
 
-void CPlayerController::Check_PlayerState()
-{
-}
+//void CPlayerController::Check_PlayerState()
+//{
+//}
 
 void CPlayerController::Free()
 {

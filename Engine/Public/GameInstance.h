@@ -37,6 +37,10 @@ public: /* For.Input_Device */
 	_char Get_DIMKeyState(DIMK eMouseKeyID);
 	_long Get_DIMMoveState(DIMM eMouseMoveID);
 
+	_bool Mouse_Down(DIMK eMouseKeyID);
+	_bool Mouse_Up(DIMK eMouseKeyID);
+	_bool Mouse_Pressing(DIMK eMouseKeyID);
+
 public: /* For.Timer_Manager */
 	HRESULT Add_Timer(const _tchar* pTimerTag);
 	_float Get_TimeDelta(const _tchar* pTimerTag);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Pawn.h"
 
 
 BEGIN(Engine)
@@ -10,13 +10,13 @@ class CShader;
 class CRenderer;
 class CTransform;
 class CModel;
-
+class CCollider;
 END
 
 
 BEGIN(Client)
 
-class CMonster final : public CGameObject
+class CMonster final : public CPawn
 {
 private:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -32,10 +32,11 @@ public:
 	virtual HRESULT Render();
 
 private:
-	CShader*				m_pShaderCom = nullptr;
+	/*CShader*				m_pShaderCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CTransform*				m_pTransformCom = nullptr;
-	CModel*					m_pModelCom = nullptr;
+	CModel*					m_pModelCom = nullptr;*/
+	CCollider*			m_pSPHERECom = nullptr;
 
 private:
 	_uint					m_iNum = 1;

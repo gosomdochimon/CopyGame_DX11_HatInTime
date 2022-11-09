@@ -49,6 +49,56 @@ HRESULT CAnimation::Initialize(CModel* pModel, aiAnimation * pAIAnimation)
 	return S_OK;
 }
 
+_bool CAnimation::Get_Finished(_uint iEnumNum)
+{
+	switch ((CModel::BODYTYPE)iEnumNum)
+	{
+	case CModel::BODYTYPE::BODYTYPE_UPPER:
+		return m_bisFinished_Upper;
+		break;
+	case CModel::BODYTYPE::BODYTYPE_LOWER:
+		return m_bisFinished_Lower;
+		break;
+	case CModel::BODYTYPE::BODYTYPE_END:
+		return m_bisFinished;
+		break;
+	}
+	return false;
+}
+
+void CAnimation::Set_Finished(_uint iEnumNum, _bool bFinished)
+{
+	switch ((CModel::BODYTYPE)iEnumNum)
+	{
+	case CModel::BODYTYPE::BODYTYPE_UPPER:
+		m_bisFinished_Upper = bFinished;
+		break;
+	case CModel::BODYTYPE::BODYTYPE_LOWER:
+		m_bisFinished_Lower = bFinished;
+		break;
+	case CModel::BODYTYPE::BODYTYPE_END:
+		m_bisFinished = bFinished;
+		break;
+	}
+}
+
+_bool CAnimation::Get_LinearFinished(_uint iEnumNum)
+{
+	switch ((CModel::BODYTYPE)iEnumNum)
+	{
+	case CModel::BODYTYPE::BODYTYPE_UPPER:
+		return m_bLinearFinished_Upper;
+		break;
+	case CModel::BODYTYPE::BODYTYPE_LOWER:
+		return m_bLinearFinished_Lower;
+		break;
+	case CModel::BODYTYPE::BODYTYPE_END: 
+		return m_bLinearFinished;
+		break;
+	}
+	return false;
+}
+
 _bool CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta)
 {
 	///* 현재 재생중인 시간. */
@@ -87,15 +137,19 @@ _bool CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta)
 
 	if (true == m_bisFinished && true == m_isLoop)
 	{//For Loop
-		
-		m_bLinearFinished = Animation_Linear_Interpolation(m_fCurrentTime, this);
 
-		if (m_bLinearFinished == true)
-		{
-			Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_END);
-			m_bisFinished = false;
-		}
-		
+		//m_bLinearFinished = Animation_Linear_Interpolation(m_fCurrentTime, this);
+		//
+		//if (m_bLinearFinished == true)
+		//{
+		//	Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_END);
+		//	//m_bisFinished_ = false;
+		//}
+		//else
+		//{//루프문내에서만 true가 계속 호출될것이다..
+		//	return true;
+		//}
+		return false;
 	}
 
 	if (!m_bisFinished)
@@ -116,6 +170,7 @@ _bool CAnimation::Invalidate_Upper_TransformationMatrix(_float fTimeDelta)
 	/* 현재 재생중인 시간. */
 	m_fCurrentTime_Upper += m_fTickPerSecond * fTimeDelta;
 
+	//저곳으로 넘어갈 수가 없는상황이다.
 	if (m_fCurrentTime_Upper >= m_fDuration)
 	{
 		m_fCurrentTime_Upper = 0.f;
@@ -123,16 +178,22 @@ _bool CAnimation::Invalidate_Upper_TransformationMatrix(_float fTimeDelta)
 		m_bisFinished_Upper = true;
 	}
 
-	if (true == m_bisFinished_Upper && true == m_isLoop)
+
+	if (true == m_bisFinished_Upper && true == m_isLoop )
 	{//For Loop
 
-		m_bLinearFinished_Upper = Animation_Linear_Interpolation_Upper(m_fCurrentTime_Upper, this);
-
-		if (m_bLinearFinished_Upper == true)
-		{
-			Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_UPPER);
-			m_bisFinished_Upper = false;
-		}
+		//m_bLinearFinished_Upper = Animation_Linear_Interpolation_Upper(m_fCurrentTime_Upper, this);
+		//
+		//if (m_bLinearFinished_Upper == true)
+		//{
+		//	Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_UPPER);
+		//	//m_bisFinished_Upper = false;
+		//}
+		////else
+		////{
+		////	return true;
+		////}
+		return false;
 	}
 
 	if (!m_bisFinished_Upper)
@@ -150,7 +211,6 @@ _bool CAnimation::Invalidate_Upper_TransformationMatrix(_float fTimeDelta)
 
 _bool CAnimation::Invalidate_Lower_TransformationMatrix(_float fTimeDelta)
 {
-	/* 현재 재생중인 시간. */
 	m_fCurrentTime_Lower += m_fTickPerSecond * fTimeDelta;
 
 	if (m_fCurrentTime_Lower >= m_fDuration)
@@ -163,13 +223,18 @@ _bool CAnimation::Invalidate_Lower_TransformationMatrix(_float fTimeDelta)
 	if (true == m_bisFinished_Lower && true == m_isLoop)
 	{//For Loop
 
-		m_bLinearFinished_Lower = Animation_Linear_Interpolation_Lower(m_fCurrentTime_Lower, this);
+		//m_bLinearFinished_Lower = Animation_Linear_Interpolation_Lower(m_fCurrentTime_Lower, this);
 
-		if (m_bLinearFinished_Lower == true)
-		{
-			Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_LOWER);
-			m_bisFinished_Lower = false;
-		}
+		//if (m_bLinearFinished_Lower == true)
+		//{
+		//	Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_LOWER);
+		//	//m_bisFinished_Lower = false;
+		//}
+		//else
+		//{
+		//	return true;
+		//}
+		return false;
 	}
 
 	if (!m_bisFinished_Lower)
@@ -185,7 +250,7 @@ _bool CAnimation::Invalidate_Lower_TransformationMatrix(_float fTimeDelta)
 	return m_bisFinished_Lower;
 }
 
-_bool CAnimation::Animation_Linear_Interpolation(_float fTimeDelta, CAnimation * NextAnim)
+_bool CAnimation::Animation_Linear_Interpolation(_float fTimeDelta, CAnimation * NextAnim, _float fTotal_Linear_Duration)
 {
 	/* 현재 재생중인 시간. */
 	vector<CChannel*> NextAnimChannels = NextAnim->Get_Channels();
@@ -193,11 +258,15 @@ _bool CAnimation::Animation_Linear_Interpolation(_float fTimeDelta, CAnimation *
 	m_bLinearFinished = false;
 	m_fLinear_CurrentTime += fTimeDelta;
 
+	if (fTotal_Linear_Duration == -1.f)
+	{
+		fTotal_Linear_Duration = m_fTotal_Linear_Duration;
+	}
 	if (!m_bLinearFinished)
 	{
-		for (_uint i = 0; i<m_iNumChannels; ++i)
+		for (_uint i = 0; i < m_iNumChannels; ++i)
 		{
-			if (m_Channels[i]->Linear_Interpolation(NextAnimChannels[i]->Get_StartKeyFrame(), m_fLinear_CurrentTime, m_fTotal_Linear_Duration))
+			if (m_Channels[i]->Linear_Interpolation(NextAnimChannels[i]->Get_StartKeyFrame(), m_fLinear_CurrentTime, fTotal_Linear_Duration))
 			{
 				m_fLinear_CurrentTime = 0.f;
 				m_bLinearFinished = true;
@@ -205,11 +274,11 @@ _bool CAnimation::Animation_Linear_Interpolation(_float fTimeDelta, CAnimation *
 			}
 
 		}
-	}	
+	}
 	return m_bLinearFinished;
 }
 
-_bool CAnimation::Animation_Linear_Interpolation_Upper(_float fTimeDelta, CAnimation * NextAnim)
+_bool CAnimation::Animation_Linear_Interpolation_Upper(_float fTimeDelta, CAnimation * NextAnim, _float fTotal_Linear_Duration)
 {
 	/* 현재 재생중인 시간. */
 	vector<CChannel*> NextAnimChannels = NextAnim->Get_UpperChannels();
@@ -217,11 +286,16 @@ _bool CAnimation::Animation_Linear_Interpolation_Upper(_float fTimeDelta, CAnima
 	m_bLinearFinished_Upper = false;
 	m_fLinear_CurrentTime_Upper += fTimeDelta;
 
+	if (fTotal_Linear_Duration == -1.f)
+	{
+		fTotal_Linear_Duration = m_fTotal_Linear_Duration;
+	}
+
 	if (!m_bLinearFinished_Upper)
 	{
-		for (_uint i = 0; i<m_iNumChannels_Upper; ++i)
+		for (_uint i = 0; i < m_iNumChannels_Upper; ++i)
 		{
-			if (m_UpperChannels[i]->Linear_Interpolation(NextAnimChannels[i]->Get_StartKeyFrame(), m_fLinear_CurrentTime_Upper, m_fTotal_Linear_Duration))
+			if (m_UpperChannels[i]->Linear_Interpolation(NextAnimChannels[i]->Get_StartKeyFrame(), m_fLinear_CurrentTime_Upper, fTotal_Linear_Duration))
 			{
 				m_fLinear_CurrentTime_Upper = 0.f;
 				m_bLinearFinished_Upper = true;
@@ -233,7 +307,7 @@ _bool CAnimation::Animation_Linear_Interpolation_Upper(_float fTimeDelta, CAnima
 	return m_bLinearFinished_Upper;
 }
 
-_bool CAnimation::Animation_Linear_Interpolation_Lower(_float fTimeDelta, CAnimation * NextAnim)
+_bool CAnimation::Animation_Linear_Interpolation_Lower(_float fTimeDelta, CAnimation * NextAnim, _float fTotal_Linear_Duration)
 {
 	/* 현재 재생중인 시간. */
 	vector<CChannel*> NextAnimChannels = NextAnim->Get_LowerChannels();
@@ -241,11 +315,16 @@ _bool CAnimation::Animation_Linear_Interpolation_Lower(_float fTimeDelta, CAnima
 	m_bLinearFinished_Lower = false;
 	m_fLinear_CurrentTime_Lower += fTimeDelta;
 
+	if (fTotal_Linear_Duration == -1.f)
+	{
+		fTotal_Linear_Duration = m_fTotal_Linear_Duration;
+	}
+
 	if (!m_bLinearFinished_Lower)
 	{
-		for (_uint i = 0; i<m_iNumChannels_Lower; ++i)
+		for (_uint i = 0; i < m_iNumChannels_Lower; ++i)
 		{
-			if (m_LowerChannels[i]->Linear_Interpolation(NextAnimChannels[i]->Get_StartKeyFrame(), m_fLinear_CurrentTime_Lower, m_fTotal_Linear_Duration))
+			if (m_LowerChannels[i]->Linear_Interpolation(NextAnimChannels[i]->Get_StartKeyFrame(), m_fLinear_CurrentTime_Lower, fTotal_Linear_Duration))
 			{
 				m_fLinear_CurrentTime_Lower = 0.f;
 				m_bLinearFinished_Lower = true;
@@ -267,6 +346,7 @@ void CAnimation::Reset_Channels(_uint iEnumNum)
 			pChannel->Reset();
 		}
 		m_fCurrentTime_Upper = 0.f;
+		m_bisFinished_Upper = false;
 		break;
 	case CModel::BODYTYPE::BODYTYPE_LOWER:
 		for (auto& pChannel : m_LowerChannels)
@@ -274,6 +354,7 @@ void CAnimation::Reset_Channels(_uint iEnumNum)
 			pChannel->Reset();
 		}
 		m_fCurrentTime_Lower = 0.f;
+		m_bisFinished_Lower = false;
 		break;
 	case CModel::BODYTYPE::BODYTYPE_END:
 		for (auto& pChannel : m_Channels)
@@ -281,12 +362,15 @@ void CAnimation::Reset_Channels(_uint iEnumNum)
 			pChannel->Reset();
 		}
 		m_fCurrentTime = 0.f;
+		m_bisFinished = false;
 		break;
 	}
-	
+
 }
 
-CAnimation * CAnimation::Create( CModel* pModel, aiAnimation * pAIAnimation)
+
+
+CAnimation * CAnimation::Create(CModel* pModel, aiAnimation * pAIAnimation)
 {
 	CAnimation*	pInstance = new CAnimation();
 
@@ -303,7 +387,7 @@ void CAnimation::Free()
 {
 	for (auto& pChannel : m_Channels)
 		Safe_Release(pChannel);
-	 
+
 	for (auto& pChannel : m_UpperChannels)
 		Safe_Release(pChannel);
 

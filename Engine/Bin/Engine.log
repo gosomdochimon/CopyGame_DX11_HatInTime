@@ -1,4 +1,27 @@
-﻿  Model.cpp
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\engine\private\model.cpp(288): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  Picking.cpp
+  Level_Manager.cpp
+  GameObject.cpp
+  GameInstance.cpp
+  Component_Manager.cpp
+  Collider.cpp
+  코드를 생성하고 있습니다...
+     ..\Bin\Engine.lib 라이브러리 및 ..\Bin\Engine.exp 개체를 생성하고 있습니다.
+Effects11d.lib(d3dxGlobal.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(d3dxGlobal.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectAPI.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectAPI.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectLoad.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectLoad.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectNonRuntime.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectNonRuntime.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectReflection.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectReflection.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectRuntime.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectRuntime.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(BasicEffect.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(BasicEffect.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(CommonStates.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(CommonStates.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(DDSTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(DDSTextureLoader.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(BinaryReader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(BinaryReader.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(EffectCommon.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(EffectCommon.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(pch.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(SpriteBatch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(SpriteBatch.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(PrimitiveBatch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(PrimitiveBatch.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(SpriteFont.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(SpriteFont.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(VertexTypes.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(VertexTypes.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(WICTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(WICTextureLoader.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
   Engine.vcxproj -> C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Default\..\Bin\Engine.dll
   Engine.vcxproj -> ..\Bin\Engine.pdb (Full PDB)

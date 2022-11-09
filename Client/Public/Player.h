@@ -29,6 +29,12 @@ public:
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	_bool	Get_CanMove(void) const { return m_bCanMove; }
+	void	Set_CanMove(_bool bCanMove) { m_bCanMove = bCanMove; }
+
+	_bool	Get_CanInputKey(void) const { return m_bCanInputKey; }
+	void	Set_CaninputKey(_bool bCanKey) { m_bCanInputKey = bCanKey; }
 private:
 	//CShader*				m_pShaderCom = nullptr;	
 	//CRenderer*				m_pRendererCom = nullptr;
@@ -45,16 +51,20 @@ public:/*for Actions*/
 	virtual HRESULT	Action_2(_float fTimeDelta)		{ return S_OK; };
 	virtual HRESULT	Action_3(_float fTimeDelta)		{ return S_OK; };
 	virtual HRESULT	Action_4(_float fTimeDelta)		{ return S_OK; };
+	virtual HRESULT	Action_5(_float fTimeDelta)		{ return S_OK; };
+	virtual HRESULT	Action_6(_float fTimeDelta)		{ return S_OK; };
 	virtual HRESULT	Idle(_float fTimeDelta)			{ return S_OK; };
+
 protected:
 	virtual void	TestFunc(_float fTimeDelta);
 
 protected: /*for Controller*/
 	class CPlayerController* m_pController = nullptr;
 	
-private:
+protected:
 	_uint					m_iNum = 1;
-
+	_bool					m_bCanMove = true;
+	_bool					m_bCanInputKey = true;
 private:
 	virtual HRESULT Ready_Components() override;
 	virtual HRESULT SetUp_ShaderResources() override; /* 셰이더 전역변수에 값을 전달한다. */

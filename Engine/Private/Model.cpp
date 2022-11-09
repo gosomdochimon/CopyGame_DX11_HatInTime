@@ -102,6 +102,35 @@ HRESULT CModel::SetUp_Material(CShader * pShader, const char * pConstantName, _u
 
 HRESULT CModel::Play_Animation(_float fTimeDelta, _bool* _bIsFinished)
  {
+	//if (m_iCurrentAnimIndex != m_iNextAnimIndex)
+	//{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
+	//	if (m_bInterupted)
+	//	{
+	//		m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
+	//		m_bInterupted = false;
+	//	}
+	//	m_bLinearFinished = m_Animations[m_iCurrentAnimIndex]->Animation_Linear_Interpolation(fTimeDelta, m_Animations[m_iNextAnimIndex]);
+	//
+	//	if (m_bLinearFinished == true)
+	//	{
+	//		m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
+	//
+	//		m_iCurrentAnimIndex = m_iNextAnimIndex;
+	//
+	//	}
+	//}
+	//else
+	//{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다
+	//	//Animation 재생이 끝났으면 리셋 해주기.
+	//	if (m_Animations[m_iCurrent_Upper_AnimIndex]->Get_Finished(BODYTYPE::BODYTYPE_END))
+	//	{
+	//		m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
+	//	}
+	//  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
+	//	*_bIsFinished = m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+	//}
+
+	/*For. Lower_Anim*/
 	if (m_iCurrentAnimIndex != m_iNextAnimIndex)
 	{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
 		if (m_bInterupted)
@@ -116,13 +145,26 @@ HRESULT CModel::Play_Animation(_float fTimeDelta, _bool* _bIsFinished)
 			m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
 
 			m_iCurrentAnimIndex = m_iNextAnimIndex;
-
 		}
+		*_bIsFinished = false;
 	}
 	else
 	{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다.	
-	  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
-		*_bIsFinished = m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+		if (!m_Animations[m_iCurrentAnimIndex]->Get_Finished(BODYTYPE::BODYTYPE_END))
+		{
+			*_bIsFinished = m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+		}
+		else
+		{
+			m_bLinearFinished = m_Animations[m_iCurrentAnimIndex]->Animation_Linear_Interpolation(fTimeDelta, m_Animations[m_iCurrentAnimIndex], 0.1f);
+			if (m_bLinearFinished)
+			{
+				m_Animations[m_iCurrentAnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_END, m_bLinearFinished);
+				m_Animations[m_iCurrentAnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_END);
+			}
+			
+		}
+		
 	}
 
 	Invalidate_Bones();
@@ -134,7 +176,35 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 {
 	if (!m_bIsSeperate)
 		return E_FAIL;
-	/*For. Upper_Anim*/
+	///*For. Upper_Anim_Before*/
+	//if (m_iCurrent_Upper_AnimIndex != m_iNext_Upper_AnimIndex)
+	//{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
+	//	if (m_bInterupted_Upper)
+	//	{
+	//		m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_UPPER);
+	//		m_bInterupted_Upper = false;
+	//	}
+	//	m_bLinearFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Animation_Linear_Interpolation_Upper(fTimeDelta, m_Animations[m_iNext_Upper_AnimIndex]);
+	//
+	//	if (m_bLinearFinished_Upper == true)
+	//	{
+	//		m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_UPPER);
+	//
+	//		m_iCurrent_Upper_AnimIndex = m_iNext_Upper_AnimIndex;
+	//	}
+	//}
+	//else
+	//{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다.	
+	//  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
+	//	//if. 애니메이션의 CurrentAnimIndex-> Get_Finished == true 
+	//	/*if (m_Animations[m_iCurrent_Upper_AnimIndex]->Get_Finished(BODYTYPE::BODYTYPE_UPPER))
+	//	{
+	//		m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_UPPER);
+	//	}*/
+	//	*bIsFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Invalidate_Upper_TransformationMatrix(fTimeDelta);
+	//}
+
+	/*For. Lower_Anim*/
 	if (m_iCurrent_Upper_AnimIndex != m_iNext_Upper_AnimIndex)
 	{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
 		if (m_bInterupted_Upper)
@@ -142,7 +212,7 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 			m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_UPPER);
 			m_bInterupted_Upper = false;
 		}
-		m_bLinearFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Animation_Linear_Interpolation_Upper(fTimeDelta, m_Animations[m_iNext_Upper_AnimIndex]);
+		m_bLinearFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Animation_Linear_Interpolation_Upper(fTimeDelta, m_Animations[m_iNext_Upper_AnimIndex], 0.1f);
 
 		if (m_bLinearFinished_Upper == true)
 		{
@@ -150,11 +220,31 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 
 			m_iCurrent_Upper_AnimIndex = m_iNext_Upper_AnimIndex;
 		}
+		*bIsFinished_Upper = false;
 	}
 	else
 	{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다.	
+	  //Anim이끝났는데 같은 애니메이션이면 채널 초기화 하기.
+	  /*if (m_Animations[m_iCurrent_Upper_AnimIndex]->Get_Finished(BODYTYPE::BODYTYPE_Upper))
+	  {
+	  m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_Upper);
+	  }*/
 	  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
-		*bIsFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Invalidate_Upper_TransformationMatrix(fTimeDelta);
+		if (!m_Animations[m_iCurrent_Upper_AnimIndex]->Get_Finished(BODYTYPE::BODYTYPE_UPPER))
+		{
+			*bIsFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Invalidate_Upper_TransformationMatrix(fTimeDelta);
+		}
+		else
+		{
+			m_bLinearFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Animation_Linear_Interpolation_Upper(fTimeDelta, m_Animations[m_iCurrent_Upper_AnimIndex], 0.1f);
+			if (m_bLinearFinished_Upper)
+			{
+				m_Animations[m_iCurrent_Upper_AnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_UPPER, m_bLinearFinished_Upper);
+				m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_UPPER);
+			}
+
+		}
+
 	}
 
 	/*For. Lower_Anim*/
@@ -165,7 +255,7 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 			m_Animations[m_iCurrent_Lower_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_LOWER);
 			m_bInterupted_Lower = false;
 		}
-		m_bLinearFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Animation_Linear_Interpolation_Lower(fTimeDelta, m_Animations[m_iNext_Lower_AnimIndex]);
+		m_bLinearFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Animation_Linear_Interpolation_Lower(fTimeDelta, m_Animations[m_iNext_Lower_AnimIndex], 0.1f);
 
 		if (m_bLinearFinished_Lower == true)
 		{
@@ -173,11 +263,25 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 
 			m_iCurrent_Lower_AnimIndex = m_iNext_Lower_AnimIndex;
 		}
+		*bIsFinished_Lower = false;
 	}
 	else
 	{ //TODO: AnimationInvalidate 그대로 호출하면 되겠다.	
-	  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
-		*bIsFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Invalidate_Lower_TransformationMatrix(fTimeDelta);
+		if (!m_Animations[m_iCurrent_Lower_AnimIndex]->Get_Finished(BODYTYPE::BODYTYPE_LOWER))
+		{
+			*bIsFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Invalidate_Lower_TransformationMatrix(fTimeDelta);
+		}
+		else
+		{
+			m_bLinearFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Animation_Linear_Interpolation_Lower(fTimeDelta, m_Animations[m_iCurrent_Lower_AnimIndex], 0.1f);
+			if (m_bLinearFinished_Lower)
+			{
+				m_Animations[m_iCurrent_Lower_AnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_LOWER, m_bLinearFinished_Lower);
+				m_Animations[m_iCurrent_Lower_AnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_LOWER);
+			}
+			
+		}
+		
 	}
 
 	Invalidate_Bones();

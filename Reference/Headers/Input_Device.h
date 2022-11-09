@@ -25,7 +25,13 @@ public:
 		return ((_long*)&m_MouseState)[eMouseMoveID];
 	}
 
+	_bool Key_Down(_uchar eKeyID);
+	_bool Key_Up(_uchar eKeyID);
+	_bool Key_Pressing(_uchar eKeyID);
 
+	_bool Mouse_Down(DIMK eMouseKeyID);
+	_bool Mouse_Up(DIMK eMouseKeyID);
+	_bool Mouse_Pressing(DIMK eMouseKeyID);
 
 
 
@@ -41,9 +47,10 @@ private:
 	
 
 private:	
+	_char				m_preKeyState[256] = { 0 };
 	_char				m_byKeyState[256] = { 0 };
 	DIMOUSESTATE		m_MouseState;
-
+	DIMOUSESTATE		m_PreMouseState;
 public:
 	virtual void Free();
 };

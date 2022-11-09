@@ -1,5 +1,4 @@
-﻿DirectXTKd.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(pch.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-DirectXTKd.lib(ScreenGrab.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(ScreenGrab.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-DirectXTKd.lib(WICTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(WICTextureLoader.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+﻿  Loader.cpp
+cl : 명령줄 warning D9028: 최소 다시 빌드에 실패했습니다. 정상 빌드로 되돌립니다.
   Client.vcxproj -> C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Client\Default\..\Bin\Client.exe
   Client.vcxproj -> ..\Bin\Client.pdb (Full PDB)

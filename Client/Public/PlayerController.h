@@ -17,8 +17,10 @@ public:
 	RBUTTON,
 	JUMP,
 	SLIDING,
-	SKILL1,
+	SKILLDOWN,
+	SKILLUP,
 	INVENTORY,
+	INTERACTION,
 	MENU,
 	KEY_END
 	};
@@ -36,9 +38,14 @@ public:
 public:
 	HRESULT	Initialize(class CPlayer* pPawn);
 public:
+	
+
+public:
 	//HRESULT	Change_KeySet(_int iKeyName, ACTIONKEY _eKEY);
 	void	Input_Controller(_float fTImeDelta);
-	void	Check_PlayerState();
+	void	Check_PlayerState(_uint	Player_State);
+
+	void	Set_LockKeys(_bool bIsLock);
 private:
 	HRESULT Setting_Key(void);
 	
@@ -51,8 +58,11 @@ private:
 	CRight_Command*		Right_Command = nullptr;
 	CJump_Command*		Jump_Command = nullptr;
 	CAction1_Command*	Sliding_Command = nullptr;
-	CAction2_Command*	Skill_Command = nullptr;
+	CAction2_Command*	PressSkill_Command = nullptr;
 	CAction3_Command*	Inventory_Command = nullptr;
+	CAction4_Command*	Interaction_Command = nullptr;
+	CAction5_Command*	UpSkill_Command = nullptr;
+	CAction6_Command*	Test_Command = nullptr;
 	CMenu_Command*		Menu_Command = nullptr;
 
 

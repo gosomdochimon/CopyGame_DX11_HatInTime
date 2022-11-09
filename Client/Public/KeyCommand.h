@@ -142,6 +142,53 @@ public:
 	virtual void Free() override { __super::Free(); };
 };
 
+class CAction4_Command final : public CKeyCommand
+{
+public:
+	CAction4_Command() {}
+	virtual ~CAction4_Command() = default;
+
+public:
+	virtual HRESULT Excute(class CPlayer* pPlayer, _float fTimeDelta)
+	{
+		return pPlayer->Action_4(fTimeDelta);
+	}
+public:
+	virtual void Free() override { __super::Free(); };
+};
+
+class CAction5_Command final : public CKeyCommand
+{
+public:
+	CAction5_Command() {}
+	virtual ~CAction5_Command() = default;
+
+public:
+	virtual HRESULT Excute(class CPlayer* pPlayer, _float fTimeDelta)
+	{
+		return pPlayer->Action_5(fTimeDelta);
+	}
+public:
+	virtual void Free() override { __super::Free(); };
+};
+
+class CAction6_Command final : public CKeyCommand
+{
+public:
+	CAction6_Command() {}
+	virtual ~CAction6_Command() = default;
+
+public:
+	virtual HRESULT Excute(class CPlayer* pPlayer, _float fTimeDelta)
+	{
+		return pPlayer->Action_6(fTimeDelta);
+	}
+public:
+	virtual void Free() override { __super::Free(); };
+};
+
+
+
 class CMenu_Command final : public CKeyCommand
 {
 public:

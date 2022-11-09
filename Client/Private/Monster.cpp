@@ -4,12 +4,12 @@
 #include "GameInstance.h"
 
 CMonster::CMonster(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-	: CGameObject(pDevice, pContext)
+	: CPawn(pDevice, pContext)
 {
 }
 
 CMonster::CMonster(const CMonster & rhs)
-	: CGameObject(rhs)
+	: CPawn(rhs)
 {
 }
 
@@ -35,12 +35,24 @@ void CMonster::Tick(_float fTimeDelta)
 {
 
 	m_pModelCom->Play_Animation(fTimeDelta, &m_bAnimFinished);
+
+	m_pSPHERECom->Update(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CMonster::Late_Tick(_float fTimeDelta)
 {
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_Sphere"));
+	if (nullptr == pTargetCollider)
+		return;
+
+	m_pSPHERECom->Collision(pTargetCollider);
+
 	if (nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CMonster::Render()
@@ -63,7 +75,12 @@ HRESULT CMonster::Render()
 			return E_FAIL;
 	}
 
+#ifdef _DEBUG
+	/*m_pAABBCom->Render();
+	m_pOBBCom->Render();*/
+	m_pSPHERECom->Render();
 
+#endif
 
 	return S_OK;
 }
@@ -89,6 +106,15 @@ HRESULT CMonster::Ready_Components()
 
 	/* For.Com_Model*/
 	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"), (CComponent**)&m_pModelCom)))
+		return E_FAIL;
+
+	CCollider::COLLIDERDESC		ColliderDesc;
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+	/* For.Com_SPHERE */
+	ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
+	ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
+	ColliderDesc.vPosition = _float3(0.f, 0.f, 0.f);
+	if (FAILED(__super::Add_Components(TEXT("Com_SPHERE"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pSPHERECom, &ColliderDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -146,6 +172,7 @@ void CMonster::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pSPHERECom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);

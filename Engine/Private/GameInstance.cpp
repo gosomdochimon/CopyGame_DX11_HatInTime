@@ -134,6 +134,30 @@ _long CGameInstance::Get_DIMMoveState(DIMM eMouseMoveID)
 	return m_pInput_Device->Get_DIMMoveState(eMouseMoveID);
 }
 
+_bool CGameInstance::Mouse_Down(DIMK eMouseKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Down(eMouseKeyID);
+}
+
+_bool CGameInstance::Mouse_Up(DIMK eMouseKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Up(eMouseKeyID);
+}
+
+_bool CGameInstance::Mouse_Pressing(DIMK eMouseKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Pressing(eMouseKeyID);
+}
+
 HRESULT CGameInstance::Add_Timer(const _tchar * pTimerTag)
 {
 	if (nullptr == m_pTimer_Manager)
