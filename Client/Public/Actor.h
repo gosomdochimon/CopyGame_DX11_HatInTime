@@ -31,8 +31,12 @@ public:
 	virtual HRESULT Render();
 
 public:
+	virtual _float Take_Damage(float fDamage, void* DamageType, CGameObject* DamageCauser);
+
+public:
 	void	Set_fTimeDelta(_float fTimeDelta) { m_fTimeDelta = fTimeDelta; }
 	_float	Get_fTimeDelta() { return m_fTimeDelta; };
+
 
 private:
 	virtual HRESULT Ready_Components();

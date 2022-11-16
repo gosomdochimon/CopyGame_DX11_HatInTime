@@ -14,6 +14,14 @@ BEGIN(Client)
 /* AI나 사용자가 조종할 객체. */
 class CPawn : public CActor
 {
+public:
+	typedef struct tagPawnDesc
+	{
+		_int			iMaxHp = 0;
+		_int			iCurrentHp = 0;
+		_float			fWalkSpeed = 0.f;
+		_float			fRunSpeed = 0.f;
+	}PAWNDESC;
 protected:
 	CPawn(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPawn(const CPawn& rhs);
@@ -32,6 +40,8 @@ private:
 
 public:
 
+protected:
+	PAWNDESC		m_PawnDesc;
 private:/*반드시 자식에서 추가 및 삭제할 것.*/
 
 public:

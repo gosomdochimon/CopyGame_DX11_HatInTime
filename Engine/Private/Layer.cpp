@@ -15,6 +15,8 @@ CComponent * CLayer::Get_Component(const _tchar * pComponentTag, _uint iIndex)
 	return (*iter)->Find_Component(pComponentTag);	
 }
 
+
+
 HRESULT CLayer::Initialize()
 {
 	return S_OK;
@@ -35,7 +37,11 @@ void CLayer::Tick(_float fTimeDelta)
 	for (auto& pGameObject : m_GameObjects)
 	{
 		if (nullptr != pGameObject)
+		{
 			pGameObject->Tick(fTimeDelta);
+			if (pGameObject->Get_IsDeleted())
+				Safe_Release(pGameObject);
+		}		
 	}
 }
 

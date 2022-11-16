@@ -40,6 +40,10 @@ public:
 		return m_WorldMatrix;
 	}
 
+	const _float4x4* Get_World4x4Ptr() const {
+		return &m_WorldMatrix;
+	}
+
 	/* 리턴받은 행렬을 셰이더에 던지기위해.  */
 	_float4x4 Get_World4x4_TP() const {
 
@@ -56,6 +60,8 @@ public:
 		return XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_WorldMatrix).r[eState]));
 	}
 	
+	_float Get_TransformDesc(void) { return m_TransformDesc.fSpeedPerSec; }
+
 	void Set_State(STATE eState, _fvector vState) {
 		_matrix		WorldMatrix = XMLoadFloat4x4(&m_WorldMatrix);
 		WorldMatrix.r[eState] = vState;
@@ -78,9 +84,11 @@ public:
 	void Go_Backward(_float fTimeDelta);
 	void Go_Left(_float fTimeDelta);
 	void Go_Right(_float fTimeDelta);	
-
+	void Jump(_float fTimeDelta, _float fJumpPower);
+	void Go_Target(_fvector vVector, _float fTimeDelta);
 public:
 	void Turn(_fvector vAxis, _float fTimeDelta);
+	void Rotation(_fvector vAxis, _float fRadian);
 	void LookAt(_fvector vAt);
 
 private:			

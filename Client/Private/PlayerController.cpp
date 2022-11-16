@@ -142,17 +142,33 @@ void CPlayerController::Input_Controller(_float fTImeDelta)
 			m_KeySets[ACTIONKEY::SKILLDOWN].pCommand->Excute(m_pOwner, fTImeDelta);
 		}
 
+		if (pGameInstance->Key_Down(m_KeySets[ACTIONKEY::JUMP].Key)
+			&& m_KeySets[ACTIONKEY::JUMP].bCanUse == true)
+		{
+			m_KeySets[ACTIONKEY::JUMP].pCommand->Excute(m_pOwner, fTImeDelta);
+		}
+
 		if (m_pOwner->Get_CanMove()) //¿òÁ÷ÀÓ ºÀ¼â¿ë.
 		{
 			if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_FRONT].Key)
 				&& m_KeySets[ACTIONKEY::MOVE_FRONT].bCanUse == true)
 			{
- 				m_KeySets[ACTIONKEY::MOVE_FRONT].pCommand->Excute(m_pOwner, fTImeDelta);
+				if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_LEFT].Key))
+					m_pOwner->Move_LeftFront(fTImeDelta);
+				else if(pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_RIGHT].Key))
+					m_pOwner->Move_RightFront(fTImeDelta);
+				else
+ 					m_KeySets[ACTIONKEY::MOVE_FRONT].pCommand->Excute(m_pOwner, fTImeDelta);
 			}
 			else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_BACK].Key)
 				&& m_KeySets[ACTIONKEY::MOVE_BACK].bCanUse == true)
 			{
-				m_KeySets[ACTIONKEY::MOVE_BACK].pCommand->Excute(m_pOwner, fTImeDelta);
+				if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_LEFT].Key))
+					m_pOwner->Move_LeftBack(fTImeDelta);
+				else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_RIGHT].Key))
+					m_pOwner->Move_RightBack(fTImeDelta);
+				else
+					m_KeySets[ACTIONKEY::MOVE_BACK].pCommand->Excute(m_pOwner, fTImeDelta);
 			}
 			else if (pGameInstance->Key_Pressing(m_KeySets[ACTIONKEY::MOVE_LEFT].Key)
 				&& m_KeySets[ACTIONKEY::MOVE_LEFT].bCanUse == true)

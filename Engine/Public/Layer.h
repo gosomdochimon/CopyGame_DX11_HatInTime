@@ -13,7 +13,7 @@ private:
 
 public:
 	class CComponent* Get_Component(const _tchar* pComponentTag, _uint iIndex = 0);
-
+	class CGameObject* Get_FirstObject(void) { return m_GameObjects.front(); }
 public:
 	HRESULT Initialize();
 	HRESULT Add_GameObject(class CGameObject* pGameObject);

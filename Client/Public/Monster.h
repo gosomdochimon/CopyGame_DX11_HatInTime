@@ -2,7 +2,7 @@
 
 #include "Client_Defines.h"
 #include "Pawn.h"
-
+#include "HierarchyNode.h"
 
 BEGIN(Engine)
 
@@ -16,9 +16,9 @@ END
 
 BEGIN(Client)
 
-class CMonster final : public CPawn
+class CMonster : public CPawn
 {
-private:
+protected:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMonster(const CMonster& rhs);
 	virtual ~CMonster() = default;
@@ -31,6 +31,17 @@ public:
 	virtual void Late_Tick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	//virtual _bool	Behavior(_float fTimeDelta);
+	//virtual void	Check_AnimationState(_float fTimeDelta);
+
+	virtual _bool Idle(_float fTimeDelta);
+	virtual _bool Move(_float fTimeDelta);
+	virtual _bool Death(_float fTimeDelta);
+	virtual _bool Attack(_float fTimeDelta);
+	virtual _bool Jump(_float fTimeDelta);
+
+	virtual void Update_Collider(void);
 private:
 	/*CShader*				m_pShaderCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
@@ -38,6 +49,9 @@ private:
 	CModel*					m_pModelCom = nullptr;*/
 	CCollider*			m_pSPHERECom = nullptr;
 
+protected:
+	CHierarchyNode*		m_pStuckSocket = nullptr;
+	_float4x4				m_CombinedWorldMatrix;
 private:
 	_uint					m_iNum = 1;
 	_bool					m_bAnimFinished = false;

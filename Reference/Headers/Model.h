@@ -28,6 +28,10 @@ public:/*Get Func*/
 		return m_iNumMeshes;
 	}
 
+	_float4x4 Get_PivotFloat4x4() const {
+		return m_PivotMatrix;
+	}
+
 	_uint	Get_iNumBones(void) const { return m_iNumBones; }
 	class CHierarchyNode* Get_BonePtr(const char* pBoneName) const;
 

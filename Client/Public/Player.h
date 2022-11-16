@@ -46,6 +46,13 @@ public:/*for Actions*/
 	virtual	HRESULT	Move_Back(_float fTimeDelta)	{ return S_OK; };
 	virtual HRESULT Move_Left(_float fTimeDelta)	{ return S_OK; };
 	virtual HRESULT	Move_Right(_float fTimeDelta)	{ return S_OK; };
+
+	virtual HRESULT	Move_RightFront(_float fTimeDelta) { return S_OK; };
+	virtual HRESULT	Move_RightBack(_float fTimeDelta) { return S_OK; };
+	virtual HRESULT	Move_LeftFront(_float fTimeDelta) { return S_OK; };
+	virtual HRESULT	Move_LeftBack(_float fTimeDelta) { return S_OK; };
+
+
 	virtual HRESULT	Jump(_float fTimeDelta)			{ return S_OK; };
 	virtual HRESULT Action_1(_float fTimeDelta)		{ return S_OK; };
 	virtual HRESULT	Action_2(_float fTimeDelta)		{ return S_OK; };

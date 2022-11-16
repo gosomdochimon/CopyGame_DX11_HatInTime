@@ -77,6 +77,22 @@ void CTransform::Go_Right(_float fTimeDelta)
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 }
 
+void CTransform::Jump(_float fTimeDelta, _float fJumpPower)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+	_vector		vUp = Get_State(CTransform::STATE_UP);
+
+	vPosition += XMVector3Normalize(vUp) * m_TransformDesc.fSpeedPerSec * fTimeDelta * fJumpPower;
+
+	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+}
+
+void CTransform::Go_Target(_fvector vVector, _float fTimeDelta)
+{
+
+
+}
+
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_TransformDesc.fRotationPerSec * fTimeDelta);
@@ -84,6 +100,15 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(CTransform::STATE_RIGHT, XMVector3TransformNormal(Get_State(CTransform::STATE_RIGHT), RotationMatrix));
 	Set_State(CTransform::STATE_UP, XMVector3TransformNormal(Get_State(CTransform::STATE_UP), RotationMatrix));
 	Set_State(CTransform::STATE_LOOK, XMVector3TransformNormal(Get_State(CTransform::STATE_LOOK), RotationMatrix));
+}
+
+void CTransform::Rotation(_fvector vAxis, _float fRadian)
+{
+	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+	Set_State(CTransform::STATE_RIGHT, XMVector3TransformNormal(XMVectorSet(1.f, 0.f, 0.f, 0.f) * Get_Scale(CTransform::STATE_RIGHT), RotationMatrix));
+	Set_State(CTransform::STATE_UP, XMVector3TransformNormal(XMVectorSet(0.f, 1.f, 0.f, 0.f) * Get_Scale(CTransform::STATE_UP), RotationMatrix));
+	Set_State(CTransform::STATE_LOOK, XMVector3TransformNormal(XMVectorSet(0.f, 0.f, 1.f, 0.f) * Get_Scale(CTransform::STATE_LOOK), RotationMatrix));
 }
 
 void CTransform::LookAt(_fvector vAt)

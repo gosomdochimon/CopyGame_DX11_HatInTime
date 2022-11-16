@@ -111,7 +111,13 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 
 	for (_uint i = 0; i < 10; ++i)
 	{
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Monster"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mafia"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+			return E_FAIL;
+	}
+
+	for (_uint i = 0; i < 3; ++i)
+	{
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MadCrow"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
 			return E_FAIL;
 	}
 

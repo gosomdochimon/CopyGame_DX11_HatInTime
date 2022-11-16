@@ -18,6 +18,10 @@ public:
 		return m_fCamDistance;
 	}
 
+	_float Get_IsDeleted(void) { return m_bDelete; }
+
+	void Set_DeleteObject(void) { m_bDelete = true; }
+
 public:
 	class CComponent* Find_Component(const _tchar* pComponentTag);
 
@@ -33,7 +37,7 @@ protected:
 	ID3D11DeviceContext* m_pContext = nullptr;
 
 	float						m_fCamDistance = 0.f;
-
+	_bool						m_bDelete = false;
 protected:
 	map<const _tchar*, class CComponent*>				m_Components;
 protected:

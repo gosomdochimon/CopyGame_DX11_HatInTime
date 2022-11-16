@@ -58,6 +58,45 @@
     <Filter Include="02.GameObjects\Actor\Pawn\02.Player\99.Player_CamVector">
       <UniqueIdentifier>{4efde387-4581-49e9-83d2-af7c40c7d904}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment">
+      <UniqueIdentifier>{58c97176-17c6-4671-b24f-1eca9bf69f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment\01.Weapon">
+      <UniqueIdentifier>{d16e1ca5-3cc3-46d2-bb04-6515649f2421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment\00.Manager">
+      <UniqueIdentifier>{cc0868e3-e9bd-43e2-ae82-94ecaa9d415a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment\02.Hat">
+      <UniqueIdentifier>{6fd69f79-2b4e-42b5-a4e6-2d749d5cf774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment\01.Weapon\Umbrella">
+      <UniqueIdentifier>{0b2ad01b-314f-4aa6-a712-a7da146ed62a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment\01.Weapon\Flask">
+      <UniqueIdentifier>{d9258ee9-50a7-4e93-92dd-25a7095368e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera">
+      <UniqueIdentifier>{a24dd426-ff18-49be-bb9b-c60ee85c2c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\Mafia">
+      <UniqueIdentifier>{cc4ad705-3112-435b-b9d4-b1e8769192ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Interface">
+      <UniqueIdentifier>{63fe845d-8fdf-4ee0-85f7-56e104cd29ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\Mad_Crow">
+      <UniqueIdentifier>{4783ffe4-1dbe-49d0-ae07-e7d869273c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BehaviorTree">
+      <UniqueIdentifier>{e49bf7ae-09a4-4cf0-bfd0-1c9cc6e7dee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object_Manager">
+      <UniqueIdentifier>{ad612278-ae94-4cfd-904f-946660b5736a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\Func_Detect">
+      <UniqueIdentifier>{0db39832-c37d-4909-b9c9-53600390bfbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -80,9 +119,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Client_Defines.h">
       <Filter>99.Defines</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Camera_Dynamic.h">
-      <Filter>02.GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_GamePlay.h">
       <Filter>01.Levels\02.GamePlay</Filter>
@@ -126,6 +162,33 @@
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02.GameObjects\Actor\Pawn\03.Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Equipments.h">
+      <Filter>02.GameObjects\Actor\Equipment\00.Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Equipment.h">
+      <Filter>02.GameObjects\Actor\Equipment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Hat.h">
+      <Filter>02.GameObjects\Actor\Equipment\02.Hat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Flask.h">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Flask</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Umbrella.h">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Umbrella</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Dynamic.h">
+      <Filter>02.GameObjects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mafia.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mafia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MadCrow.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mad_Crow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Detect.h">
+      <Filter>02.GameObjects\Actor\Pawn\Func_Detect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -136,9 +199,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>00.MainApp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Camera_Dynamic.cpp">
-      <Filter>02.GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_GamePlay.cpp">
       <Filter>01.Levels\02.GamePlay</Filter>
@@ -178,6 +238,33 @@
     </ClCompile>
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02.GameObjects\Actor\Pawn\03.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Equipments.cpp">
+      <Filter>02.GameObjects\Actor\Equipment\00.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Equipment.cpp">
+      <Filter>02.GameObjects\Actor\Equipment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Hat.cpp">
+      <Filter>02.GameObjects\Actor\Equipment\02.Hat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Umbrella.cpp">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Umbrella</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Flask.cpp">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Flask</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Dynamic.cpp">
+      <Filter>02.GameObjects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mafia.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mafia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MadCrow.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mad_Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Detect.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\Func_Detect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

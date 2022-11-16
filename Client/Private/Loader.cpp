@@ -8,7 +8,11 @@
 #include "BackGround.h"
 #include "Terrain.h"
 #include "HatKid.h"
-#include "Monster.h"
+#include "Umbrella.h"
+#include "Flask.h"
+#include "Hat.h"
+#include "Mafia.h"
+#include "MadCrow.h"
 //#include "Effect.h"
 //#include "Sky.h"
 //#include "UI.h"
@@ -159,11 +163,11 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	_matrix			PivotMatrix = XMMatrixIdentity();
 
-	///*For.Prototype_Component_Model_Fiona*/
-	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Fiona/Fiona.fbx", PivotMatrix))))
-		return E_FAIL;
+	/////*For.Prototype_Component_Model_Fiona*/
+	//PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Fiona/Fiona.fbx", PivotMatrix))))
+	//	return E_FAIL;
 
 	/*For.Prototype_Component_Model_Hatkid*/
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
@@ -171,10 +175,64 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/HatKid/HatKidAnim.fbx", PivotMatrix))))
 		return E_FAIL;
 
-	/*For.Prototype_Component_Model_ForkLift*/
+	///*For.Prototype_Component_Model_ForkLift*/
+	//_float3 scale = _float3(0.01f, 0.01f, 0.01f);
+	//PivotMatrix = /*XMMatrixTransformation(XMLoadFloat3(&scale),)*/XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/ForkLift/ForkLift.fbx", PivotMatrix))))
+	//	return E_FAIL;
+
+	/*For.Prototype_Component_Model_Umbrella*/
+	_matrix RotationXMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f));
+	_matrix RotationYMatrix = XMMatrixRotationY(XMConvertToRadians(90.0f));
+	_matrix RotationZMatrix = XMMatrixRotationZ(XMConvertToRadians(0.0f));
+	_matrix RotationMatrix = RotationXMatrix * RotationYMatrix * RotationZMatrix;
+	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) *RotationMatrix;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Umbrella"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Equipments/Umbrella/Umbrella.fbx", PivotMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Flask*/
+	RotationXMatrix = XMMatrixRotationX(XMConvertToRadians(0.0f));
+	RotationYMatrix = XMMatrixRotationY(XMConvertToRadians(90.0f));
+	RotationZMatrix = XMMatrixRotationZ(XMConvertToRadians(270.0f));
+	RotationMatrix = RotationXMatrix * RotationYMatrix * RotationZMatrix;
+	PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) *RotationMatrix;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Flask"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Equipments/tube/tube.fbx", PivotMatrix))))
+		return E_FAIL;
+
+
+
+	/*For.Prototype_Component_Model_Default_Hat*/
+	PivotMatrix = /*XMMatrixTransformation(XMLoadFloat3(&scale),)*/XMMatrixScaling(0.3f, 0.3f, 0.3f) * XMMatrixTranslation(0.f, 1.f, 0.f) /** XMMatrixRotationY(XMConvertToRadians(180.0f))*/;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Default_Hat"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Equipments/hats/hatkid_hat.fbx", PivotMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Witch_Hat*/
+	PivotMatrix = /*XMMatrixTransformation(XMLoadFloat3(&scale),)*/XMMatrixScaling(0.3f, 0.3f, 0.3f) * XMMatrixTranslation(0.f, 3.f, 0.f)/* * XMMatrixRotationY(XMConvertToRadians(180.0f))*/;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Witch_Hat"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Equipments/hats/witch_hat.fbx", PivotMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Sprint_Hat*/
+	PivotMatrix = /*XMMatrixTransformation(XMLoadFloat3(&scale),)*/XMMatrixScaling(0.2f, 0.2f, 0.2f) * XMMatrixTranslation(0.f, 3.f, 0.f)/* * XMMatrixRotationY(XMConvertToRadians(180.0f))*/;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Sprint_Hat"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Equipments/hats/sprint_hat.fbx", PivotMatrix))))
+		return E_FAIL;
+
+	/*Monster 葛胆 积己*/
+	/*For.Prototype_Component_Model_Mafia*/
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_ForkLift"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/ForkLift/ForkLift.fbx", PivotMatrix))))
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Mafia"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Enemy/Mafia/Mafia.fbx", PivotMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Mad_Crow*/
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_MadCrow"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Enemy/Mad_Crow/Mad_Crow.fbx", PivotMatrix))))
 		return E_FAIL;
 
 	///*For.Prototype_Component_VIBuffer_Cube */
@@ -247,9 +305,33 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CHatKid::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/*For.Prototype_GameObject_Monster */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Monster"),
-		CMonster::Create(m_pDevice, m_pContext))))
+	/*For.Prototype_GameObject_Umbrella*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Umbrella"),
+		CUmbrella::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_Flask*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Flask"),
+		CFlask::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For.Prototype_GameObject_Hat*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Hat"),
+		CHat::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	///*For.Prototype_GameObject_Monster */
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Monster"),
+	//	CMonster::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+	/*Monster 按眉 积己*/
+	/*For.Prototype_GameObject_Mafia */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mafia"),
+		CMafia::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MadCrow"),
+		CMadCrow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/*For.Prototype_GameObject_Terrain*/

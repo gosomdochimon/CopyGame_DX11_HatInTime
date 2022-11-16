@@ -8,7 +8,6 @@ class CCollider;
 class CRenderer;
 class CTransform;
 class CModel;
-
 END
 
 BEGIN(Client)
@@ -24,13 +23,17 @@ public:
 	Attack: Attack키만 먹혀야함. 
 	*/
 	
-	enum class LOWER_STATE{ IDLE, RUN, JUMP, DOUBLE_JUMP, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END };
+	enum class LOWER_STATE{ IDLE, RUN, SPRINT, JUMP, DOUBLE_JUMP, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END };
 	
-	enum class UPPER_STATE { IDLE, RUN, JUMP, DOUBLE_JUMP, CARRY, SKILL, UMBRELLA, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END};
+	enum class UPPER_STATE { IDLE, RUN, SPRINT, JUMP, DOUBLE_JUMP, CARRY, SKILL, UMBRELLA, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END};
 
-	enum HAT_TYPE { HAT_DEFAULT, HAT_WITCH, HAT_SPRINT, HAT_END };
+	enum PARTS_TYPE { PARTS_HAT, PARTS_WEAPON, PARTS_END};
 
-	enum WEAPON_TYPE{ WEAPON_PUNCH, WEAPON_UMBRELLA, WEAPON_END};
+	enum HAT_TYPE { HAT_NONE, HAT_DEFAULT, HAT_WITCH, HAT_SPRINT, HAT_END };
+
+	enum WEAPON_TYPE{ WEAPON_NONE, WEAPON_UMBRELLA, WEAPON_FLASK, WEAPON_END};
+
+	enum KEYSTATE { KEY_LEFT, KEY_RIGHT, KEY_LF, KEY_LB, KEY_RF, KEY_RB, KEY_END };
 private:
 	CHatKid(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CHatKid(const CHatKid& rhs);
@@ -44,19 +47,26 @@ public:
 	virtual HRESULT		Render();
 
 public:/*Get&Set*/
-
+	_vector		Get_State(_uint iState) const;
 private:/*For AnimControl Func*/
 	HRESULT				Setup_Anim_Loop(void);
 
 	void				Pop_Animation(void);
 	void				Play_Animation(_float fTimeDelta);
 	void				Push_UpperState(UPPER_STATE eUpperState);
-	void				Change_ActionBoolState_Anim();
+	void				Change_ActionBoolState_Anim(_float fTImeDelta);
 	//void				InputNextAnim_Upper(ANIM_STATE eState); 
 	//void				InputNextAnim_Lower(ANIM_STATE eState); 
 	void				Reset_LowerAnim();
 	void				Reset_UpperAnim();
+	/*Actions*/
+	void				Sliding();
+	void				Move(_float fTimeDelta);
+	void				Hurt(_float fTimeDelta);
+private:/*For.Equip*/
+	void				Add_Equip();
 
+	void				Shoot_Flask();
 private:/*For. Anim*/
 	CCollider*			m_pSPHERECom = nullptr;
 	_bool				m_bAnimFinished = false;
@@ -71,10 +81,17 @@ private:/*For. Anim Queue*/
 	vector<_bool>		m_AnimLoopStates;
 	//map<ANIM_STATE, _bool>	
 private: /*For. State*/
-	UPPER_STATE			m_eUpperState = UPPER_STATE::STATE_END; 
-	LOWER_STATE			m_eLowerState = LOWER_STATE::STATE_END;
-	ANIM_STATE			m_eAnimState = ANIM_STATE::STATE_END;
+	UPPER_STATE			m_eCurrentUpperState = UPPER_STATE::STATE_END; 
+	LOWER_STATE			m_eCurrentLowerState = LOWER_STATE::STATE_END;
 
+	UPPER_STATE			m_ePreUpperState = UPPER_STATE::STATE_END;
+	LOWER_STATE			m_ePreLowerState = LOWER_STATE::STATE_END;
+
+	ANIM_STATE			m_eAnimState = ANIM_STATE::STATE_END; //ForUpper
+	ANIM_STATE			m_eAnimState_Lower = ANIM_STATE::STATE_END; //ForLower
+
+	HAT_TYPE			m_eHatType = HAT_TYPE::HAT_END;
+	WEAPON_TYPE			m_eWeaponType = WEAPON_TYPE::WEAPON_END;
 private:
 	/*MainMoving_Bool*/
 	_bool				m_bJump = false;
@@ -84,29 +101,49 @@ private:
 	_bool				m_bIsHooking = false;
 	_bool				m_bSkillReady = false;
 	_bool				m_bSkillUsing = false;
-	_bool				m_bDive = false;
+	_bool				m_bDived = false;
 	_bool				m_bAttacked = false;
 	_bool				m_bHurt = false;
 	_bool				m_bThrowing = false;
 	/*Interrupt State Bool*/
 	_uint				m_iAtkCount = 0;
 	_float				m_fAtkDelay = 0.f;
+	_float				m_fSkillTime = 0.f;
+	/*Jump*/
+	_float				m_fJumpPower = 2.f;
+	_float				m_fJumpFinishPower = -1.f *m_fJumpPower;
+	_bool				m_bIsShoot = false;
+	//for Dive
+	_float				m_fDiveTime = 1.f;
+	//for Hurt
+	_float				m_fHurtTime = 1.f;
+	//임시용
+	KEYSTATE m_ePreKeyState = KEY_END;
+	KEYSTATE m_eCurKeyState = KEY_END;
+private:/*For. Parts*/
+	class CEquipments*	m_pEquipments = nullptr;
+
 public:
 	virtual HRESULT		Move_Front(_float fTimeDelta)	override;
 	virtual	HRESULT		Move_Back(_float fTimeDelta)	override;
 	virtual HRESULT		Move_Left(_float fTimeDelta)	override;
 	virtual HRESULT		Move_Right(_float fTimeDelta)	override;
+	virtual HRESULT	Move_RightFront(_float fTimeDelta)	override;
+	virtual HRESULT	Move_RightBack(_float fTimeDelta)	override;
+	virtual HRESULT	Move_LeftFront(_float fTimeDelta)	override;
+	virtual HRESULT	Move_LeftBack(_float fTimeDelta)	override;
+
 	virtual HRESULT		Jump(_float fTimeDelta)			override;
-	virtual HRESULT		Action_1(_float fTimeDelta)		override;
+	virtual HRESULT		Action_1(_float fTimeDelta)		override; //Sliding
 	virtual HRESULT		Action_2(_float fTimeDelta)		override; //스킬 Pressing
 	virtual HRESULT		Action_3(_float fTimeDelta)		override;
 	virtual HRESULT		Action_4(_float fTimeDelta)		override;
-	virtual HRESULT		Action_5(_float fTimeDelta)		override;
-	virtual HRESULT		Action_6(_float fTimeDelta)		override; //스킬Key_Up
+	virtual HRESULT		Action_5(_float fTimeDelta)		override;//스킬Key_Up
+	virtual HRESULT		Action_6(_float fTimeDelta)		override; 
 	virtual HRESULT		Idle(_float fTimeDelta)			override;
 private:/*For Test*/
 	virtual void		TestFunc(_float fTimeDelta) override;
-
+	HRESULT				Ready_Parts();
 	virtual HRESULT		Ready_Components() override;
 	virtual HRESULT		SetUp_ShaderResources() override; /* 셰이더 전역변수에 값을 전달한다. */
 public:

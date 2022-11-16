@@ -17,6 +17,18 @@ CComponent * CObject_Manager::Get_Component(_uint iLevelIndex, const _tchar * pL
 	return pLayer->Get_Component(pComponentTag, iIndex);	
 }
 
+CGameObject * CObject_Manager::Get_FirstObject(_uint iLevelIndex, const _tchar * pLayerTag)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return nullptr;
+
+	auto	iter = find_if(m_pLayers[iLevelIndex].begin(), m_pLayers[iLevelIndex].end(), CTag_Finder(pLayerTag));
+	if (iter == m_pLayers[iLevelIndex].end())
+		return nullptr;
+
+	return iter->second->Get_FirstObject();
+}
+
 HRESULT CObject_Manager::Reserve_Container(_uint iNumLevels)
 {
 	if (nullptr != m_pLayers)
@@ -66,6 +78,15 @@ HRESULT CObject_Manager::Add_GameObject(const _tchar * pPrototypeTag, _uint iLev
 
 
 	return S_OK;
+}
+
+CGameObject * CObject_Manager::Clone_GameObject(const _tchar * pPrototypeTag, void * pArg)
+{
+	CGameObject*		pPrototype = Find_Prototype(pPrototypeTag);
+	if (nullptr == pPrototype)
+		return nullptr;
+
+	return pPrototype->Clone(pArg);
 }
 
 void CObject_Manager::Tick(_float fTimeDelta)

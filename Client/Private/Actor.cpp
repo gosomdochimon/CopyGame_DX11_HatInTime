@@ -44,6 +44,11 @@ HRESULT CActor::Render()
 	return S_OK;
 }
 
+_float CActor::Take_Damage(float fDamage, void * DamageType, CGameObject * DamageCauser)
+{
+	return 0.f;
+}
+
 HRESULT CActor::Ready_Components()
 {
 	return S_OK;
