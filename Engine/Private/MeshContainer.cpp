@@ -11,6 +11,7 @@ CMeshContainer::CMeshContainer(const CMeshContainer & rhs)
 	, m_pAIMesh(rhs.m_pAIMesh)
 	, m_iMaterialIndex(rhs.m_iMaterialIndex)
 	, m_iNumBones(rhs.m_iNumBones)
+	, m_eModelType(rhs.m_eModelType)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
@@ -37,7 +38,7 @@ HRESULT CMeshContainer::Initialize_Prototype(CModel::TYPE eModelType, const aiMe
 	strcpy_s(m_szName, pAIMesh->mName.data);
 	m_iMaterialIndex = pAIMesh->mMaterialIndex;
 	m_pAIMesh = pAIMesh;
-
+	m_eModelType = eModelType;
 #pragma region VERTICES
 
 	HRESULT			hr = 0;
@@ -136,6 +137,73 @@ HRESULT CMeshContainer::SetUp_Bones(CModel * pModel)
 	return S_OK;
 }
 
+HRESULT CMeshContainer::Reset_Vertices(CModel * pModel, _fmatrix PivotMatrix)
+{
+#pragma region VERTICES
+
+	HRESULT			hr = 0;
+
+	if (CModel::TYPE_NONANIM == m_eModelType)
+	{
+
+		Safe_Release(m_pVB);
+		Safe_Release(m_pIB);
+		hr = Create_VertexBuffer_NonAnimModel(m_pAIMesh, PivotMatrix);
+	}
+		
+	else
+	{
+		hr = Create_VertexBuffer_AnimModel(m_pAIMesh, pModel);
+	}
+	
+	if (FAILED(hr))
+		return E_FAIL;
+
+
+#pragma endregion
+
+
+#pragma region Indices
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+
+	m_iIndicesByte = sizeof(FACEINDICES32);
+	m_iNumPrimitive = m_pAIMesh->mNumFaces;
+	m_iNumIndicesPerPrimitive = 3;
+
+	m_BufferDesc.ByteWidth = m_iIndicesByte * m_iNumPrimitive;
+	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT; /* 정적버퍼를 생성한다. */
+	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.MiscFlags = 0;
+	m_BufferDesc.StructureByteStride = sizeof(_ushort);
+
+	FACEINDICES32*			pIndices = new FACEINDICES32[m_iNumPrimitive];
+
+	for (_uint i = 0; i < m_iNumPrimitive; ++i)
+	{
+		aiFace		AIFace = m_pAIMesh->mFaces[i];
+
+		pIndices[i]._0 = AIFace.mIndices[0];
+		pIndices[i]._1 = AIFace.mIndices[1];
+		pIndices[i]._2 = AIFace.mIndices[2];
+	}
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pIndices;
+
+	/* 정점을 담기 위한 공간을 할당하고, 내가 전달해준 배열의 값들을 멤카피한다. */
+	if (FAILED(__super::Create_IndexBuffer()))
+		return E_FAIL;
+
+	Safe_Delete_Array(pIndices);
+#pragma endregion
+
+	//Safe_AddRef(m_pVB);
+	//Safe_AddRef(m_pIB);
+
+	return S_OK;
+}
+
 
 
 
@@ -177,7 +245,7 @@ HRESULT CMeshContainer::Create_VertexBuffer_NonAnimModel(const aiMesh* pAIMesh, 
 	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
 
-	Safe_Delete_Array(pVertices);
+	Safe_Delete_Array(pVertices); 
 
 	return S_OK;
 }

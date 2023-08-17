@@ -25,6 +25,8 @@ public:
 	HRESULT Add_Department_Part(_uint iLayerNum, _uint iPartNum, void* pArg = nullptr);
 	_bool	Change_Part(_uint iLayerNum, _uint iPartNum);
 	HRESULT Delete_Part(_uint iLayerNum, _uint iPartNum);
+
+	void	Set_CanAttack(_bool bCanAttack);
 private:
 	_uint			m_iLayerNum = 0;
 	_uint			m_iPartsNum = 0;

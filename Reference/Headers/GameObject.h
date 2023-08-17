@@ -19,9 +19,10 @@ public:
 	}
 
 	_float Get_IsDeleted(void) { return m_bDelete; }
-
+	ID3D11Device* Get_Device(void) { return m_pDevice; }
 	void Set_DeleteObject(void) { m_bDelete = true; }
-
+public:
+	virtual _float Take_Damage(float fDamage, void* DamageType, CGameObject* DamageCauser);
 public:
 	class CComponent* Find_Component(const _tchar* pComponentTag);
 
@@ -38,11 +39,12 @@ protected:
 
 	float						m_fCamDistance = 0.f;
 	_bool						m_bDelete = false;
+	_bool						m_bCollid = false;
 protected:
 	map<const _tchar*, class CComponent*>				m_Components;
 protected:
 	HRESULT Add_Components(const _tchar* pComponentTag, _uint iLevelIndex, const _tchar* pPrototypeTag, CComponent** ppOut, void* pArg = nullptr);
-	void Compute_CamDistance(_float3 vWorldPos);
+	void Compute_CamDistance(_fvector vWorldPos);
 
 
 

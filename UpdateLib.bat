@@ -6,3 +6,4 @@ xcopy	/y	.\Engine\Bin\*.lib				.\Reference\Librarys\
 xcopy	/y	.\Engine\ThirdPartyLib\*.lib	.\Reference\Librarys\
 xcopy	/y	.\Engine\Bin\*.dll				.\Client\Bin\
 xcopy	/y	.\Engine\Bin\*.dll				.\Maptool\Bin\
+xcopy	/y	.\Engine\Bin\ShaderFiles\*.hlsl .\Client\Bin\ShaderFiles\

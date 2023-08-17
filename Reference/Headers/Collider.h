@@ -34,7 +34,11 @@ public:
 
 public:
 	void	Update(_fmatrix WorldMatrix);
-	HRESULT	Render();
+#ifdef _DEBUG
+public:
+	HRESULT Render();
+#endif // _DEBUG
+
 
 public:
 	_bool Collision(class CCollider* pTargetCollider);
@@ -58,7 +62,7 @@ private:
 	BoundingBox*			m_pAABB[BOUNDING_END] = { nullptr };
 	BoundingOrientedBox*	m_pOBB[BOUNDING_END] = { nullptr };
 	BoundingSphere*			m_pSphere[BOUNDING_END] = { nullptr };
-
+	ID3D11DepthStencilState*						m_pDepthStencilState = nullptr;
 	_bool					m_isCollision = false;
 
 #ifdef _DEBUG

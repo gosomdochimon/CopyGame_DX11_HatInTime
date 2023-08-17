@@ -3,8 +3,13 @@
 
 matrix			g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D		g_DiffuseTexture;
+texture2D		g_DissolveTexture;
 
-
+float			g_DissolveTimer;
+float			g_DissolveLifespan;
+float			g_AlphaVolume;
+float			g_AlphaMaxVolume;
+int				g_ColorType;
 
 struct VS_IN
 {
@@ -17,7 +22,9 @@ struct VS_IN
 struct VS_OUT
 {
 	float4		vPosition : SV_POSITION;
+	float4		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
+	float4		vProjPos : TEXCOORD1;
 };
 
 /* DrawIndexed함수를 호출하면. */
@@ -32,10 +39,14 @@ VS_OUT VS_MAIN(VS_IN In)
 	matWV = mul(g_WorldMatrix, g_ViewMatrix);
 	matWVP = mul(matWV, g_ProjMatrix);
 
+	vector vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
+
 	/* 정점의 위치에 월드 뷰 투영행렬을 곱한다. 현재 정점은 ViewSpace에 존재하낟. */
 	/* 투영행렬까지 곱하면 정점위치의 w에 뷰스페이스 상의 z를 보관한다. == Out.vPosition이 반드시 float4이어야하는 이유. */
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	Out.vNormal = vNormal;
 	Out.vTexUV = In.vTexUV;
+	Out.vProjPos = Out.vPosition;
 
 	return Out;
 }
@@ -44,12 +55,16 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
 	float4		vPosition : SV_POSITION;
+	float4		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
+	float4		vProjPos : TEXCOORD1;
 };
 
 struct PS_OUT
 {
-	float4		vColor : SV_TARGET0;
+	float4		vDiffuse : SV_TARGET0;
+	float4		vNormal : SV_TARGET1;
+	float4		vDepth : SV_TARGET2;
 };
 
 /* 이렇게 만들어진 픽셀을 PS_MAIN함수의 인자로 던진다. */
@@ -59,21 +74,135 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);	
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
 
-	if (Out.vColor.a <= 0.3f)
+	if (Out.vDiffuse.a <= 0.3f)
 		discard;
 
 	return Out;
 }
 
 
+PS_OUT PS_MAIN_DISSOLVE(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
+
+	/* Dissolve with Highlight */
+	float dissolveFactor = lerp(0, 1, g_DissolveTimer / g_DissolveLifespan); /* If dissolveFactor:
+																			 == 0:   Should not Dissolve
+																			 == 1:   Should Dissolve Everything. */
+	float4 dissolveColor = g_DissolveTexture.Sample(LinearSampler, In.vTexUV);
+	dissolveColor.a = dissolveColor.y;
+	dissolveColor.yz = dissolveColor.x;
+
+	float dissolveValue = dissolveColor.r - dissolveFactor; /* If dissolveValue:
+															> .15:      No Dissolve
+															0 ~ .15f:   Highlight
+															<= 0:      Dissolve. */
+
+	if (dissolveValue <= 0)
+		discard;
+	else if (dissolveValue < .15f)
+	{
+		float3 colorYellow = float3(1.f, .95f, .6f);
+		float3 colorOrange = float3(.92f, .36f, .2f);
+
+		float3 lerpColor = lerp(colorOrange, colorYellow, dissolveValue / .15f);
+		Out.vDiffuse.rgb = lerpColor;
+	}
+
+	return Out;
+}
+
+PS_OUT PS_MAIN_TEST(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	//Out.vDiffuse = float4(1.f, 1.f, 1.f, 1.f);
+	//Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	//Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
 
 
+	/*Out.vDiffuse.rgb = float3(1.f, .95f, .6f);
+	Out.vDiffuse.a = 1.f;*/
+	if (Out.vDiffuse.r < 0.5f)
+		discard;
+	else
+	{
+		float3 colorYellow = float3(1.f, .95f, .6f);
+		float3 colorOrange = float3(.92f, .36f, .2f);
+
+		float3 lerpColor = lerp(colorYellow, colorOrange, Out.vDiffuse.r / 1.f);
+		//시간을 받아서 점점 알파가 0으로 되도록 만들기.
+		Out.vDiffuse.rgb = lerpColor;
+	}
+
+	return Out;
+}
+
+PS_OUT PS_MAIN_COLOR(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
+
+	if (Out.vDiffuse.a <= 0.3f)
+		discard;
+	else
+	{
+		if (g_ColorType == 0)
+		{//노랑이착지용
+			float3 colorYellow = float3(1.f, .95f, .6f);
+			Out.vDiffuse.rgb = colorYellow;
+		}
+		else if (g_ColorType == 1)
+		{//보라 폭탄용
+			float3 colorPurple = float3(0.8f, 0.4f, 1.f);
+			Out.vDiffuse.rgb = colorPurple;
+			Out.vDiffuse.a = 0.5f;
+		}
+		else if (g_ColorType == 2)
+		{// 빨강 칼용
+			float3 colorRed = float3(.8f, .2f, .2f);
+			Out.vDiffuse.rgb = colorRed;
+			Out.vDiffuse.a = 0.7f;
+		}
+	}
+	return Out;
+}
+
+PS_OUT PS_MAIN_HIT(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexUV);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 500.f, 0.f, 0.f);
+
+	if (Out.vDiffuse.a <= 0.3f)
+		discard;
+	else
+	{
+
+		float3 colorRed = float3(1.f, 0.f, .05f);
+		Out.vDiffuse.rgb = colorRed;
+	
+	}
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
-	pass Default
+	pass Default // 0
 	{
 		SetRasterizerState(RS_Default);
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -84,4 +213,47 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
+	pass Dissolve //1
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
+	}
+
+	pass ForAttackEffect //2
+	{
+		SetRasterizerState(RS_CullNone);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_TEST();
+	}
+
+	pass ForColorEffect //3
+	{
+		SetRasterizerState(RS_CullNone);
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_COLOR();
+	}
+
+	pass ForHitEffect //4
+	{
+		SetRasterizerState(RS_Default);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_HIT();
+	}
 }

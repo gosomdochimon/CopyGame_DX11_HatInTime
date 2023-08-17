@@ -1,23 +1,4 @@
-﻿  Transform.cpp
-  VIBuffer_Terrain.cpp
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\engine\private\vibuffer_terrain.cpp(199): warning C4244: '인수': 'Engine::_uint'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\engine\private\vibuffer_terrain.cpp(337): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\engine\private\vibuffer_terrain.cpp(339): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\engine\private\vibuffer_terrain.cpp(350): warning C4101: 'fU' :참조되지 않은 지역 변수입니다.
-c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\engine\private\vibuffer_terrain.cpp(350): warning C4101: 'fV' :참조되지 않은 지역 변수입니다.
-  Picking.cpp
-  Object_Manager.cpp
-  Level_Manager.cpp
-  Layer.cpp
-  GameObject.cpp
-  GameInstance.cpp
-  Component_Manager.cpp
-  Collider.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  Camera.cpp
-  코드를 생성하고 있습니다...
-     ..\Bin\Engine.lib 라이브러리 및 ..\Bin\Engine.exp 개체를 생성하고 있습니다.
+﻿     ..\Bin\Engine.lib 라이브러리 및 ..\Bin\Engine.exp 개체를 생성하고 있습니다.
 Effects11d.lib(d3dxGlobal.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(d3dxGlobal.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 Effects11d.lib(EffectAPI.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectAPI.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
 Effects11d.lib(EffectLoad.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectLoad.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.

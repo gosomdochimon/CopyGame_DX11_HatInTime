@@ -44,7 +44,7 @@ HRESULT CDetect::Ready_Components(void * pArg)
 	ColliderDesc.vScale = m_DetectDesc.MaxDetect_Collider.vScale;
 	ColliderDesc.vRotation = m_DetectDesc.MaxDetect_Collider.vRotation;
 	ColliderDesc.vPosition = m_DetectDesc.MaxDetect_Collider.vPosition;
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pMinSphereCom, &ColliderDesc)))
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pMinSphereCom, &ColliderDesc)))
 		return E_FAIL;
 
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
@@ -52,7 +52,7 @@ HRESULT CDetect::Ready_Components(void * pArg)
 	ColliderDesc.vScale = m_DetectDesc.MinDetect_Collider.vScale;
 	ColliderDesc.vRotation = m_DetectDesc.MinDetect_Collider.vRotation;
 	ColliderDesc.vPosition = m_DetectDesc.MinDetect_Collider.vPosition;
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pMaxSphereCom, &ColliderDesc)))
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pMaxSphereCom, &ColliderDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -80,13 +80,16 @@ HRESULT CDetect::Render()
 		m_pMinSphereCom == nullptr)
 		return E_FAIL;
 
-#ifdef _DEBUG
-	m_pMaxSphereCom->Render();
-	m_pMinSphereCom->Render();
 
-#endif
 
 	return S_OK;
+}
+
+void CDetect::Late_Tick(_float fTimeDelta)
+{
+#ifdef _DEBUG
+#endif
+
 }
 
 

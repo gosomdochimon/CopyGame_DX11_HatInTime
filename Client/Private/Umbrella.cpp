@@ -40,11 +40,19 @@ HRESULT CUmbrella::Initialize(void * pArg)
 
 	m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(0.0f));
 
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	pGameInstance->Add_Group(CCollider_Manager::GROUP_TYPE::TYPE_WEAPON, this, m_pOBBCom);
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
 void CUmbrella::Tick(_float fTimeDelta)
 {
+	__super::Tick(fTimeDelta);
+
 	_matrix		SocketMatrix = /*m_EquipDesc.pSocket->Get_OffsetMatrix() **/
 		m_EquipDesc.pSocket->Get_CombinedTransformationMatrix() *
 		XMLoadFloat4x4(&m_EquipDesc.SocketPivotMatrix) * XMLoadFloat4x4(m_EquipDesc.pParentWorldMatrix);
@@ -60,9 +68,21 @@ void CUmbrella::Tick(_float fTimeDelta)
 
 void CUmbrella::Late_Tick(_float fTimeDelta)
 {
+	if (m_bAttack)
+	{
+		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+		pGameInstance->Collider_Group(CCollider_Manager::TYPE_MONSTER, this, m_pOBBCom, 1.f);
+		RELEASE_INSTANCE(CGameInstance);
+	}
+
 	if (nullptr != m_pRendererCom)
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+
+#ifdef _DEBUG
+		//m_pRendererCom->Add_Debug(m_pOBBCom);
+#endif
+
 	}
 }
 
@@ -86,9 +106,6 @@ HRESULT CUmbrella::Render()
 			return E_FAIL;
 	}
 
-#ifdef _DEBUG
-	m_pOBBCom->Render();
-#endif
 	return S_OK;
 }
 
@@ -109,11 +126,11 @@ HRESULT CUmbrella::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Umbrella"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Umbrella"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	CCollider::COLLIDERDESC		ColliderDesc;
@@ -121,7 +138,7 @@ HRESULT CUmbrella::Ready_Components()
 	ColliderDesc.vScale = _float3(10.f, 10.f, 1.f);
 	ColliderDesc.vPosition = _float3(2.f, 0.f, 0.f);
 	ColliderDesc.vRotation = _float3(0.f, 30.f, 0.f);
-	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Components(TEXT("Com_OBB"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
 		return E_FAIL;
 
 	return S_OK;

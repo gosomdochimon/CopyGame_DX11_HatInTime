@@ -24,12 +24,15 @@ private:
 public:
 	_vector Get_State(STATE eState) const {
 		return XMLoadFloat4((_float4*)&m_WorldMatrix.m[eState][0]);
-	}	
+	}
 
 	/* 리턴받은 행렬을 이용해 연산을 해야할 때. */
 	_matrix Get_WorldMatrix() const {
 		return XMLoadFloat4x4(&m_WorldMatrix);
 	}
+
+	void Set_WorldMatrix(_matrix WorldMatrix) { memcpy(&m_WorldMatrix, &WorldMatrix, sizeof(_matrix)); }
+
 	/* Invers연산. */
 	_matrix Get_WorldMatrixInverse() const {
 		return XMMatrixInverse(nullptr, Get_WorldMatrix());
@@ -44,6 +47,10 @@ public:
 		return &m_WorldMatrix;
 	}
 
+	void	ResetWorld4x4() {
+		XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
+	}
+
 	/* 리턴받은 행렬을 셰이더에 던지기위해.  */
 	_float4x4 Get_World4x4_TP() const {
 
@@ -52,25 +59,25 @@ public:
 		XMStoreFloat4x4(&TransposeMatrix, XMMatrixTranspose(Get_WorldMatrix()));
 
 		return TransposeMatrix;
-	
+
 	}
 
 
 	_float Get_Scale(STATE eState) {
 		return XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_WorldMatrix).r[eState]));
 	}
-	
+
 	_float Get_TransformDesc(void) { return m_TransformDesc.fSpeedPerSec; }
 
 	void Set_State(STATE eState, _fvector vState) {
 		_matrix		WorldMatrix = XMLoadFloat4x4(&m_WorldMatrix);
 		WorldMatrix.r[eState] = vState;
-		XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);	
+		XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);
 	}
 
 
 	void Set_Scale(STATE eState, _float fScale);
-	void Set_TransformDesc(const TRANSFORMDESC& TransformDesc ) {
+	void Set_TransformDesc(const TRANSFORMDESC& TransformDesc) {
 		m_TransformDesc = TransformDesc;
 	}
 
@@ -80,18 +87,21 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 
 public:
-	void Go_Straight(_float fTimeDelta);
-	void Go_Backward(_float fTimeDelta);
-	void Go_Left(_float fTimeDelta);
-	void Go_Right(_float fTimeDelta);	
-	void Jump(_float fTimeDelta, _float fJumpPower);
-	void Go_Target(_fvector vVector, _float fTimeDelta);
+	void Go_Straight(_float fTimeDelta, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Go_Backward(_float fTimeDelta, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Go_Left(_float fTimeDelta, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Go_Right(_float fTimeDelta, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Jump(_float fTimeDelta, _float fJumpPower, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Go_Target(_vector vGoalPos, _float fTimeDelta, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Go_Down(_float fTimeDelta, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Go_Up(_float fTimeDelta, class CNavigation* pNavigation = nullptr, _uint iCellType = -1, _bool* bCanGo = nullptr);
+	void Go_Dir(_float fTimeDelta, _fvector vDir);
 public:
 	void Turn(_fvector vAxis, _float fTimeDelta);
 	void Rotation(_fvector vAxis, _float fRadian);
 	void LookAt(_fvector vAt);
-
-private:			
+	void LookAt_Dir(_fvector vAt);
+private:
 	_float4x4				m_WorldMatrix;
 	TRANSFORMDESC			m_TransformDesc;
 

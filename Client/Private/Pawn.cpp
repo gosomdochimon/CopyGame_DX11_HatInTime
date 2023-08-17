@@ -44,6 +44,10 @@ HRESULT CPawn::SetUp_ShaderResources()
 	return S_OK;
 }
 
+void CPawn::Functor()
+{
+}
+
 CPawn * CPawn::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	return nullptr;

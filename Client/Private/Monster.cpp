@@ -33,7 +33,7 @@ HRESULT CMonster::Initialize(void * pArg)
 
 void CMonster::Tick(_float fTimeDelta)
 {
-
+	__super::Tick(fTimeDelta);
 	//m_pModelCom->Play_Animation(fTimeDelta, &m_bAnimFinished);
 
 	//m_pSPHERECom->Update(m_pTransformCom->Get_WorldMatrix());

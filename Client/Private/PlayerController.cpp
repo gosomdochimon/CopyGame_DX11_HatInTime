@@ -41,22 +41,22 @@ HRESULT CPlayerController::Setting_Key(void)
 {
 	pair<ACTIONKEY, COMMANDDESC> KeyMoveFront;
 	KeyMoveFront.first = ACTIONKEY::MOVE_FRONT;
-	KeyMoveFront.second.Key = VK_UP;
+	KeyMoveFront.second.Key = 'W';
 	KeyMoveFront.second.pCommand = Front_Command = new CFront_Command();
 
 	pair<ACTIONKEY, COMMANDDESC> KeyMoveBack;
 	KeyMoveBack.first = ACTIONKEY::MOVE_BACK;
-	KeyMoveBack.second.Key = VK_DOWN;
+	KeyMoveBack.second.Key = 'S';
 	KeyMoveBack.second.pCommand = Back_Command = new CBack_Command();
 
 	pair<ACTIONKEY, COMMANDDESC> KeyMoveLeft;
 	KeyMoveLeft.first = ACTIONKEY::MOVE_LEFT;
-	KeyMoveLeft.second.Key = VK_LEFT;
+	KeyMoveLeft.second.Key = 'A';
 	KeyMoveLeft.second.pCommand = Left_Command = new CLeft_Command();
 	
 	pair<ACTIONKEY, COMMANDDESC> KeyMoveRight;
 	KeyMoveRight.first = ACTIONKEY::MOVE_RIGHT;
-	KeyMoveRight.second.Key = VK_RIGHT;
+	KeyMoveRight.second.Key = 'D';
 	KeyMoveRight.second.pCommand = Right_Command = new CRight_Command();
 
 	pair<ACTIONKEY, COMMANDDESC> KeyMoveJump;
@@ -123,7 +123,13 @@ void CPlayerController::Input_Controller(_float fTImeDelta)
 		{
 			m_KeySets[ACTIONKEY::SLIDING].pCommand->Excute(m_pOwner, fTImeDelta);
 		}
-		
+		else if (pGameInstance->Key_Down(m_KeySets[ACTIONKEY::LBUTTON].Key)
+			&& m_KeySets[ACTIONKEY::LBUTTON].bCanUse == true)
+		{
+			m_KeySets[ACTIONKEY::LBUTTON].pCommand->Excute(m_pOwner, fTImeDelta);
+		}
+
+
 		if (pGameInstance->Key_Down(m_KeySets[ACTIONKEY::INTERACTION].Key)
 			&& m_KeySets[ACTIONKEY::INTERACTION].bCanUse == true)
 		{
@@ -184,6 +190,10 @@ void CPlayerController::Input_Controller(_float fTImeDelta)
 			{
 				m_pOwner->Idle(fTImeDelta);
 			}
+		}
+		else
+		{
+			m_pOwner->Idle(fTImeDelta);
 		}
 
 	}

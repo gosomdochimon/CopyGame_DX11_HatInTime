@@ -41,6 +41,7 @@ enum DIMM { DIMM_X, DIMM_Y, DIMM_WHEEL, DIMM_END };
 #include <algorithm>
 #include <typeinfo.h>
 #include <queue>
+#include <deque>
 using namespace std;
 
 

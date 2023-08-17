@@ -159,7 +159,7 @@ _bool CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta)
 	//return false;
 
 	/* 현재 재생중인 시간. */
-	m_fCurrentTime += m_fTickPerSecond * fTimeDelta;
+	m_fCurrentTime += m_fTickPerSecond * fTimeDelta * m_fOffsetPerSecond;
 
 	if (m_fCurrentTime >= m_fDuration)
 	{

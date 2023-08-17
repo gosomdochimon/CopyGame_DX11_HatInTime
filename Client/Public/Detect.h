@@ -27,6 +27,8 @@ public:
 
 	}DETECTDESC;
 
+	enum class SPHERE_SCALE { MIN, MAX, SCALE_END};
+
 public:
 	CDetect();
 	virtual ~CDetect() = default;
@@ -35,8 +37,10 @@ public:
 	HRESULT	Initialize(void* pArg);
 	void	Update_Position(_matrix WorldMatrix);
 	HRESULT Render();
+	void	Late_Tick(_float fTimeDelta);
 
-
+	class CCollider* Get_MinSphere() { return m_pMinSphereCom; }
+	class CCollider* Get_MaxSphere() { return m_pMaxSphereCom; }
 	_bool	Detect_MinRange(class CCollider* TargetCollider);
 	_bool	Detect_MaxRange(class CCollider* TargetCollider);
 private:

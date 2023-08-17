@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\Actor.h"
-
+#include "GameInstance.h"
 CActor::CActor(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -24,6 +24,8 @@ HRESULT CActor::Initialize(void * pArg)
 
 void CActor::Tick(_float fTimeDelta)
 {
+	if (m_bDelete == true)
+		return;
 }
 
 void CActor::Late_Tick(_float fTimeDelta)
@@ -44,9 +46,9 @@ HRESULT CActor::Render()
 	return S_OK;
 }
 
-_float CActor::Take_Damage(float fDamage, void * DamageType, CGameObject * DamageCauser)
+_vector CActor::Get_State(_uint iState) const
 {
-	return 0.f;
+	return m_pTransformCom->Get_State((CTransform::STATE)iState);
 }
 
 HRESULT CActor::Ready_Components()
@@ -55,6 +57,11 @@ HRESULT CActor::Ready_Components()
 }
 
 HRESULT CActor::SetUp_ShaderResources()
+{
+	return S_OK;
+}
+
+HRESULT CActor::Setup_CloneInfo()
 {
 	return S_OK;
 }

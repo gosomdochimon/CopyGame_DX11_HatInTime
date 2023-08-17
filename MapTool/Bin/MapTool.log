@@ -1,6 +1,9 @@
-﻿  MapTool.cpp
+﻿  건너뛰고 있습니다... (관련된 변경 내용 없음)
+  stdafx.cpp
+  MapTool.cpp
   Terrain.cpp
   Player.cpp
+  Pawn.cpp
   MainApp.cpp
   Loader.cpp
   Level_Logo.cpp
@@ -11,9 +14,7 @@
   Camera_Dynamic.cpp
   BackGround.cpp
 c:\users\수비드닭가슴살스테이크\desktop\3d개인폴\hatintime_copygame\copygame_dx11_hatintime\maptool\private\background.cpp(32): warning C4244: '인수': 'const unsigned int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Actor.cpp
   코드를 생성하고 있습니다...
-DirectXTKd.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(pch.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\MapTool\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-DirectXTKd.lib(ScreenGrab.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(ScreenGrab.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\MapTool\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-DirectXTKd.lib(WICTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(WICTextureLoader.obj)' 또는 'C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\MapTool\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-  MapTool.vcxproj -> C:\Users\수비드닭가슴살스테이크\Desktop\3D개인폴\HatInTime_CopyGame\CopyGame_DX11_HatInTime\MapTool\Default\..\Bin\MapTool.exe
-  MapTool.vcxproj -> ..\Bin\MapTool.pdb (Full PDB)
+cl : 명령줄 warning D9028: 최소 다시 빌드에 실패했습니다. 정상 빌드로 되돌립니다.
+LINK : fatal error LNK1104: '..\Bin\MapTool.exe' 파일을 열 수 없습니다.

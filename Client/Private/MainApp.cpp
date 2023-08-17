@@ -3,13 +3,27 @@
 
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "Deligate_Monster.h"
+#include "DataManager.h"
+#include "Interactive_Manager.h"
+#include "Camera_Manager.h"
+#include "LogoTexture.h"
+
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
+	, m_pDeligateMonster(CDeligate_Monster::Get_Instance())
+	, m_pDataManager(CDataManager::Get_Instance())
+	, m_pInteractive_Mgr(CInteractive_Manager::Get_Instance())
+	, m_pCam_Mgr(CCamera_Manager::Get_Instance())
 {
 	/*D3D11_SAMPLER_DESC*/
 	
 	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pDeligateMonster);
+	Safe_AddRef(m_pDataManager);
+	Safe_AddRef(m_pInteractive_Mgr);
+	Safe_AddRef(m_pCam_Mgr);
 }
 
 HRESULT CMainApp::Initialize()
@@ -33,7 +47,10 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst, LEVEL_END, Graphic_Desc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
-
+	//Gara
+	/*if (FAILED(Ready_Gara()))
+		return E_FAIL;*/
+	//
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 
@@ -43,6 +60,8 @@ HRESULT CMainApp::Initialize()
 	// MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
 	if (FAILED(m_pGameInstance->Add_Fonts(m_pDevice, m_pContext, TEXT("Font_Nexon"), TEXT("../Bin/Resources/Fonts/130.spritefont"))))
 		return E_FAIL;
+
+	m_pDataManager->Initialize();
 
 	// D3D11_DEPTH_STENCIL_DESC
 	// D3D11_DEPTH_STENCIL_DESC
@@ -81,16 +100,16 @@ void CMainApp::Tick(_float fTimeDelta)
 
 HRESULT CMainApp::Render()
 {
-	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
+	m_pGameInstance->Clear_BackBuffer_View(_float4(1.f, 1.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	m_pRenderer->Render_GameObjects();
-
+#ifdef _DEBUG
 	++m_iNumRender;
 
 	if (m_fTimeAcc > 1.0f)
 	{
-		wsprintf(m_szFPS, TEXT("에프피에스 : %d"), m_iNumRender);
+		//wsprintf(m_szFPS, TEXT("에프피에스 : %d"), m_iNumRender);
 
 		
 		m_fTimeAcc = 0.f;
@@ -98,7 +117,7 @@ HRESULT CMainApp::Render()
 	}
 
 	m_pGameInstance->Render_Font(TEXT("Font_Nexon"), m_szFPS, XMVectorSet(0.f, 0.f, 0.f, 1.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
-
+#endif
 
 
 	m_pGameInstance->Present();
@@ -145,8 +164,56 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		return E_FAIL;
 
 
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UI_Logo"),
+		CLogoTexture::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*Prototype_Component_Logo*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_LogoMan"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Logo/Logo_%d.png"), 20))))
+		return E_FAIL;
+
 
 	Safe_AddRef(m_pRenderer);
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Gara()
+{
+	_ulong		dwByte = 0;
+	HANDLE		hFile = CreateFile(TEXT("../Bin/Data/NavigationData.dat"), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+		return E_FAIL;
+
+	_float3		vPoints[3];
+
+	/* 쎌정보 생성. */
+	ZeroMemory(vPoints, sizeof(_float3) * 3);
+	vPoints[0] = _float3(0.f, 0.f, 5.f);
+	vPoints[1] = _float3(5.f, 0.f, 0.f);
+	vPoints[2] = _float3(0.f, 0.f, 0.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	ZeroMemory(vPoints, sizeof(_float3) * 3);
+	vPoints[0] = _float3(0.f, 0.f, 5.f);
+	vPoints[1] = _float3(5.f, 0.f, 5.f);
+	vPoints[2] = _float3(5.f, 0.f, 0.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	ZeroMemory(vPoints, sizeof(_float3) * 3);
+	vPoints[0] = _float3(0.f, 0.f, 10.f);
+	vPoints[1] = _float3(5.f, 0.f, 5.f);
+	vPoints[2] = _float3(0.f, 0.f, 5.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	ZeroMemory(vPoints, sizeof(_float3) * 3);
+	vPoints[0] = _float3(5.f, 0.f, 5.f);
+	vPoints[1] = _float3(10.f, 0.f, 0.f);
+	vPoints[2] = _float3(5.f, 0.f, 0.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	CloseHandle(hFile);
 
 	return S_OK;
 }
@@ -166,6 +233,18 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+	Safe_Release(m_pInteractive_Mgr);
+	CInteractive_Manager::Get_Instance()->Destroy_Instance();
+
+	Safe_Release(m_pDeligateMonster);
+	CDeligate_Monster::Get_Instance()->Destroy_Instance();
+
+	Safe_Release(m_pDataManager);
+	CDataManager::Get_Instance()->Destroy_Instance();
+
+	Safe_Release(m_pCam_Mgr);
+	CCamera_Manager::Get_Instance()->Destroy_Instance();
+
 	Safe_Release(m_pRenderer);
 
 	Safe_Release(m_pDevice);

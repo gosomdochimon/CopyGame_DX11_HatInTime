@@ -44,6 +44,8 @@ HRESULT CHat::Initialize(void * pArg)
 
 void CHat::Tick(_float fTimeDelta)
 {
+	__super::Tick(fTimeDelta);
+
 	_matrix		SocketMatrix = /*m_EquipDesc.pSocket->Get_OffsetMatrix() **/
 		m_EquipDesc.pSocket->Get_CombinedTransformationMatrix() *
 		XMLoadFloat4x4(&m_EquipDesc.SocketPivotMatrix) * XMLoadFloat4x4(m_EquipDesc.pParentWorldMatrix);
@@ -63,6 +65,7 @@ void CHat::Late_Tick(_float fTimeDelta)
 	if (nullptr != m_pRendererCom)
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+
 	}
 }
 
@@ -106,7 +109,7 @@ HRESULT CHat::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	if (FAILED(Select_HatType()))
@@ -146,17 +149,17 @@ HRESULT CHat::Select_HatType(void)
 	{
 	case 1:
 		/* For.Com_Model*/
-		if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Default_Hat"), (CComponent**)&m_pModelCom)))
+		if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Default_Hat"), (CComponent**)&m_pModelCom)))
 			return E_FAIL;
 		break;
 	case 2:
 		/* For.Com_Model*/
-		if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Witch_Hat"), (CComponent**)&m_pModelCom)))
+		if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Witch_Hat"), (CComponent**)&m_pModelCom)))
 			return E_FAIL;
 		break;
 	case 3:
 		/* For.Com_Model*/
-		if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Sprint_Hat"), (CComponent**)&m_pModelCom)))
+		if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_Sprint_Hat"), (CComponent**)&m_pModelCom)))
 			return E_FAIL;
 		break;
 	}

@@ -17,6 +17,13 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
+	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	_float fVolume = 0.7f;
+	pGameInstance->PlaySounds(TEXT("RoulettSongLoop.ogg"), 0, fVolume);
+
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 
@@ -29,7 +36,10 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+		_float fVolume = 0.7f;
+		pGameInstance->PlaySounds(TEXT("menu_next.ogg"), 1, fVolume);
+		pGameInstance->StopSound(0);
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY_PLATFORM))))
 			return;
 
 		Safe_Release(pGameInstance);
@@ -53,6 +63,13 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_BackGround"), LEVEL_LOGO, pLayerTag, nullptr)))
 		return E_FAIL;
 
+	_int iNum = 1;
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_UI_Logo"), LEVEL_LOGO, pLayerTag, &iNum)))
+		return E_FAIL;
+
+	//Prototype_GameObject_UI_Start
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_UI_Start"), LEVEL_LOGO, pLayerTag, nullptr)))
+		return E_FAIL;
 	Safe_Release(pGameInstance);
 
 	return S_OK;

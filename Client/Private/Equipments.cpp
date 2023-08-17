@@ -100,15 +100,15 @@ HRESULT CEquipments::Add_Department_Part(_uint iLayerNum, _uint iPartNum, void *
 
 	memcpy(&EquipDesc, pArg, sizeof(CEquipment::EQUIPDESC));
 
-	EquipDesc.bIsDepartment = true;
-
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	_tchar ObjectNamePath[MAX_PATH] = TEXT("Prototype_GameObject_");
 
 	wcscat_s(ObjectNamePath, EquipDesc.szName);
 
-	if (FAILED(pGameInstance->Add_GameObject(ObjectNamePath, LEVEL_GAMEPLAY, TEXT("Layer_Object"), &EquipDesc)))
+	_uint iLevelIndex = pGameInstance->Get_CurrentLevelIndex();
+
+	if (FAILED(pGameInstance->Add_GameObject(ObjectNamePath, iLevelIndex, TEXT("Layer_Object"), &EquipDesc)))
 		return E_FAIL;
 
 
@@ -163,6 +163,17 @@ HRESULT CEquipments::Delete_Part(_uint iLayerNum, _uint iPartNum)
 
 
 	return S_OK;
+}
+
+void CEquipments::Set_CanAttack(_bool bCanAttack)
+{
+	for(auto& CurrentPart : m_vCurrentParts)
+	{ 
+		if (CurrentPart.second != nullptr)
+		{
+			CurrentPart.second->Set_Attack(bCanAttack);
+		}
+	}
 }
 
 void CEquipments::Free()

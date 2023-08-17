@@ -29,6 +29,7 @@ HRESULT CEquipment::Initialize(void * pArg)
 
 void CEquipment::Tick(_float fTimeDelta)
 {
+	__super::Tick(fTimeDelta);
 }
 
 void CEquipment::Late_Tick(_float fTimeDelta)

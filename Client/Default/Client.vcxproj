@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -22,32 +22,32 @@
     <ProjectGuid>{CD256A42-E184-4BAF-955A-C894A0A126D0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Client</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -171,28 +171,76 @@
   <ItemGroup>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\Public\Actor.h" />
+    <ClInclude Include="..\Public\Apple.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\Public\Bars.h" />
+    <ClInclude Include="..\Public\Behavior_Tree.h" />
+    <ClInclude Include="..\Public\Blade.h" />
+    <ClInclude Include="..\Public\Boss_Bullet.h" />
+    <ClInclude Include="..\Public\BT_MafiaBoss.h" />
+    <ClInclude Include="..\Public\Button.h" />
     <ClInclude Include="..\Public\Camera_Dynamic.h" />
+    <ClInclude Include="..\Public\Camera_Manager.h" />
+    <ClInclude Include="..\Public\Clerk.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Crown.h" />
+    <ClInclude Include="..\Public\DataManager.h" />
+    <ClInclude Include="..\Public\DeadSphere.h" />
+    <ClInclude Include="..\Public\Deligate_Monster.h" />
     <ClInclude Include="..\Public\Detect.h" />
+    <ClInclude Include="..\Public\Dizzy_Effect.h" />
+    <ClInclude Include="..\Public\Dweller.h" />
+    <ClInclude Include="..\Public\Effect.h" />
     <ClInclude Include="..\Public\Equipment.h" />
     <ClInclude Include="..\Public\Equipments.h" />
     <ClInclude Include="..\Public\Flask.h" />
     <ClInclude Include="..\Public\Hat.h" />
     <ClInclude Include="..\Public\HatKid.h" />
+    <ClInclude Include="..\Public\Head_Point.h" />
+    <ClInclude Include="..\Public\HitImpact.h" />
+    <ClInclude Include="..\Public\Interactive_Manager.h" />
     <ClInclude Include="..\Public\KeyCommand.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
+    <ClInclude Include="..\Public\Level_GamePlay2.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
+    <ClInclude Include="..\Public\Level_Platform.h" />
     <ClInclude Include="..\Public\Loader.h" />
+    <ClInclude Include="..\Public\LogoTexture.h" />
     <ClInclude Include="..\Public\MadCrow.h" />
     <ClInclude Include="..\Public\Mafia.h" />
+    <ClInclude Include="..\Public\MafiaBoss.h" />
+    <ClInclude Include="..\Public\MafiaElite.h" />
+    <ClInclude Include="..\Public\Mafia_Guard.h" />
+    <ClInclude Include="..\Public\Mafia_HQ.h" />
+    <ClInclude Include="..\Public\Mafia_HQ_Dome.h" />
+    <ClInclude Include="..\Public\Mafia_Platform.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\Particle_Point.h" />
     <ClInclude Include="..\Public\Pawn.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\PlayerController.h" />
+    <ClInclude Include="..\Public\Puff.h" />
+    <ClInclude Include="..\Public\Punch.h" />
+    <ClInclude Include="..\Public\Ring.h" />
+    <ClInclude Include="..\Public\Rotation_Effect.h" />
+    <ClInclude Include="..\Public\Sandback.h" />
+    <ClInclude Include="..\Public\Sky.h" />
+    <ClInclude Include="..\Public\Star.h" />
+    <ClInclude Include="..\Public\Start_UI.h" />
+    <ClInclude Include="..\Public\StaticMesh.h" />
+    <ClInclude Include="..\Public\SubConEye.h" />
+    <ClInclude Include="..\Public\Talk.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\Public\Throne.h" />
+    <ClInclude Include="..\Public\Throwing_Object.h" />
+    <ClInclude Include="..\Public\Trigger_Box.h" />
+    <ClInclude Include="..\Public\UI_Arrow.h" />
+    <ClInclude Include="..\Public\UI_Manager.h" />
+    <ClInclude Include="..\Public\UI_PlayerHealth.h" />
+    <ClInclude Include="..\Public\UI_Base.h" />
+    <ClInclude Include="..\Public\UI_TextLife.h" />
     <ClInclude Include="..\Public\Umbrella.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -201,27 +249,75 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Actor.cpp" />
+    <ClCompile Include="..\Private\Apple.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\Bars.cpp" />
+    <ClCompile Include="..\Private\Behavior_Tree.cpp" />
+    <ClCompile Include="..\Private\Blade.cpp" />
+    <ClCompile Include="..\Private\Boss_Bullet.cpp" />
+    <ClCompile Include="..\Private\BT_MafiaBoss.cpp" />
+    <ClCompile Include="..\Private\Button.cpp" />
     <ClCompile Include="..\Private\Camera_Dynamic.cpp" />
+    <ClCompile Include="..\Private\Camera_Manager.cpp" />
+    <ClCompile Include="..\Private\Clerk.cpp" />
+    <ClCompile Include="..\Private\Crown.cpp" />
+    <ClCompile Include="..\Private\DataManager.cpp" />
+    <ClCompile Include="..\Private\DeadSphere.cpp" />
+    <ClCompile Include="..\Private\Deligate_Monster.cpp" />
     <ClCompile Include="..\Private\Detect.cpp" />
+    <ClCompile Include="..\Private\Dizzy_Effect.cpp" />
+    <ClCompile Include="..\Private\Dweller.cpp" />
+    <ClCompile Include="..\Private\Effect.cpp" />
     <ClCompile Include="..\Private\Equipment.cpp" />
     <ClCompile Include="..\Private\Equipments.cpp" />
     <ClCompile Include="..\Private\Flask.cpp" />
     <ClCompile Include="..\Private\Hat.cpp" />
     <ClCompile Include="..\Private\HatKid.cpp" />
+    <ClCompile Include="..\Private\Head_Point.cpp" />
+    <ClCompile Include="..\Private\HitImpact.cpp" />
+    <ClCompile Include="..\Private\Interactive_Manager.cpp" />
     <ClCompile Include="..\Private\KeyCommand.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\Private\Level_GamePlay2.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
+    <ClCompile Include="..\Private\Level_Platform.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
+    <ClCompile Include="..\Private\LogoTexture.cpp" />
     <ClCompile Include="..\Private\MadCrow.cpp" />
     <ClCompile Include="..\Private\Mafia.cpp" />
+    <ClCompile Include="..\Private\MafiaBoss.cpp" />
+    <ClCompile Include="..\Private\MafiaElite.cpp" />
+    <ClCompile Include="..\Private\Mafia_Guard.cpp" />
+    <ClCompile Include="..\Private\Mafia_HQ.cpp" />
+    <ClCompile Include="..\Private\Mafia_HQ_Dome.cpp" />
+    <ClCompile Include="..\Private\Mafia_Platform.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\Particle_Point.cpp" />
     <ClCompile Include="..\Private\Pawn.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\PlayerController.cpp" />
+    <ClCompile Include="..\Private\Puff.cpp" />
+    <ClCompile Include="..\Private\Punch.cpp" />
+    <ClCompile Include="..\Private\Ring.cpp" />
+    <ClCompile Include="..\Private\Rotation_Effect.cpp" />
+    <ClCompile Include="..\Private\Sandback.cpp" />
+    <ClCompile Include="..\Private\Sky.cpp" />
+    <ClCompile Include="..\Private\Star.cpp" />
+    <ClCompile Include="..\Private\Start_UI.cpp" />
+    <ClCompile Include="..\Private\StaticMesh.cpp" />
+    <ClCompile Include="..\Private\SubConEye.cpp" />
+    <ClCompile Include="..\Private\Talk.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\Private\Throne.cpp" />
+    <ClCompile Include="..\Private\Throwing_Object.cpp" />
+    <ClCompile Include="..\Private\Trigger_Box.cpp" />
+    <ClCompile Include="..\Private\UI_Arrow.cpp" />
+    <ClCompile Include="..\Private\UI_Manager.cpp" />
+    <ClCompile Include="..\Private\UI_PlayerHealth.cpp" />
+    <ClCompile Include="..\Private\UI_Base.cpp" />
+    <ClCompile Include="..\Private\UI_TextLife.cpp" />
     <ClCompile Include="..\Private\Umbrella.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -239,9 +335,14 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Navigation.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTexture.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

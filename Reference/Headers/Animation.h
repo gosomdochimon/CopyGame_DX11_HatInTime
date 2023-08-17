@@ -26,6 +26,8 @@ public:/*Get*/
 	_bool					Get_LinearFinished(_uint iEnumNum);
 public:/*Set*/
 	void	Set_Loop(const _bool bLoop) { m_isLoop = bLoop; }
+	_bool	Get_Loop(void) const { return m_isLoop; }
+	void	Set_OffsetPerSecond(_float fOffsetPerSecond) { m_fOffsetPerSecond = fOffsetPerSecond; }
 public:
 	/*For Upper*/
 	_bool Invalidate_Upper_TransformationMatrix(_float fTimeDelta);
@@ -49,6 +51,7 @@ private:
 	/* 1초에 재생되어야할 애니메이션의 속도. */	
 	_float				m_fTickPerSecond = 0.f;
 	_float				m_fCurrentTime = 0.f;
+	_float				m_fOffsetPerSecond = 1.f;
 	/* For UpperTime. */
 	_float				m_fCurrentTime_Upper = 0.f;
 	/* For LowerTime. */

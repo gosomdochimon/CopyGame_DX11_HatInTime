@@ -29,6 +29,16 @@ CGameObject * CObject_Manager::Get_FirstObject(_uint iLevelIndex, const _tchar *
 	return iter->second->Get_FirstObject();
 }
 
+list<class CGameObject*>* CObject_Manager::Get_Layer(_uint iLevelIndex, const _tchar * pLayerTag)
+{
+	CLayer*		pLayer = Find_Layer(iLevelIndex, pLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return &pLayer->Get_Layer();
+}
+
 HRESULT CObject_Manager::Reserve_Container(_uint iNumLevels)
 {
 	if (nullptr != m_pLayers)

@@ -26,12 +26,18 @@ public:
 		_uint				iTypeNum = 0;
 		_bool				bIsDepartment = false;
 		_float4x4			fOwnerMatrix;
+		_float4x4			EquipPivotMatrix;
+		_float				fPivotAngle =0.f;
+		_bool				bIsEnemy = false;
 	}EQUIPDESC;
 
 protected:
 	CEquipment(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEquipment(const CEquipment& rhs);
 	virtual ~CEquipment() = default;
+
+public:
+	void	Set_Attack(_bool bAttack) { m_bAttack = bAttack; }
 
 public:
 	virtual HRESULT Initialize_Prototype()		override;
@@ -47,7 +53,9 @@ private:
 protected:
 	EQUIPDESC		m_EquipDesc;
 	_bool			m_bDummy = false;
-	_float4x4				m_CombinedWorldMatrix;
+	_float4x4		m_CombinedWorldMatrix;
+
+	_bool			m_bAttack = false;
 public:
 	static CEquipment* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg = nullptr);

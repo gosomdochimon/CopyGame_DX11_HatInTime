@@ -24,11 +24,17 @@ HRESULT CMadCrow::Initialize(void * pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(rand() % 10 -15, 0.f, rand() % 10 - 15, 1.f));
-	m_pModelCom->Set_CurrentAnimIndex(rand() % (_uint)ANIM_END);
-	m_pModelCom->Set_NextAnimIndex(rand() % (_uint)ANIM_END, true);
-	//m_pModelCom->Set_CurrentAnimIndex(3);
+	Update_Collider();
 
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	pGameInstance->Add_Group(CCollider_Manager::GROUP_TYPE::TYPE_MONSTER, this, m_pSPHERECom);
+	Safe_AddRef(this);
+	RELEASE_INSTANCE(CGameInstance);
+
+	m_eCurrentState = STATE::STATE_IDLE;
+	m_eCurrentAnimState = ANIM_STATE::ANIM_IDLE;
+	m_pModelCom->Set_CurrentAnimIndex(m_eCurrentAnimState);
 	return S_OK;
 }
 
@@ -36,7 +42,6 @@ void CMadCrow::Tick(_float fTimeDelta)
 {
 	if (m_bDelete)
 		return;
-
 
 	Play_FSM(fTimeDelta);
 
@@ -50,27 +55,9 @@ void CMadCrow::Late_Tick(_float fTimeDelta)
 	if (m_bDelete)
 		return;
 
-	if (m_bAnimFinished == true)
-	{
-		m_bDelete = true;
-	}
-
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_SPHERE"));
-	if (nullptr == pTargetCollider)
-		return;
-
-	if (m_pSPHERECom->Collision(pTargetCollider))
-	{
-		m_pModelCom->Set_NextAnimIndex(ANIM_DEATH, false);
-		m_eAnimState = ANIM_DEATH;
-	}
-
 	if (nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
-	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CMadCrow::Render()
@@ -103,6 +90,20 @@ HRESULT CMadCrow::Render()
 	return S_OK;
 }
 
+_float CMadCrow::Take_Damage(float fDamage, void * DamageType, CGameObject * DamageCauser)
+{
+	if (m_iLife > 0)
+	{
+		m_iLife -= (_uint)fDamage;
+	}
+	else
+	{
+		m_eCurrentState = STATE::STATE_DEAD;
+	}
+
+	return fDamage;
+}
+
 void CMadCrow::Update_Collider(void)
 {
 	_matrix		SocketMatrix = /*m_pTransformCom->Get_WorldMatrix() **/ m_pStuckSocket->Get_OffsetMatrix() *
@@ -119,67 +120,164 @@ void CMadCrow::Update_Collider(void)
 	m_pDetect->Update_Position(XMLoadFloat4x4(&m_CombinedWorldMatrix));
 }
 
-void CMadCrow::Play_FSM(_float fTimeDelta)
+void CMadCrow::Check_FightMode(void)
 {
-	if (m_eAnimState == ANIM_STATE::ANIM_DEATH)
-		return;
-
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (nullptr == pGameInstance)
 		return;
 
-	CHatKid* pTarget = dynamic_cast<CHatKid*>(pGameInstance->Get_FirstObject(LEVEL_GAMEPLAY, TEXT("Layer_Player")));
-
-	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), TEXT("Com_SPHERE"));
+	CCollider*	pTargetCollider = (CCollider*)pGameInstance->Get_Component(LEVEL_STATIC, TEXT("Layer_Player"), TEXT("Com_SPHERE"));
 	if (nullptr == pTargetCollider)
 		return;
 
-
-	
-	if (!m_bFightMode)
+	RELEASE_INSTANCE(CGameInstance);
+	if (m_eCurrentAnimState != ANIM_STATE::ANIM_DEATH)
 	{
-		if (m_eAnimState != ANIM_STATE::ANIM_IDLE)
+		if (!m_bFightMode)
 		{
-			m_eAnimState = ANIM_STATE::ANIM_IDLE;
-			m_pModelCom->Set_NextAnimIndex(ANIM_IDLE);
+			if (m_pDetect->Detect_MinRange(pTargetCollider))
+			{
+				m_bFightMode = true;
+				//m_eCurrentState = STATE::STATE_WALK;
+				m_fIdleTime = 1.f;
+			}
 		}
-		
-		if (m_pDetect->Detect_MinRange(pTargetCollider))
-		{
-			m_bFightMode = true;
+		else
+
+		{	//Fight_Mode일 때
+			if (!(m_pDetect->Detect_MaxRange(pTargetCollider)))
+			{
+				m_bFightMode = false;
+				m_eCurrentState = STATE::STATE_IDLE;
+			}
 		}
 	}
-	else
-	{	//Fight_Mode일 때
-		if (m_eAnimState != ANIM_STATE::ANIM_WALK)
+}
+
+void CMadCrow::Play_FSM(_float fTimeDelta)
+{
+
+	Check_FightMode();
+
+	switch (m_eCurrentState)
+	{
+	case STATE::STATE_IDLE:
+		Idle(fTimeDelta);
+		break;
+	case STATE::STATE_WALK:
+		Move(fTimeDelta);
+		break;
+	case STATE::STATE_DEAD:
+		Death(fTimeDelta);
+		break;
+	}
+	
+}
+
+_bool CMadCrow::Idle(_float fTimeDelta)
+{
+	if (m_eCurrentAnimState != ANIM_STATE::ANIM_IDLE)
+	{
+		m_eCurrentAnimState = ANIM_STATE::ANIM_IDLE;
+		m_pModelCom->Set_NextAnimIndex(m_eCurrentAnimState);
+	}
+
+	m_fIdleTime -= fTimeDelta;
+
+	if (m_fIdleTime <= 0.f)
+	{
+		m_fIdleTime = 1.f;
+		m_eCurrentState = STATE::STATE_WALK;
+
+		_vector TargetPos = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+
+		XMStoreFloat3(&m_vTargetPos, TargetPos);
+		m_vTargetPos.x += (_float)(rand() % 5 + 3);
+		m_vTargetPos.z += (_float)(rand() % 5 + 2);
+
+
+		if(false == XMVector3Equal(XMLoadFloat3(&m_vHomePos), m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION)))
 		{
-			m_eAnimState = ANIM_STATE::ANIM_WALK;
-			m_pModelCom->Set_NextAnimIndex(ANIM_WALK);
+			_bool bMove = (_bool)(rand() % 2);
+			m_vTargetPos = bMove ? m_vTargetPos : m_vHomePos;
 		}
+
+		m_bArrive = false;
+
+	}
+
+	return true;
+}
+
+_bool CMadCrow::Move(_float fTimeDelta)
+{
+	if (m_eCurrentAnimState != ANIM_STATE::ANIM_WALK)
+	{
+		m_eCurrentAnimState = ANIM_STATE::ANIM_WALK;
+		m_pModelCom->Set_NextAnimIndex(m_eCurrentAnimState);
+	}
+
+	if (m_bFightMode)
+	{
+		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+		CHatKid* pTarget = dynamic_cast<CHatKid*>(pGameInstance->Get_FirstObject(LEVEL_STATIC, TEXT("Layer_Player")));
 
 		_vector vLook = pTarget->Get_State(CTransform::STATE_TRANSLATION) - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
 
-		/*if (XMVectorGetX(XMVector3Length(vLook)) < 8.f){ ]*/
 		m_pTransformCom->LookAt(pTarget->Get_State(CTransform::STATE_TRANSLATION));
 
 		_float fDistance = 0.f;
 		XMStoreFloat(&fDistance, (XMVector3Length(pTarget->Get_State(CTransform::STATE_TRANSLATION) - m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION))));
 
-		if (fDistance >= 1.f)
+
+		if (false == pGameInstance->Collider_Group(CCollider_Manager::GROUP_TYPE::TYPE_PLAYER, this, m_pSPHERECom, 1.f))
 		{
 			m_pTransformCom->Go_Straight(fTimeDelta * 0.5f);
 		}
-
-		if (!(m_pDetect->Detect_MaxRange(pTargetCollider)))
-		{
-			m_bFightMode = false;
-		}
-
+		RELEASE_INSTANCE(CGameInstance);
 	}
-	
+	else
+	{
+		if (!m_bArrive)
+		{
+			m_pTransformCom->LookAt(XMVectorSetW(XMLoadFloat3(&m_vTargetPos), 1.f));
 
-	RELEASE_INSTANCE(CGameInstance);
+			_float3 Current_Pos;
+			XMStoreFloat3(&Current_Pos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+			if (fabs(Current_Pos.x - m_vTargetPos.x) <= 0.2f &&
+				fabs(Current_Pos.z - m_vTargetPos.z) <= 0.2f)
+			{
+				m_eCurrentState = STATE::STATE_IDLE;
+				m_fIdleTime = 1.f;
+				m_bArrive = true;
+			}
+			else
+			{
+				m_pTransformCom->Go_Straight(fTimeDelta * 0.5f);
+			}
+			
+		}
+	}
+
+	return true;
+}
+
+_bool CMadCrow::Death(_float fTimeDelta)
+{
+	if (m_eCurrentAnimState != ANIM_STATE::ANIM_DEATH)
+	{
+		m_eCurrentAnimState = ANIM_STATE::ANIM_DEATH;
+		m_pModelCom->Set_NextAnimIndex(m_eCurrentAnimState, false);
+	}
+
+	if (m_bAnimFinished)
+	{
+		m_bDelete = true;
+	}
+
+	return true;
 }
 
 HRESULT CMadCrow::Ready_Others(_float3 fColliderPos)
@@ -204,6 +302,9 @@ HRESULT CMadCrow::Ready_Others(_float3 fColliderPos)
 	m_pDetect = new CDetect();
 	m_pDetect->Initialize(&DetectDesc);
 
+	
+
+
 	return S_OK;
 }
 
@@ -222,12 +323,16 @@ HRESULT CMadCrow::Ready_Components()
 	if (FAILED(__super::Add_Components(TEXT("Com_Transform"), LEVEL_STATIC, TEXT("Prototype_Component_Transform"), (CComponent**)&m_pTransformCom, &TransformDesc)))
 		return E_FAIL;
 
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(rand() % 10 - 15, 0.f, rand() % 10 - 15, 1.f));
+
+	XMStoreFloat3(&m_vHomePos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Shader"), LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimModel"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_MadCrow"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Components(TEXT("Com_Model"), LEVEL_STATIC, TEXT("Prototype_Component_Model_MadCrow"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	CCollider::COLLIDERDESC		ColliderDesc;
@@ -239,7 +344,7 @@ HRESULT CMadCrow::Ready_Components()
 	ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
 	ColliderDesc.vRotation = _float3(0.f, 0.f, 0.f);
 	ColliderDesc.vPosition = _float3(0.f, 0.f, -0.5f);
-	if (FAILED(__super::Add_Components(TEXT("Com_SPHERE"), LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pSPHERECom, &ColliderDesc)))
+	if (FAILED(__super::Add_Components(TEXT("Com_SPHERE"), LEVEL_STATIC, TEXT("Prototype_Component_Collider_SPHERE"), (CComponent**)&m_pSPHERECom, &ColliderDesc)))
 		return E_FAIL;
 
 	Ready_Others(ColliderDesc.vPosition);

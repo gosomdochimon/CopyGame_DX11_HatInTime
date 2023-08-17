@@ -2,6 +2,8 @@
 #include "..\Public\Camera_Dynamic.h"
 #include "GameInstance.h"
 #include "HatKid.h"
+#include "Interactive_Manager.h"
+
 CCamera_Dynamic::CCamera_Dynamic(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -35,28 +37,12 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	//if (GetKeyState('W') < 0)
-	//{
-	//   m_pTransform->Go_Straight(fTimeDelta);
-	//}
-
-	//if (GetKeyState('S') < 0)
-	//{
-	//   m_pTransform->Go_Backward(fTimeDelta);
-	//}
-
-	//if (GetKeyState('A') < 0)
-	//{
-	//   
-	//   m_pTransform->Go_Left(fTimeDelta);
-	//}
-
-	//if (GetKeyState('D') < 0)
-	//{
-	//   
-	//   m_pTransform->Go_Right(fTimeDelta);
-	//}
-
+	_matrix matRotX;
+	_matrix matRotY;
+	_vector vCamDir;
+	_vector vCamPos;
+	_vector vDestPos;
+	_vector vLookPos;
 
 	static _float fAngleX = 0.f;
 	static _float fAngleY = 0.f;
@@ -68,88 +54,78 @@ void CCamera_Dynamic::Tick(_float fTimeDelta)
 	_long         MouseMoveY = 0;
 	_long         MouseMove = 0;
 
-	CTransform* pTransform = (CTransform*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, L"Layer_Player", TEXT("Com_Transform"));
+	CTransform* pTransform = Set_Target_Transform(m_eCamState);
+
+	//CTransform* pTransform = (CTransform*)pGameInstance->Get_Component(LEVEL_GAMEPLAY, L"Layer_Effect2", TEXT("Com_Transform"));
 	//_vector Lookvec = pTransform->Get_State(CTransform::STATE_LOOK);
 	//if (MouseMoveX = pGameInstance->Get_DIMMoveState(DIMM_X))
 	//{
 	//   fAngleX += MouseMoveX * fTimeDelta * 20.f;
-
+	//
 	//   if (360.f <= fAngleX)
 	//      fAngleX = 0.f;
 	//   else if (0.f >= fAngleX)
 	//      fAngleX = 360.f;
-
+	//
 	//   //_matrix mX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngle));
 	//   
 	//}
-
+	//
 	//if (MouseMoveY = pGameInstance->Get_DIMMoveState(DIMM_Y))
 	//{
 	//   fAngleY += MouseMoveY * fTimeDelta * 20.f;
-
+	//
 	//   if (360.f <= fAngleY)
 	//      fAngleY = 0.f;
 	//   else if (0.f >= fAngleY)
 	//      fAngleY = 360.f;
-
+	//
 	//   //_matrix mX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngle));
-
+	//
 	//}
 
-	if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_Y))
+	Mouse_Move(fAngleX, fAngleY, MouseMove, fTimeDelta);
+	CInteractive_Manager* pInter = GET_INSTANCE(CInteractive_Manager);
+	switch (m_eCamState)
 	{
+	case CAM_HATKID:
+		matRotX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngleX));
+		matRotY = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(fAngleY));
 
-		fAngleX += MouseMove * fTimeDelta * 20.f;
+		vCamDir = XMVector3TransformNormal(XMVectorSet(0.f, 1.f, -1.f, 0.f), matRotX);
+		vCamDir = XMVector3TransformNormal(vCamDir, matRotY);
+		vCamPos = vCamDir * 3.f;
+		vDestPos = pTransform->Get_State(CTransform::STATE_TRANSLATION) + vCamPos;
 
-		if (40.f <= fAngleX)
-			fAngleX = 40.f;
-		else if (-50.f >= fAngleX)
-			fAngleX = -50.f;
+		m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vDestPos);
 
+		vLookPos = XMVectorSetY(pTransform->Get_State(CTransform::STATE_TRANSLATION), XMVectorGetY(pTransform->Get_State(CTransform::STATE_TRANSLATION)) + 0.8f);
+		break;
+	case CAM_BOSS_CiNEMA:
+		//matRotX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngleX));
+		//matRotY = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(fAngleY));
+		//vCamDir = pInter->Get_Boss()->Get_State(CTransform::STATE_TRANSLATION);
+		//vCamDir = XMVector3TransformNormal(XMVectorSet(0.f, 1.f, -1.f, 0.f), matRotX);
+		//vCamDir = pInter->Get_Boss_Pos(1)
+		vCamPos = XMVectorSet(2.5f, 2.f, -35.f, 1.f);
+		vDestPos = pInter->Get_Boss_Pos(1) + vCamPos;
 
-		//_matrix mX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngle));
+		m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vDestPos);
 
+		vLookPos = XMVectorSetY(pInter->Get_Boss_Pos(1), XMVectorGetY(pInter->Get_Boss_Pos(1)) + 4.f);
+		break;
+	case CAM_ENEMY_CINEMA:
+		break;
 	}
 
-	if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_X))
-	{
 
-		fAngleY += MouseMove * fTimeDelta * 20.f;
-
-		if (360.f <= fAngleY)
-			fAngleY = 0.f;
-		else if (0.f >= fAngleY)
-			fAngleY = 360.f;
-
-
-		//_matrix mX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngle));
-
-	}
-
-	_matrix matRotX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngleX));
-	_matrix matRotY = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(fAngleY));
-
-	//_matrix matRotX = XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(fAngleX));
-	//_matrix matRotY = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngleY));
-
-	//_vector vCamDir = XMVector3TransformNormal(XMVector3Normalize(XMVectorSet(0.f, 1.f, -1.f, 0.f)), matRotX);
-
-	_vector vCamDir = XMVector3TransformNormal(XMVectorSet(0.f, 1.f, -1.f, 0.f), matRotX);
-	vCamDir = XMVector3TransformNormal(vCamDir, matRotY);
-	_vector vCamPos = vCamDir * 3.f;
-	_vector vDestPos = pTransform->Get_State(CTransform::STATE_TRANSLATION) + vCamPos;
-
-	m_pTransform->Set_State(CTransform::STATE_TRANSLATION, vDestPos);
-
-	_vector vLookPos = XMVectorSetY(pTransform->Get_State(CTransform::STATE_TRANSLATION), XMVectorGetY(pTransform->Get_State(CTransform::STATE_TRANSLATION)) + 0.8f);
+	RELEASE_INSTANCE(CInteractive_Manager);
 	m_pTransform->LookAt(vLookPos);
 
 	Safe_Release(pGameInstance);
 
 	if (FAILED(Bind_OnPipeLine()))
 		return;
-
-
 }
 
 void CCamera_Dynamic::Late_Tick(_float fTimeDelta)
@@ -165,6 +141,90 @@ HRESULT CCamera_Dynamic::Render()
 
 	
 	return S_OK;
+}
+
+CTransform * CCamera_Dynamic::Set_Target_Transform(CAM_STATE eCamState)
+{
+	CGameInstance*         pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	CTransform* pTransform = nullptr;
+
+	switch (m_eCamState)
+	{ //카메라 세팅
+	case CAM_HATKID:
+		pTransform = (CTransform*)pGameInstance->Get_Component(LEVEL_STATIC, L"Layer_Player", TEXT("Com_Transform"));
+		break;
+	case CAM_BOSS_CiNEMA:
+		pTransform = (CTransform*)pGameInstance->Get_Component(LEVEL_STATIC, L"Layer_Player", TEXT("Com_Transform"));
+		//보스한테서 트랜스폼 받아오도록 만들어야함 
+		break;
+
+	case CAM_ENEMY_CINEMA:
+		break;
+	}
+
+	Safe_Release(pGameInstance);
+	return pTransform;
+}
+
+void CCamera_Dynamic::Mouse_Move(_float& fAngleX, _float& fAngleY, _long MouseMove, _float fTimeDelta)
+{
+	CGameInstance*         pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_Y))
+	{
+
+		fAngleX += MouseMove * fTimeDelta * 20.f;
+
+		if (m_bMouseLock)
+		{
+			if (25.f <= fAngleX)
+				fAngleX = 25.f;// 아래에서 위
+			else if (-40.f >= fAngleX)
+				fAngleX = -40.f;// 위에서 아래
+			m_fLastAngleX = fAngleX;
+		}
+		else
+		{
+			fAngleX = m_fLastAngleX;
+		}
+		//_matrix mX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngle));
+
+	}
+
+
+	if (MouseMove = pGameInstance->Get_DIMMoveState(DIMM_X))
+	{
+
+		fAngleY += MouseMove * fTimeDelta * 20.f;
+		if (m_bMouseLock)
+		{
+			if (360.f <= fAngleY)
+				fAngleY = 0.f;
+			else if (0.f >= fAngleY)
+				fAngleY = 360.f;
+			m_fLastAngleY = fAngleY;
+		}
+		else
+		{
+			fAngleY = m_fLastAngleY;
+		}
+		//_matrix mX = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(fAngle));
+
+	}
+
+	if (m_bMouseLock)
+	{
+		POINT         ptMouse = { g_iWinSizeX >> 1, g_iWinSizeY >> 1 };
+
+		ClientToScreen(g_hWnd, &ptMouse);
+
+		SetCursorPos(ptMouse.x, ptMouse.y);
+	}
+
+	Safe_Release(pGameInstance);
 }
 
 CCamera_Dynamic * CCamera_Dynamic::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

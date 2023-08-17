@@ -23,7 +23,11 @@ public:
 
 private:
 	CGameInstance*			m_pGameInstance = nullptr;
-
+private:/*For.ClientManagers*/
+	class CDeligate_Monster*	m_pDeligateMonster = nullptr;
+	class CDataManager*			m_pDataManager = nullptr;
+	class CInteractive_Manager* m_pInteractive_Mgr = nullptr;
+	class CCamera_Manager*		m_pCam_Mgr = nullptr;
 private:
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
@@ -39,6 +43,7 @@ private:
 private:
 	HRESULT Open_Level(LEVEL eLevel);
 	HRESULT Ready_Prototype_Component();	
+	HRESULT Ready_Gara();
 
 public:
 	static CMainApp* Create();

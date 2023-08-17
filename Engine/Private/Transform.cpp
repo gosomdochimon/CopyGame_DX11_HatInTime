@@ -1,4 +1,5 @@
 #include "..\Public\Transform.h"
+#include "Navigation.h"
 
 CTransform::CTransform(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
@@ -37,60 +38,206 @@ HRESULT CTransform::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CTransform::Go_Straight(_float fTimeDelta)
+void CTransform::Go_Straight(_float fTimeDelta, CNavigation * pNavigation, _uint iCellType, _bool* bCanGo)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vLook = Get_State(CTransform::STATE_LOOK);
 
 	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
-	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if(bCanGo !=nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
+		
 }
 
-void CTransform::Go_Backward(_float fTimeDelta)
+void CTransform::Go_Backward(_float fTimeDelta, CNavigation * pNavigation, _uint iCellType, _bool* bCanGo)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vLook = Get_State(CTransform::STATE_LOOK);
 
 	vPosition -= XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
-	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
 }
 
-void CTransform::Go_Left(_float fTimeDelta)
+void CTransform::Go_Left(_float fTimeDelta, CNavigation * pNavigation, _uint iCellType, _bool* bCanGo)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vRight = Get_State(CTransform::STATE_RIGHT);
 
 	vPosition -= XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
-	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
 }
 
-void CTransform::Go_Right(_float fTimeDelta)
+void CTransform::Go_Right(_float fTimeDelta, CNavigation * pNavigation, _uint iCellType, _bool* bCanGo)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vRight = Get_State(CTransform::STATE_RIGHT);
 
 	vPosition += XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
-	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
 }
 
-void CTransform::Jump(_float fTimeDelta, _float fJumpPower)
+void CTransform::Jump(_float fTimeDelta, _float fJumpPower, CNavigation * pNavigation, _uint iCellType, _bool* bCanGo)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vUp = Get_State(CTransform::STATE_UP);
 
 	vPosition += XMVector3Normalize(vUp) * m_TransformDesc.fSpeedPerSec * fTimeDelta * fJumpPower;
 
-	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
 }
 
-void CTransform::Go_Target(_fvector vVector, _float fTimeDelta)
+void CTransform::Go_Target(_vector vGoalPos, _float fTimeDelta, CNavigation * pNavigation, _uint iCellType, _bool * bCanGo)
 {
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+	_vector		vLook = Get_State(CTransform::STATE_LOOK);
 
+	_vector		vGo = vGoalPos - vPosition;
+	XMVector3Normalize(vGo);
 
+	vPosition += XMVector3Normalize(vGo) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+	_float3 vPos;
+	XMStoreFloat3(&vPos, vPosition);
+
+	vPosition = XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f);
+
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
+}
+
+void CTransform::Go_Down(_float fTimeDelta, CNavigation * pNavigation, _uint iCellType, _bool* bCanGo)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+	_vector		vUp = Get_State(CTransform::STATE_UP);
+
+	vPosition -= XMVector3Normalize(vUp) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
+}
+
+void CTransform::Go_Up(_float fTimeDelta, CNavigation * pNavigation, _uint iCellType, _bool* bCanGo)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+	_vector		vUp = Get_State(CTransform::STATE_UP);
+
+	vPosition += XMVector3Normalize(vUp) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+
+	if (nullptr == pNavigation)
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	else if (true == pNavigation->isMove(vPosition, iCellType))
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = true;
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+	else
+	{
+		if (bCanGo != nullptr)
+			*bCanGo = false;
+	}
+}
+
+void CTransform::Go_Dir(_float fTimeDelta, _fvector vDir)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+	_vector		vLook = vDir;
+
+	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+
+	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 }
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
@@ -126,6 +273,22 @@ void CTransform::LookAt(_fvector vAt)
 	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * Get_Scale(CTransform::STATE_LOOK));
 }
 
+void CTransform::LookAt_Dir(_fvector vAt)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+
+	_vector		vLook = vAt;
+	_vector		vAxisY = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+	_vector		vRight = XMVector3Cross(vAxisY, vLook);
+	_vector		vUp = XMVector3Cross(vLook, vRight);
+
+	Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * Get_Scale(CTransform::STATE_RIGHT));
+	Set_State(STATE_UP, XMVector3Normalize(vUp) * Get_Scale(CTransform::STATE_UP));
+	Set_State(STATE_LOOK, XMVector3Normalize(vLook) * Get_Scale(CTransform::STATE_LOOK));
+
+}
+
 CTransform * CTransform::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
 	CTransform*	pInstance = new CTransform(pDevice, pContext);
@@ -149,7 +312,7 @@ CComponent * CTransform::Clone(void * pArg)
 		ERR_MSG(TEXT("Failed to Cloned : CTransform"));
 		Safe_Release(pInstance);
 	}
-		
+
 	return pInstance;
 }
 

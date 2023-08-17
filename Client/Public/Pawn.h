@@ -40,7 +40,10 @@ private:
 
 public:
 
+public:
+	virtual void		Functor();
 protected:
+	map<const _tchar*, _bool(*)(_float)> m_Functors;
 	PAWNDESC		m_PawnDesc;
 private:/*반드시 자식에서 추가 및 삭제할 것.*/
 

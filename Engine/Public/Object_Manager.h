@@ -17,6 +17,7 @@ public:
 	class CComponent* Get_Component(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pComponentTag, _uint iIndex = 0);
 
 	class CGameObject* Get_FirstObject(_uint iLevelIndex, const _tchar* pLayerTag);
+	list<class CGameObject*>* Get_Layer(_uint iLevelIndex, const _tchar* pLayerTag);
 public:
 	HRESULT Reserve_Container(_uint iNumLevels);
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);

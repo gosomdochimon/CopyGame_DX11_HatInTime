@@ -50,17 +50,54 @@ namespace Engine
 		unsigned long		_0, _1, _2;
 	}FACEINDICES32;
 
+	typedef struct tagVertexPosition
+	{
+		XMFLOAT3		vPosition;
+	}VTXPOS;
+
 	typedef struct tagVertexTexture
 	{
 		XMFLOAT3		vPosition;
 		XMFLOAT2		vTexture;
 	}VTXTEX;
 
+	typedef struct ENGINE_DLL tagVertexPosition_Declaration
+	{
+		static const unsigned int iNumElements = 1;
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXPOS_DECLARATION;
+
 	typedef struct ENGINE_DLL tagVertexTexture_Declaration
 	{
 		static const unsigned int iNumElements = 2;
 		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
 	}VTXTEX_DECLARATION;
+
+	typedef struct tagVertexPoint
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT2		vPSize;
+	}VTXPOINT;
+
+	typedef struct tagVertexMatrix
+	{
+		XMFLOAT4		vRight;
+		XMFLOAT4		vUp;
+		XMFLOAT4		vLook;
+		XMFLOAT4		vPosition;
+	}VTXMATRIX;
+
+	typedef struct ENGINE_DLL tagVertexRectInstance_Declaration
+	{
+		static const unsigned int iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXRECTINSTANCE_DECLARATION;
+
+	typedef struct ENGINE_DLL tagVertexPointInstance_Declaration
+	{
+		static const unsigned int iNumElements = 6;
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXPOINTINSTANCE_DECLARATION;
 
 	typedef struct tagVertexNormalTexture
 	{
@@ -80,6 +117,12 @@ namespace Engine
 		XMFLOAT3		vPosition;
 		XMFLOAT3		vTexture;
 	}VTXCUBETEX;
+
+	typedef struct ENGINE_DLL tagVertexCubeTexture_Declaration
+	{
+		static const unsigned int iNumElements = 2;
+		static const D3D11_INPUT_ELEMENT_DESC Elements[iNumElements];
+	}VTXCUBETEX_DECLARATION;
 
 	typedef struct tagVertexColor
 	{

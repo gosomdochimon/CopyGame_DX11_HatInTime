@@ -18,6 +18,8 @@ HRESULT CCustomFont::Initialize(const _tchar * pFontFilePath)
 
 HRESULT CCustomFont::Render(const _tchar* pText, _fvector vPosition, _fvector vColor)
 {
+	m_pContext->GSSetShader(nullptr, nullptr, 0);
+
 	m_pSprite->Begin();
 
 	m_pFont->DrawString(m_pSprite, pText, vPosition, vColor);

@@ -27,11 +27,12 @@ public:
 public: 
 	HRESULT			SetUp_Bones(class CModel* pModel);
 
+	HRESULT			Reset_Vertices(class CModel* pModel, _fmatrix PivotMatrix);
 private:
 	char						m_szName[MAX_PATH] = "";
 	const aiMesh*				m_pAIMesh = nullptr;
 	_uint						m_iMaterialIndex = 0;
-
+	CModel::TYPE				m_eModelType = CModel::TYPE::TYPE_END;
 	/* 이 메시에 영향을 주는 뼈들의 갯수 .*/
 	_uint							m_iNumBones = 0;
 	vector<class CHierarchyNode*>	m_Bones;

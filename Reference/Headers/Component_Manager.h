@@ -7,10 +7,15 @@
 #include "Renderer.h"
 #include "Transform.h"
 #include "Collider.h"
+#include "Navigation.h"
 #include "VIBuffer_Rect.h"
-//#include "VIBuffer_Cube.h"
+#include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
-
+#include "VIBuffer_Navigation.h"
+#include "VIBuffer_Rect_Instance.h"
+#include "VIBuffer_Point_Instance.h"
+#include "Point_Instance_Up.h"
+#include "Point_Instance_Turn.h"
 BEGIN(Engine)
 
 class CComponent_Manager final : public CBase

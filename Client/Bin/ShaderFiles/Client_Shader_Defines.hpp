@@ -22,6 +22,13 @@ RasterizerState RS_Default
 	FrontCounterClockwise = false;
 };
 
+RasterizerState RS_CullNone
+{
+	FillMode = solid;
+	CullMode = none;
+	FrontCounterClockwise = false;
+};
+
 RasterizerState RS_Wireframe
 {
 	FillMode = wireframe;
@@ -35,6 +42,8 @@ RasterizerState RS_SkyBox
 	CullMode = front;
 	FrontCounterClockwise = false;
 };
+
+
 
 //BOOL BlendEnable;
 //D3D11_BLEND SrcBlend;

@@ -79,23 +79,167 @@
     <Filter Include="02.GameObjects\Camera">
       <UniqueIdentifier>{a24dd426-ff18-49be-bb9b-c60ee85c2c29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\Mafia">
-      <UniqueIdentifier>{cc4ad705-3112-435b-b9d4-b1e8769192ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.Interface">
       <UniqueIdentifier>{63fe845d-8fdf-4ee0-85f7-56e104cd29ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\Mad_Crow">
-      <UniqueIdentifier>{4783ffe4-1dbe-49d0-ae07-e7d869273c36}</UniqueIdentifier>
     </Filter>
     <Filter Include="BehaviorTree">
       <UniqueIdentifier>{e49bf7ae-09a4-4cf0-bfd0-1c9cc6e7dee4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object_Manager">
+    <Filter Include="02.GameObjects\Actor\Equipment\01.Weapon\Punch">
+      <UniqueIdentifier>{b47b0df9-7e7c-4d07-8c16-a1916c92027d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Interface\Behavior_Tree">
+      <UniqueIdentifier>{91f88595-cef1-43d7-be5e-594644619fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment\01.Weapon\ThrowingObj">
+      <UniqueIdentifier>{456222eb-6d78-4768-b64f-6afa14ae7d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\01.Mad_Crow">
+      <UniqueIdentifier>{4783ffe4-1dbe-49d0-ae07-e7d869273c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\02.Mafia">
+      <UniqueIdentifier>{cc4ad705-3112-435b-b9d4-b1e8769192ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\02.Mafia\BT_Mafia">
+      <UniqueIdentifier>{dd214ef2-f0e7-4946-9ac2-a94ce5f6d034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\99.Head_Point">
+      <UniqueIdentifier>{a3bf85e7-4017-4519-9a07-eb072562bb0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95.Deligate">
+      <UniqueIdentifier>{e479d76b-b1e9-4f29-ad09-20e8a1b42f10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95.Deligate\Deligate_Monster">
+      <UniqueIdentifier>{99766072-69d2-47d6-8d6a-b211a39caa06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss">
+      <UniqueIdentifier>{29217da1-c39f-447b-9c7d-5cfd0263caa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Interface\Func_Detect">
+      <UniqueIdentifier>{0db39832-c37d-4909-b9c9-53600390bfbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\BT_MafiaBoss">
+      <UniqueIdentifier>{1c94cb9c-7a17-47a2-abff-56d10a36cf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Equipment\01.Weapon\Blade">
+      <UniqueIdentifier>{b4103fc5-1cff-4264-9463-7828889f4bc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh">
+      <UniqueIdentifier>{45c3ce40-ede9-4030-a75f-d48c716e157d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh\Map">
+      <UniqueIdentifier>{75db118c-a9c0-4dd5-8d4e-9fe4ab5d007b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh\Apple">
+      <UniqueIdentifier>{a5fe1264-3714-4c0e-8f80-aa3825554468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\Sandback">
+      <UniqueIdentifier>{366b6bad-baab-45e4-b747-287f58562f6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\Boss_Bullet">
+      <UniqueIdentifier>{6e4af748-2eb4-4fbc-a0e5-5db62745bc4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\04.NPC">
+      <UniqueIdentifier>{2f76c00c-0f95-46ba-b6a2-bbc18885c912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\SubConEye">
+      <UniqueIdentifier>{a6924172-cc09-45e6-bd91-bb05ebd1fe65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Trigger_Box">
+      <UniqueIdentifier>{60f07b16-ef1e-4855-b809-b9f0cc0012b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh\Throne">
+      <UniqueIdentifier>{0683bb68-88b1-404f-91df-10a6fa35d7a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh\Map\Mafia_HQ_Dome">
+      <UniqueIdentifier>{bbd7f9aa-ca5e-4eab-83aa-28e2511e6dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{10fd42bc-235a-4c22-88df-d65c940b1d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Interactive_Manager">
       <UniqueIdentifier>{ad612278-ae94-4cfd-904f-946660b5736a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Actor\Pawn\Func_Detect">
-      <UniqueIdentifier>{0db39832-c37d-4909-b9c9-53600390bfbc}</UniqueIdentifier>
+    <Filter Include="Managers\DataManager">
+      <UniqueIdentifier>{6f1285cb-31e8-4233-bc1e-766f15c6921e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\MafiaElite">
+      <UniqueIdentifier>{4c7a1871-1b18-405d-b2e1-4f6d5ce09f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\03.GamePlay2">
+      <UniqueIdentifier>{4df72d55-fcdc-403d-8e3b-9a248c964040}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect">
+      <UniqueIdentifier>{dfeef76c-7caa-470c-acdb-9493e9e18472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\Puff">
+      <UniqueIdentifier>{0b6a10b7-46b5-47e6-bd22-865df65e1afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\Particle_Point">
+      <UniqueIdentifier>{1a8070f9-22ab-4825-9113-72c1062073a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\HitImpact">
+      <UniqueIdentifier>{28643132-6471-4424-a7d1-27e7c030cab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\Dizzy">
+      <UniqueIdentifier>{167900d7-ddff-45fe-9231-a5d86cab9c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\Star">
+      <UniqueIdentifier>{81aff392-1117-49a4-b361-4e2578b1dc33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\Ring">
+      <UniqueIdentifier>{698d5315-701e-4d4a-8f3b-7177f5a544cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\Crown">
+      <UniqueIdentifier>{f2967a99-405d-4176-b8ac-813272c28edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\Rotation">
+      <UniqueIdentifier>{ad1edb19-b45e-4641-adf0-264b43992e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93.Effect\DeadSphere">
+      <UniqueIdentifier>{123f54af-80e7-4f9e-ac9d-7b961174dcb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI">
+      <UniqueIdentifier>{95724ad0-2c34-44e3-a9bb-db1f6bd74ab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI\Health">
+      <UniqueIdentifier>{dc7e4094-bcbc-479e-b1f1-811eb8c04679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI\Health\Arrow">
+      <UniqueIdentifier>{fea49647-ecc1-4766-ae4c-6bd51341562b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI\Health\Text_Life">
+      <UniqueIdentifier>{217b4bd8-88cc-4d00-9e30-7da63f384340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI\Health\Player_Health">
+      <UniqueIdentifier>{b45935cf-5822-46d2-8577-0fb2a1f7de81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI\Manager">
+      <UniqueIdentifier>{52152e1a-2fbe-42b1-a98d-958477d2d595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI\Scene">
+      <UniqueIdentifier>{0baa6ee4-7856-4f1e-b404-25162716972a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Camera_Manager">
+      <UniqueIdentifier>{dc59bdd7-5d27-46ff-8e80-e8e2d446468b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh\Platform">
+      <UniqueIdentifier>{471f931c-c1eb-4eae-81f9-1fa5866fb53c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\Pawn\03.Monster\02.Mafia\Mafia_S1">
+      <UniqueIdentifier>{a8c774b5-4553-4f4b-817e-e0d5032456af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\04.GamePlay_Platform">
+      <UniqueIdentifier>{2b6b958a-3af8-4c55-a71e-01838f15d574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh\Bars">
+      <UniqueIdentifier>{e0e15daa-91ca-42ce-9069-f57b7dbe9efd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Actor\StaticMesh\Button">
+      <UniqueIdentifier>{0d0dc623-9a6c-4934-afc3-065ea939eecf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="94.UI\Talk">
+      <UniqueIdentifier>{356e33bd-8d99-48fb-9507-d6030907d260}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,9 +282,6 @@
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\01.Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
-      <Filter>97.ShaderFiles</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Player.h">
       <Filter>02.GameObjects\Actor\Pawn\02.Player</Filter>
     </ClInclude>
@@ -181,13 +322,160 @@
       <Filter>02.GameObjects\Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Mafia.h">
-      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mafia</Filter>
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\02.Mafia</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MadCrow.h">
-      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mad_Crow</Filter>
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\01.Mad_Crow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Detect.h">
-      <Filter>02.GameObjects\Actor\Pawn\Func_Detect</Filter>
+      <Filter>96.Interface\Func_Detect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Punch.h">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Punch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Behavior_Tree.h">
+      <Filter>96.Interface\Behavior_Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Throwing_Object.h">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\ThrowingObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Head_Point.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\99.Head_Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Deligate_Monster.h">
+      <Filter>95.Deligate\Deligate_Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MafiaBoss.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BT_MafiaBoss.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\BT_MafiaBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Blade.h">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Blade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mafia_HQ.h">
+      <Filter>02.GameObjects\Actor\StaticMesh\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StaticMesh.h">
+      <Filter>02.GameObjects\Actor\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Apple.h">
+      <Filter>02.GameObjects\Actor\StaticMesh\Apple</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sandback.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\Sandback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss_Bullet.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\Boss_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dweller.h">
+      <Filter>02.GameObjects\Actor\Pawn\04.NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SubConEye.h">
+      <Filter>02.GameObjects\Actor\Pawn\SubConEye</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interactive_Manager.h">
+      <Filter>Managers\Interactive_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Throne.h">
+      <Filter>02.GameObjects\Actor\StaticMesh\Throne</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trigger_Box.h">
+      <Filter>02.GameObjects\Actor\Trigger_Box</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mafia_HQ_Dome.h">
+      <Filter>02.GameObjects\Actor\StaticMesh\Map\Mafia_HQ_Dome</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DataManager.h">
+      <Filter>Managers\DataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MafiaElite.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaElite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_GamePlay2.h">
+      <Filter>01.Levels\03.GamePlay2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Point.h">
+      <Filter>93.Effect\Particle_Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect.h">
+      <Filter>93.Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Puff.h">
+      <Filter>93.Effect\Puff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>97.ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HitImpact.h">
+      <Filter>93.Effect\HitImpact</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Dizzy_Effect.h">
+      <Filter>93.Effect\Dizzy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Arrow.h">
+      <Filter>94.UI\Health\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PlayerHealth.h">
+      <Filter>94.UI\Health\Player_Health</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_TextLife.h">
+      <Filter>94.UI\Health\Text_Life</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Manager.h">
+      <Filter>94.UI\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Star.h">
+      <Filter>93.Effect\Star</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ring.h">
+      <Filter>93.Effect\Ring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Crown.h">
+      <Filter>93.Effect\Crown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Rotation_Effect.h">
+      <Filter>93.Effect\Rotation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DeadSphere.h">
+      <Filter>93.Effect\DeadSphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Base.h">
+      <Filter>94.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LogoTexture.h">
+      <Filter>94.UI\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Start_UI.h">
+      <Filter>94.UI\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>Managers\Camera_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mafia_Platform.h">
+      <Filter>02.GameObjects\Actor\StaticMesh\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Platform.h">
+      <Filter>01.Levels\04.GamePlay_Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Clerk.h">
+      <Filter>02.GameObjects\Actor\Pawn\04.NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bars.h">
+      <Filter>02.GameObjects\Actor\StaticMesh\Bars</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Button.h">
+      <Filter>02.GameObjects\Actor\StaticMesh\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mafia_Guard.h">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\02.Mafia\Mafia_S1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Talk.h">
+      <Filter>94.UI\Talk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sky.h">
+      <Filter>02.GameObjects\00.BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,13 +546,157 @@
       <Filter>02.GameObjects\Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Mafia.cpp">
-      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mafia</Filter>
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\02.Mafia</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MadCrow.cpp">
-      <Filter>02.GameObjects\Actor\Pawn\03.Monster\Mad_Crow</Filter>
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\01.Mad_Crow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Detect.cpp">
-      <Filter>02.GameObjects\Actor\Pawn\Func_Detect</Filter>
+      <Filter>96.Interface\Func_Detect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Punch.cpp">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Punch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Behavior_Tree.cpp">
+      <Filter>96.Interface\Behavior_Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Throwing_Object.cpp">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\ThrowingObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Head_Point.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\99.Head_Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Deligate_Monster.cpp">
+      <Filter>95.Deligate\Deligate_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MafiaBoss.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BT_MafiaBoss.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\BT_MafiaBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Blade.cpp">
+      <Filter>02.GameObjects\Actor\Equipment\01.Weapon\Blade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mafia_HQ.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StaticMesh.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Apple.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sandback.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\Sandback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss_Bullet.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaBoss\Boss_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dweller.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\04.NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SubConEye.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\SubConEye</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interactive_Manager.cpp">
+      <Filter>Managers\Interactive_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Throne.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh\Throne</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trigger_Box.cpp">
+      <Filter>02.GameObjects\Actor\Trigger_Box</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mafia_HQ_Dome.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh\Map\Mafia_HQ_Dome</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DataManager.cpp">
+      <Filter>Managers\DataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MafiaElite.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\MafiaElite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_GamePlay2.cpp">
+      <Filter>01.Levels\03.GamePlay2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Point.cpp">
+      <Filter>93.Effect\Particle_Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect.cpp">
+      <Filter>93.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Puff.cpp">
+      <Filter>93.Effect\Puff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HitImpact.cpp">
+      <Filter>93.Effect\HitImpact</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Dizzy_Effect.cpp">
+      <Filter>93.Effect\Dizzy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Arrow.cpp">
+      <Filter>94.UI\Health\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PlayerHealth.cpp">
+      <Filter>94.UI\Health\Player_Health</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_TextLife.cpp">
+      <Filter>94.UI\Health\Text_Life</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Manager.cpp">
+      <Filter>94.UI\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Star.cpp">
+      <Filter>93.Effect\Star</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ring.cpp">
+      <Filter>93.Effect\Ring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Crown.cpp">
+      <Filter>93.Effect\Crown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Rotation_Effect.cpp">
+      <Filter>93.Effect\Rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DeadSphere.cpp">
+      <Filter>93.Effect\DeadSphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Base.cpp">
+      <Filter>94.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LogoTexture.cpp">
+      <Filter>94.UI\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Start_UI.cpp">
+      <Filter>94.UI\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager.cpp">
+      <Filter>Managers\Camera_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mafia_Platform.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Platform.cpp">
+      <Filter>01.Levels\04.GamePlay_Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Clerk.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\04.NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bars.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh\Bars</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Button.cpp">
+      <Filter>02.GameObjects\Actor\StaticMesh\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mafia_Guard.cpp">
+      <Filter>02.GameObjects\Actor\Pawn\03.Monster\02.Mafia\Mafia_S1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Talk.cpp">
+      <Filter>94.UI\Talk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sky.cpp">
+      <Filter>02.GameObjects\00.BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,16 +713,31 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Navigation.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTexture.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxRectInstance.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

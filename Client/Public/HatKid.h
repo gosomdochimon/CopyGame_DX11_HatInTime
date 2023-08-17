@@ -8,6 +8,9 @@ class CCollider;
 class CRenderer;
 class CTransform;
 class CModel;
+class CHierarchyNode;
+class CNavigation;
+
 END
 
 BEGIN(Client)
@@ -15,25 +18,30 @@ class CHatKid final :
 	public CPlayer
 {
 public:
-	enum ANIM_STATE {IDLE =0, IDLE_TAUNT = 1, RUN = 2, RUN_OLD =3, SPRINT = 4, JUMP_FORWARD =5, JUMP_DOUBLE = 6, JUMP_LEDGE =7,
-		DIVE_IDLE =8, DIVE_SLIDE = 9, SLIDE_FINISH = 10, CRARRY_UMBRELLA_INTRO =11, CARRY_UMBRELLA_IDLE =12, UMBRELLA_ATK_A =13, UMBRELLA_ATK_B = 14, UMBRELLA_ATK_C =15,
-		PUNCH_A =16, PUNCH_B = 17, ITEM_PICKUP_LARGE =18, ITEM_CARRY_LARGE = 19, ITEM_THROW_ONEHAND = 20, ITEM_THROW =21, SHAKE_FLASK = 22,
-		HOOKSHOT_START = 23, HOOK0SHOT_SWING =24, HOOKSHOT_FINISH =25, DEAD =26, LELVEL_START =27, VICTORY =28, HURT =29, STATE_END =30 };
+	enum ANIM_STATE {
+		IDLE = 0, IDLE_TAUNT = 1, RUN = 2, RUN_OLD = 3, SPRINT = 4, JUMP_FORWARD = 5, JUMP_DOUBLE = 6, JUMP_LEDGE = 7,
+		DIVE_IDLE = 8, DIVE_SLIDE = 9, SLIDE_FINISH = 10, CRARRY_UMBRELLA_INTRO = 11, CARRY_UMBRELLA_IDLE = 12, UMBRELLA_ATK_A = 13, UMBRELLA_ATK_B = 14, UMBRELLA_ATK_C = 15,
+		PUNCH_A = 16, PUNCH_B = 17, ITEM_PICKUP_LARGE = 18, ITEM_CARRY_LARGE = 19, ITEM_THROW_ONEHAND = 20, ITEM_THROW = 21, SHAKE_FLASK = 22,
+		HOOKSHOT_START = 23, HOOK0SHOT_SWING = 24, HOOKSHOT_FINISH = 25, DEAD = 26, LELVEL_START = 27, VICTORY = 28, HURT = 29, STATE_END = 30
+	};
 	/*
-	Attack: Attack키만 먹혀야함. 
+	Attack: Attack키만 먹혀야함.
 	*/
-	
-	enum class LOWER_STATE{ IDLE, RUN, SPRINT, JUMP, DOUBLE_JUMP, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END };
-	
-	enum class UPPER_STATE { IDLE, RUN, SPRINT, JUMP, DOUBLE_JUMP, CARRY, SKILL, UMBRELLA, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END};
 
-	enum PARTS_TYPE { PARTS_HAT, PARTS_WEAPON, PARTS_END};
+	enum class LOWER_STATE { IDLE, RUN, SPRINT, JUMP, DOUBLE_JUMP, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END };
+
+	enum class UPPER_STATE { IDLE, RUN, SPRINT, JUMP, DOUBLE_JUMP, CARRY, SKILL, UMBRELLA, ATTACK, THROW, DIVE, HOOK, HURT, DEAD, STATE_END };
+
+	enum PARTS_TYPE { PARTS_HAT, PARTS_WEAPON, PARTS_SUBWEAPON, PARTS_END };
 
 	enum HAT_TYPE { HAT_NONE, HAT_DEFAULT, HAT_WITCH, HAT_SPRINT, HAT_END };
 
-	enum WEAPON_TYPE{ WEAPON_NONE, WEAPON_UMBRELLA, WEAPON_FLASK, WEAPON_END};
+	enum WEAPON_TYPE { WEAPON_NONE, WEAPON_PUNCH, WEAPON_UMBRELLA, WEAPON_FLASK, WEAPON_END };
+
+	enum SUBWEAPON_TYPE { SUBWEAPON_NONE, SUBWEAPON_PUNCH, SUBWEAPON_END };
 
 	enum KEYSTATE { KEY_LEFT, KEY_RIGHT, KEY_LF, KEY_LB, KEY_RF, KEY_RB, KEY_END };
+	enum class SOUND_STATE {ATTACK, THROW, JUMP, HMM, HURT, SOUND_END};
 private:
 	CHatKid(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CHatKid(const CHatKid& rhs);
@@ -47,7 +55,12 @@ public:
 	virtual HRESULT		Render();
 
 public:/*Get&Set*/
-	_vector		Get_State(_uint iState) const;
+	//_vector		Get_State(_uint iState) const;
+	//
+	_bool		Get_isCanPick() { return m_bCanPick; }
+	void		Set_isCanPick(_bool CanPick) { m_bCanPick = CanPick; }
+private:
+	HRESULT		Init_Position();
 private:/*For AnimControl Func*/
 	HRESULT				Setup_Anim_Loop(void);
 
@@ -63,12 +76,26 @@ private:/*For AnimControl Func*/
 	void				Sliding();
 	void				Move(_float fTimeDelta);
 	void				Hurt(_float fTimeDelta);
+	void				IsShoot_Flask(_bool bShoot);
+	void				CoolTime(_float fTimeDelta);
+	void				Set_Height();
+
+	void				Create_Dizzy();
+	void				Create_Puff(CHierarchyNode* pStuckSocket, _float fTimeDelta, _uint iType = 0, _uint iMoveType = 0, _float fLifeTime = 1.f, _float fAngle =0.f);
+	void				Create_JumpPuff(_uint iType = 0);
+	void				Create_HitImpact();
+	void				Play_Sound_Lower(LOWER_STATE eLowerState);
+	//void				Play_Sound_Upper(UPPER_STATE eUpperState);
+	void				Play_Sound_HatKid(SOUND_STATE eSoundState);
 private:/*For.Equip*/
 	void				Add_Equip();
 
-	void				Shoot_Flask();
-private:/*For. Anim*/
+	_bool				Change_Level();
+
 	CCollider*			m_pSPHERECom = nullptr;
+	class CHierarchyNode* m_pColliderBone = nullptr;
+private:/*For. Anim*/
+
 	_bool				m_bAnimFinished = false;
 	_bool				m_bAnimFinished_Upper = false;
 	_bool				m_bAnimFinished_Lower = false;
@@ -81,7 +108,7 @@ private:/*For. Anim Queue*/
 	vector<_bool>		m_AnimLoopStates;
 	//map<ANIM_STATE, _bool>	
 private: /*For. State*/
-	UPPER_STATE			m_eCurrentUpperState = UPPER_STATE::STATE_END; 
+	UPPER_STATE			m_eCurrentUpperState = UPPER_STATE::STATE_END;
 	LOWER_STATE			m_eCurrentLowerState = LOWER_STATE::STATE_END;
 
 	UPPER_STATE			m_ePreUpperState = UPPER_STATE::STATE_END;
@@ -98,6 +125,7 @@ private:
 	_bool				m_bDoubleJump = false;
 	/*Action State Bool*/
 	_bool				m_bIsPickup = false; //
+	_bool				m_bCanPick = false;
 	_bool				m_bIsHooking = false;
 	_bool				m_bSkillReady = false;
 	_bool				m_bSkillUsing = false;
@@ -117,12 +145,28 @@ private:
 	_float				m_fDiveTime = 1.f;
 	//for Hurt
 	_float				m_fHurtTime = 1.f;
+	_float				m_fSuperTime = 2.f;
+	_bool				m_bSuper = false;
+	//for Effect
+	_float				m_fRunningTime = 0.2f;
+	_float				m_fWalkTIme = 0.2f;
 	//임시용
 	KEYSTATE m_ePreKeyState = KEY_END;
 	KEYSTATE m_eCurKeyState = KEY_END;
+
+	_float4x4				m_CombinedWorldMatrix;
+
+	//For Sound.
+	_bool					m_bSoundEnd = false;
+	_float					m_fSoundTimer = 0.f;
+
+	_int					m_iLife = 4;
 private:/*For. Parts*/
 	class CEquipments*	m_pEquipments = nullptr;
 
+	CNavigation*			m_pNavigationCom = nullptr;
+	_bool					m_bLoading = false;
+	_bool					m_bChanged = false;
 public:
 	virtual HRESULT		Move_Front(_float fTimeDelta)	override;
 	virtual	HRESULT		Move_Back(_float fTimeDelta)	override;
@@ -139,8 +183,10 @@ public:
 	virtual HRESULT		Action_3(_float fTimeDelta)		override;
 	virtual HRESULT		Action_4(_float fTimeDelta)		override;
 	virtual HRESULT		Action_5(_float fTimeDelta)		override;//스킬Key_Up
-	virtual HRESULT		Action_6(_float fTimeDelta)		override; 
+	virtual HRESULT		Action_6(_float fTimeDelta)		override;
 	virtual HRESULT		Idle(_float fTimeDelta)			override;
+
+	virtual _float Take_Damage(float fDamage, void* DamageType, CGameObject* DamageCauser) override;
 private:/*For Test*/
 	virtual void		TestFunc(_float fTimeDelta) override;
 	HRESULT				Ready_Parts();

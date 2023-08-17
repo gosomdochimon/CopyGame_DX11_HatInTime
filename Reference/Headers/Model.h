@@ -65,6 +65,11 @@ public:/*Set Func*/
 		m_iNext_Lower_AnimIndex = iAnimIndex; m_Animations[m_iNext_Lower_AnimIndex]->Set_Loop(bLoop);
 	}
 
+	void Set_OffsetPerSecond(_uint iAnimIndex, _float OffsetPerSecond) { m_Animations[iAnimIndex]->Set_OffsetPerSecond(OffsetPerSecond); }
+
+	void Reset_Anim();
+	void ReSet_PivotMatatrix(_float4x4 PivotMatrix);
+
 public:
 	virtual HRESULT Initialize_Prototype(TYPE eModelType, const char* pModelFilePath, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg);
@@ -127,7 +132,7 @@ private:
 	_bool								m_bLinearFinished_Upper = false;
 	_bool								m_bLinearFinished_Lower = false;
 private:
-	_float4x4				m_PivotMatrix;
+	_float4x4							m_PivotMatrix;
 
 	_bool								m_bInterupted = false;
 	_bool								m_bInterupted_Upper = false;

@@ -45,6 +45,24 @@ CHierarchyNode * CModel::Get_BonePtr(const char * pBoneName) const
 	return *iter;
 }
 
+void CModel::Reset_Anim()
+{
+	m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
+}
+
+void CModel::ReSet_PivotMatatrix(_float4x4 PivotMatrix)
+{
+	{ memcpy(&m_PivotMatrix, &PivotMatrix, sizeof(_float4x4)); }
+
+	_matrix mat_PivotMatrix = XMLoadFloat4x4(&PivotMatrix);
+
+	for (auto& iter = m_Meshes.begin(); iter != m_Meshes.end();)
+	{
+		(*iter)->Reset_Vertices(this, mat_PivotMatrix);
+		iter++;
+	}
+}
+
 HRESULT CModel::Initialize_Prototype(TYPE eModelType, const char * pModelFilePath, _fmatrix PivotMatrix)
 {
 	m_eModelType = eModelType;
@@ -147,6 +165,7 @@ HRESULT CModel::Play_Animation(_float fTimeDelta, _bool* _bIsFinished)
 			m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
 
 			m_iCurrentAnimIndex = m_iNextAnimIndex;
+			m_Animations[m_iCurrentAnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_END);
 		}
 		*_bIsFinished = false;
 	}
@@ -158,13 +177,19 @@ HRESULT CModel::Play_Animation(_float fTimeDelta, _bool* _bIsFinished)
 		}
 		else
 		{
-			m_bLinearFinished = m_Animations[m_iCurrentAnimIndex]->Animation_Linear_Interpolation(fTimeDelta, m_Animations[m_iCurrentAnimIndex], 0.1f);
-			if (m_bLinearFinished)
+			if(m_Animations[m_iCurrentAnimIndex]->Get_Loop() == true)
 			{
-				m_Animations[m_iCurrentAnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_END, m_bLinearFinished);
-				m_Animations[m_iCurrentAnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_END);
+				m_bLinearFinished = m_Animations[m_iCurrentAnimIndex]->Animation_Linear_Interpolation(fTimeDelta, m_Animations[m_iCurrentAnimIndex], 0.1f);
+				if (m_bLinearFinished)
+				{
+					m_Animations[m_iCurrentAnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_END, m_bLinearFinished);
+					m_Animations[m_iCurrentAnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_END);
+				}
 			}
-			
+			else if (m_Animations[m_iCurrentAnimIndex]->Get_Loop() == false)
+			{
+				*_bIsFinished = true;
+			}
 		}
 		
 	}
@@ -232,19 +257,22 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 	  m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels(BODYTYPE::BODYTYPE_Upper);
 	  }*/
 	  /* 뼈의 m_TransformationMatrix행렬을 갱신한다. */
+
 		if (!m_Animations[m_iCurrent_Upper_AnimIndex]->Get_Finished(BODYTYPE::BODYTYPE_UPPER))
 		{
 			*bIsFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Invalidate_Upper_TransformationMatrix(fTimeDelta);
 		}
 		else
 		{
-			m_bLinearFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Animation_Linear_Interpolation_Upper(fTimeDelta, m_Animations[m_iCurrent_Upper_AnimIndex], 0.1f);
-			if (m_bLinearFinished_Upper)
+			if (m_Animations[m_iCurrent_Upper_AnimIndex]->Get_Loop() == true)
 			{
-				m_Animations[m_iCurrent_Upper_AnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_UPPER, m_bLinearFinished_Upper);
-				m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_UPPER);
+				m_bLinearFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Animation_Linear_Interpolation_Upper(fTimeDelta, m_Animations[m_iCurrent_Upper_AnimIndex], 0.1f);
+				if (m_bLinearFinished_Upper)
+				{
+					m_Animations[m_iCurrent_Upper_AnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_UPPER, m_bLinearFinished_Upper);
+					m_Animations[m_iCurrent_Upper_AnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_UPPER);
+				}
 			}
-
 		}
 
 	}
@@ -275,11 +303,14 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 		}
 		else
 		{
-			m_bLinearFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Animation_Linear_Interpolation_Lower(fTimeDelta, m_Animations[m_iCurrent_Lower_AnimIndex], 0.1f);
-			if (m_bLinearFinished_Lower)
+			if (m_Animations[m_iCurrent_Lower_AnimIndex]->Get_Loop() == true)
 			{
-				m_Animations[m_iCurrent_Lower_AnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_LOWER, m_bLinearFinished_Lower);
-				m_Animations[m_iCurrent_Lower_AnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_LOWER);
+				m_bLinearFinished_Lower = m_Animations[m_iCurrent_Lower_AnimIndex]->Animation_Linear_Interpolation_Lower(fTimeDelta, m_Animations[m_iCurrent_Lower_AnimIndex], 0.1f);
+				if (m_bLinearFinished_Lower)
+				{
+					m_Animations[m_iCurrent_Lower_AnimIndex]->Set_Finished(BODYTYPE::BODYTYPE_LOWER, m_bLinearFinished_Lower);
+					m_Animations[m_iCurrent_Lower_AnimIndex]->Reset_Channels((_uint)CModel::BODYTYPE::BODYTYPE_LOWER);
+				}
 			}
 			
 		}

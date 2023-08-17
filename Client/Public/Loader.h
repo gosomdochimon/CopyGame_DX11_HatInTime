@@ -34,9 +34,20 @@ public:
 	HRESULT Initialize(LEVEL eNextLevel);
 
 	HRESULT Loading_ForLogoLevel();
+
+	HRESULT	Loading_ForGamePlay_Platform();
+
 	HRESULT Loading_ForGamePlayLevel();
 
+	HRESULT Loading_ForGamePlay2Level();
 
+	HRESULT Loading_ForPrototype_Object();
+private:
+	HRESULT Loading_ForStatic_Model();
+	HRESULT Loading_ForStatic_Shader();
+	HRESULT Loading_ForStatic_Texture();
+private:
+	HRESULT	Loading_ForModel_Play1();
 private:
 	LEVEL					m_eNextLevel = LEVEL_END;
 	_bool					m_isFinished = false;

@@ -3,7 +3,8 @@
 
 #include "GameInstance.h"
 #include "Camera_Dynamic.h"
-
+#include "DataManager.h"
+#include "Effect.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -20,8 +21,10 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+		return E_FAIL;*/
+
+
 
 	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
 		return E_FAIL;
@@ -29,20 +32,27 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Map(TEXT("Layer_Map"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_InteractionObject(TEXT("InteractionObject"))))
+		return E_FAIL;
+
+
 	//if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
 	//	return E_FAIL;	
 
 	//if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
 	//	return E_FAIL;
 
-	
+
 
 	return S_OK;
 }
 
 void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);	
+	__super::Tick(fTimeDelta);
 
 
 }
@@ -67,7 +77,7 @@ HRESULT CLevel_GamePlay::Ready_Lights()
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);	
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
 		return E_FAIL;
@@ -95,12 +105,12 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const _tchar * pLayerTag)
 	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HatKid"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-		return E_FAIL;	
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HatKid"), LEVEL_STATIC, pLayerTag, nullptr)))
+		return E_FAIL;
 
 	Safe_Release(pGameInstance);
 
-	
+
 	return S_OK;
 }
 
@@ -109,21 +119,72 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const _tchar * pLayerTag)
 	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	for (_uint i = 0; i < 10; ++i)
+	//for (_uint i = 0; i < 10; ++i)
 	{
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mafia"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+		/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mafia"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+			return E_FAIL;*/
+	}
+	//MafiaBoss
+	{
+		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MafiaBoss"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
 			return E_FAIL;
 	}
 
-	for (_uint i = 0; i < 3; ++i)
+
+	//for (_uint i = 0; i < 3; ++i)
 	{
-		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MadCrow"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-			return E_FAIL;
+		/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_MadCrow"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+			return E_FAIL;*/
 	}
+
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Sandback"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+	//	return E_FAIL;
 
 	Safe_Release(pGameInstance);
 
 
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Map(const _tchar * pLayerTag)
+{
+	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+	CDataManager*			pDataManager = CDataManager::Get_Instance();
+	Safe_AddRef(pDataManager);
+
+	list<CActor::tagCloneInfo> Info = pDataManager->Get_TutorialAllTypeData();
+
+	for (auto& iter = Info.begin(); iter != Info.end();)
+	{
+		switch(iter->iModelNum)
+		{
+		case 0:
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mafia_HQ"), LEVEL_GAMEPLAY, pLayerTag, &(*iter))))
+				return E_FAIL;
+			break;
+		case 1:
+			if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mafia_HQ_Dome"), LEVEL_GAMEPLAY, pLayerTag, &(*iter))))
+				return E_FAIL;
+			break;
+		case 2:
+			/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Mafia"), LEVEL_GAMEPLAY, TEXT("Layer_Monster"), &(*iter))))
+				return E_FAIL;*/
+			break;
+
+		}
+		iter++;
+	}
+
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Platform"), LEVEL_GAMEPLAY, pLayerTag)))
+	//	return E_FAIL;
+	
+
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Sky"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+	//	return E_FAIL;
+
+	Safe_Release(pGameInstance);
+	Safe_Release(pDataManager);
 	return S_OK;
 }
 
@@ -132,11 +193,11 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Terrain"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-		return E_FAIL;
+	/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Terrain"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+		return E_FAIL;*/
 
-	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Sky"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
-	//	return E_FAIL;
+		//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Sky"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+		//	return E_FAIL;
 
 	Safe_Release(pGameInstance);
 
@@ -148,14 +209,40 @@ HRESULT CLevel_GamePlay::Ready_Layer_Effect(const _tchar * pLayerTag)
 	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
-	for (_uint i = 0; i < 20; ++i)
+	/*for (_uint i = 0; i < 20; ++i)
 	{
 		if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Effect"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
 			return E_FAIL;
-	}	
+	}*/
+	
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Particle_Point"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+	//	return E_FAIL;
+
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_HitEffect"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+	//	return E_FAIL;
+	//Prototype_GameObject_Ring
+
+	/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Ring"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_StarEffect"), LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;*/
+	CEffect::EFFECTINFO EffectInfo;
+	EffectInfo.iTypeNum = 1;
+	EffectInfo.iMoveType = 0;
+	EffectInfo.fAngle = 0.f;
+	EffectInfo.fLifeTime = 0.f;
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_RotationEffect"), LEVEL_GAMEPLAY, pLayerTag, &EffectInfo)))
+	//	return E_FAIL;
+	EffectInfo.iTypeNum = 0;
+	/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_RotationEffect"), LEVEL_GAMEPLAY, pLayerTag, &EffectInfo)))
+		return E_FAIL; */
+
+	/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_DeadSphere"), LEVEL_GAMEPLAY, pLayerTag, nullptr)))
+		return E_FAIL;*/
 
 	Safe_Release(pGameInstance);
-	
+
 	return S_OK;
 }
 
@@ -192,10 +279,42 @@ HRESULT CLevel_GamePlay::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
-
-	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_UI"), LEVEL_GAMEPLAY, pLayerTag)))
+	/*Health_UI*/
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_UI_PlayerHealth"), LEVEL_STATIC, pLayerTag)))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_UI_TextLife"), LEVEL_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_UI_Arrow"), LEVEL_STATIC, pLayerTag)))
+		return E_FAIL;
+
+
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_InteractionObject(const _tchar * pLayerTag)
+{
+	CGameInstance*			pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	/*if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Apple"), LEVEL_GAMEPLAY, pLayerTag)))
+		return E_FAIL;*/
+
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Dweller"), LEVEL_GAMEPLAY, TEXT("Layer_Test"))))
+	//	return E_FAIL;
+
+	//if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_SubConEye"), LEVEL_GAMEPLAY, TEXT("Layer_SubConEye"))))
+	//	return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Trigger_Box"), LEVEL_GAMEPLAY, TEXT("Layer_TriggerBox"))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject(TEXT("Prototype_GameObject_Throne"), LEVEL_GAMEPLAY, TEXT("Layer_StaticMesh"))))
+		return E_FAIL;
 	Safe_Release(pGameInstance);
 
 	return S_OK;
