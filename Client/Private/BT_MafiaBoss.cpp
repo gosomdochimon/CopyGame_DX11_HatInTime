@@ -132,7 +132,6 @@ void CBT_MafiaBoss::Tick(_float fTimeDelta)
 	if (RootNode->Excute(m_pOwner, fTimeDelta) == STATUS::FINISH)
 	{
 		RootNode->Reset_Status();
-		//m_pRunningNode = RootNode->Get_RunningNode(RootNode);
 	}
 }
 

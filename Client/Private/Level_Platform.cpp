@@ -45,10 +45,10 @@ HRESULT CLevel_Platform::Initialize()
 	//if (FAILED(Ready_Layer_Effect(TEXT("Layer_Effect"))))
 	//	return E_FAIL;	
 
-	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
+	//	return E_FAIL;
 
-
+	ShowCursor(false);
 
 	return S_OK;
 }

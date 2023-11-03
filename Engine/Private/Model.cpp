@@ -231,7 +231,7 @@ HRESULT CModel::Play_Animation_Seperate(_float fTimeDelta, _bool* bIsFinished_Up
 	//	*bIsFinished_Upper = m_Animations[m_iCurrent_Upper_AnimIndex]->Invalidate_Upper_TransformationMatrix(fTimeDelta);
 	//}
 
-	/*For. Lower_Anim*/
+	/*For. Upper_Anim*/
 	if (m_iCurrent_Upper_AnimIndex != m_iNext_Upper_AnimIndex)
 	{	//TODO: 현재애님과 다음 애님프레임간의 선형보간 함수 호출 할 것.
 		if (m_bInterupted_Upper)

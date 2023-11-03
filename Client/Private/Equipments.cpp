@@ -134,7 +134,6 @@ _bool CEquipments::Change_Part(_uint iLayerNum, _uint iNextPartNum)
 			else
 				iter++;
 		}
-
 	}
 
 	return false;

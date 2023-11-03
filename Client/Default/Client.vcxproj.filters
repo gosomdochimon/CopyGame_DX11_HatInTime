@@ -741,4 +741,7 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram2.cd" />
+  </ItemGroup>
 </Project>

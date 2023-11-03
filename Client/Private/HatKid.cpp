@@ -120,7 +120,7 @@ void CHatKid::Late_Tick(_float fTimeDelta)
 
 #ifdef _DEBUG
 		//m_pRendererCom->Add_Debug(m_pSPHERECom);
-		//m_pRendererCom->Add_Debug(m_pNavigationCom);
+		m_pRendererCom->Add_Debug(m_pNavigationCom);
 #endif
 	}
 }
@@ -152,7 +152,7 @@ HRESULT CHatKid::Render()
 		m_pOBBCom->Render();*/
 		//m_pSPHERECom->Render();
 		if (m_pNavigationCom != nullptr)
-			//m_pNavigationCom->Render_Navigation();
+			m_pNavigationCom->Render_Navigation();
 	#endif
 
 	return S_OK;
